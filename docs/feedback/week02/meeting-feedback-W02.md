@@ -1,5 +1,5 @@
 ## Formative Assessment Week 2
-- **Chair**: Kirill
+- **Chair**: Aleksandar
 - **Notetaker**: Călin
 
 ### Meeting Organization
@@ -22,7 +22,7 @@ Feedback:
 
 ### Chair performance
 
-Mark: **Good**
+Mark: **Good** -> **Sufficient**
 
 Feedback: 
 #### Tops:
@@ -32,6 +32,10 @@ Feedback:
 #### Tips:
 - They could have been more commanding.
 
+#### Update:
+- I was not even aware of whom the chairman actually is. Because of this, I have updated the mark.
+- Please from next time, be more clear who the chairman actually is and also be sure that they send me the agenda, not someone else.
+- Also, the chairman is the one responsible for starting the conversation and guiding the discussion points.
 ### Time management
 
 Mark: **Good**
