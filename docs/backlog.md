@@ -28,9 +28,9 @@
 	* cards are removed for me when deleted
 	* cards are updated in the database when added and removed
 * to add and edit cards title so that I can see what task I need to complete
-	*card title is displayed for me when added
-	*card title is updated for me after an edit
-	*card titles are updated in the database
+	* card title is displayed for me when added
+	* card title is updated for me after an edit
+	* card titles are updated in the database
 * to work on a board simultaneously with someone else so that we can work efficiently as a team
 	* card information is updated for other users
 	* list information is updated for other users
