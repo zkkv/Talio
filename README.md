@@ -14,6 +14,7 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Aleksandar Yotkov | a.p.yotkov-1@student.tudelft.nl | 
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Kirill Zhankov | k.zhankov@student.tudelft.nl |
 |![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Vinchentzo | V.T.Bunardzhiev@student.tudelft.nl
+|![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Calin Ciocanea | c.ciocanea@student.tudelft.nl
 
 
 
