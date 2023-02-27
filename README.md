@@ -16,6 +16,7 @@ Add your own name (do not add the names for others!) to the section below.
 |![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Vinchentzo | V.T.Bunardzhiev@student.tudelft.nl
 |![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Calin Ciocanea | c.ciocanea@student.tudelft.nl
 |![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Diana-Otilia Sutac | d.o.sutac@student.tudelft.nl
+|![](https://secure.gravatar.com/avatar/a3fa7ac230efc573cd8759580806d4e6?s=300&d=identicon) | Sofia Dimieva | s.dimieva@student.tudelft.nl
 
 
 
