@@ -1,6 +1,6 @@
 # TEAM 66 AGENDA
 
-## Agenda Week 2 Meeting
+## Agenda Week 3 Meeting
 
 * Location: 		PC Hall 1
 * Datum: 		28.02.2023
