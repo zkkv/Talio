@@ -13,14 +13,18 @@
 * __(Board) Key__ - a unique identifier which allows users to join boards
 
 ## Epics Description
-* __Minimal app__ - minimal requirements such as having a board with lists and cards and being able to edit them
-* __Flexibility__ - being able to drag and drop and reorder cards 
-* __Multi-Board__ - being able to create multiple private/shared boards
-* __Card details__ - being able to add tags, card description and subtasks
-* __Customization__ - being able to customize the boards, cards and lists with different colors
-* __Key mapping__ - the possibility of using keyboard shortcuts for certain tasks 
-* __Security features__ - allowing the user to create passwords for security and configuring them
-* __Convenience__ 👌😁😎 - small refinements to make the users and admin have the best  experience ever
+* __Minimal app__ - essential requirements encompassing only the very basic functionality, i.e. having editable lists and cards that are synchronized
+* __Drag and drop__ - drag and drop cards from one list to another and reorder cards within one list
+* __Multi-Board__ - allow a user to manage multiple projects at the same time
+* __Card details__ - allow a user to add more information to a card so it is more descriptive
+* __Customization__ - allow users to customize the app to fit their preferences
+* __Key mapping__- having keyboard shortcuts for most common actions
+* __Password protection__ - allow users to create and change board passwords for improved security
+* __Visual Feedback__ - show users how close they are to completing a task
+* __List Reordering__ - reorder lists within a board
+* __Board Names__ - give each board a name so that it is immediately clear which project it belongs to
+* __Search by Tag__ - filter out the cards based on the tag they have
+* __Restricting Users__ - reduce the load on the server by having an upper bound for the number of objects a user can create
 
 ## Minimal app 
 ### As a user I want:
@@ -55,7 +59,7 @@
 	* all lists are deleted from the board for users using the board
 	* all lists are updated in the database
 
-## Flexibility
+## Drag and drop
 ### As a user I want:
 * to drag and drop cards from one list to another so that I can be more productive
 	* while dragging the card you can see it moving in real time with the cursor
@@ -67,7 +71,7 @@ after dropping the card
 * to reorder the cards inside a list so that I can prioritize tasks
 	* reordered cards are visible for everyone
 
-## Multi-Board features
+## Multi-Board
 ### As a user I want:
 * to be able to create multiple new boards so that I can keep track of multiple projects at the same time
 	* the boards are displayed for me
@@ -118,7 +122,7 @@ after dropping the card
 	* when Enter is pressed in  the card is added to 
 	* when Del is pressed the selected card or list is deleted
 
-## Security features
+## Password protection
 ### As a user I want:
 * to set an optional password for a board so that no one without access will be able to make changes to the board
 	* there is a menu for the board security which has a field for setting a password and saving it
@@ -138,20 +142,30 @@ after dropping the card
 	* after changing the password you can’t use the old password to gain access
 	* after deleting the password, it does not ask you for giving a password anymore
 	
-## Convenience 👌😁😎
+## Visual Feedback
 ### As a user I want:
 * to see what portion of the tasks is completed in a whole list so that I can keep progress of each individual card
 	* there is a progress bar under each list and card (if that card has subtasks) that
 	shows a percentage of the finished tasks
 	* when a card’s task(s) is/are finished then the card is grayed out
+	
+## List Reordering
+### As a user I want:
 * to drag and drop lists so that I can adjust priority of each list
 	* the drag and drop of lists can be seen in real time by everyone on the board
+	
+## Board Names
+### As a user I want:
 * to add, remove and edit board’s name so that the purpose of each board is clear to me
 	* inside the board’s menu there is a field to change the board’s name
+
+## Search by Tag
+### As a user I want:
 * to search cards by tag so that all cards of one category will be shown together
 	* in the general board UI there is a search field where you type a tag or a card and
 	the results are shown in an organized way
 
+## Restricting Users
 ### As an admin I want:
 * users to be restricted in terms of how many boards and lists in each board they can create so that they cannot abuse the system
 	* when the user is near the limit a message is shown
