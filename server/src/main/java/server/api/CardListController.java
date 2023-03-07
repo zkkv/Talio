@@ -15,16 +15,12 @@
  */
 package server.api;
 
-import commons.Card;
 import commons.CardList;
-import commons.Quote;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardListRepository;
-import server.database.QuoteRepository;
 
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/card-list")
