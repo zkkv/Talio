@@ -1,0 +1,87 @@
+package commons;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CardListTest {
+
+    List<Card> list1;
+    List<Card> list2;
+
+    @BeforeEach
+    public void initializeObjects() {
+        Card card1 = new Card("title1");
+        Card card2 = new Card("title2");
+        Card card3 = new Card("title3");
+
+        Card card4 = new Card("title4");
+        Card card5 = new Card("title5");
+        Card card6 = new Card("title6");
+
+        list1 = new ArrayList<>(3);
+        list1.add(card1);
+        list1.add(card2);
+        list1.add(card3);
+
+        list2 = new ArrayList<>(3);
+        list1.add(card4);
+        list1.add(card5);
+        list1.add(card6);
+    }
+
+    @Test
+    public void constructorTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        assertEquals("TODO", cardList1.title);
+        assertEquals(list1, cardList1.list);
+    }
+
+    @Test
+    public void notEqualsSameListDifferentTitlesTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        CardList cardList2 = new CardList(list1, "Done");
+        assertNotEquals(cardList1, cardList2);
+    }
+
+    @Test
+    public void notEqualsDifferentListsSameTitleTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        CardList cardList2 = new CardList(list2, "TODO");
+        assertNotEquals(cardList1, cardList2);
+    }
+    @Test
+    public void notEqualsDifferentListsDifferentTitlesTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        CardList cardList2 = new CardList(list2, "Done");
+        assertNotEquals(cardList1, cardList2);
+    }
+
+    @Test
+    public void equalsTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        CardList cardList2 = new CardList(list1, "TODO");
+        assertEquals(cardList1, cardList2);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        CardList cardList1 = new CardList(list1, "TODO");
+        CardList cardList2 = new CardList(list1, "TODO");
+        assertEquals(cardList1.hashCode(), cardList2.hashCode());
+    }
+
+/*    @Test
+    public void hasToString() {
+        var actual = new Person("a", "b").toString();
+        assertTrue(actual.contains(Person.class.getSimpleName()));
+        assertTrue(actual.contains("\n"));
+        assertTrue(actual.contains("firstName"));
+    }*/
+}
