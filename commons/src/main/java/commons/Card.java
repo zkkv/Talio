@@ -16,7 +16,7 @@ public class Card {
 
     public String title;
 
-    public  Card(){
+    private Card(){
 
     }
 
