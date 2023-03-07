@@ -31,13 +31,17 @@
  
 	**Stand-up meeting** - What have you done last week? What are you going to do this week? Did you have any impediments?
 
-* 16:00-16:06 
+* 16:00-16:03 
 
 	**Buddy Check** - Questions: How do we do it? When is the assignment posted? - Discusion about the assignment.
 
-* 16:06-16:12 
+* 16:03-16:06 
 
 	**Heuristic Usability Evaluation** - Questions: How do we do it? When is the assignment posted? - Discusion about the assignment.
+
+* 16:06-16:12 
+
+	**Discussion about good GIT practices** - Discussion between us. Questions to the TA's.
 
 * 16:12-16:20 
 
