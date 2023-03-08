@@ -75,12 +75,4 @@ public class CardListTest {
         CardList cardList2 = new CardList(list1, "TODO");
         assertEquals(cardList1.hashCode(), cardList2.hashCode());
     }
-
-/*    @Test
-    public void hasToString() {
-        var actual = new Person("a", "b").toString();
-        assertTrue(actual.contains(Person.class.getSimpleName()));
-        assertTrue(actual.contains("\n"));
-        assertTrue(actual.contains("firstName"));
-    }*/
 }
