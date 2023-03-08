@@ -40,7 +40,7 @@
 	> * Alexandar - Board, BoardRepository, BoardController, BoardControllerTest (Not yet finished)
 	> * Calin - Card, CardRepository, CardController, CardTest
 	> * Kirill - CardList, CardListRepository, CardListController, CardListTest
-	> * Sofi & Vinny - Basic scenes
+	> * Sofi, Vinny, Diana - Basic scenes
 	
 
 * 16:00-16:03 
