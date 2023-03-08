@@ -15,14 +15,10 @@
  */
 package client;
 
-import client.scenes.HomeScreenCtrl;
+import client.scenes.*;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
-
-import client.scenes.AddQuoteCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
 
 public class MyModule implements Module {
 
@@ -32,5 +28,7 @@ public class MyModule implements Module {
         binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(HomeScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ClientConnectCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
     }
 }
