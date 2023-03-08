@@ -55,8 +55,4 @@ public class CardListController {
         CardList saved = repo.save(cardList);
         return ResponseEntity.ok(saved);
     }
-
-    private static boolean isNullOrEmpty(String s) {
-        return s == null || s.isEmpty();
-    }
 }
