@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Board;
 import commons.Card;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
