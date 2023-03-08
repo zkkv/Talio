@@ -36,9 +36,9 @@ public class BoardController {
 
     @GetMapping("/board/")
     public ResponseEntity<Board> getBoard() {
-        Board board = new Board(new ArrayList<>(),new ArrayList<>());
         Board saved = null;
         if (this.br.findAll().isEmpty()) {
+            Board board = new Board(new ArrayList<>(),new ArrayList<>());
             return ResponseEntity.ok(br.saveAndFlush(board));
         }
         saved = br.findAll().stream().findFirst().get();
