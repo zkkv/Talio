@@ -77,6 +77,7 @@ public class MainCtrl {
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
         primaryStage.setScene(homeScene);
+        home.addRetrievedCardLists();
     }
 
     public void showOverview() {
