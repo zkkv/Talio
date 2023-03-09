@@ -20,11 +20,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-public class
-
-
-
-MainCtrl {
+public class MainCtrl {
 
     private Stage primaryStage;
 
@@ -36,10 +32,17 @@ MainCtrl {
 
     private HomeScreenCtrl home;
     private Scene homeScene;
+    private ClientConnectCtrl clientConnect;
+    private Scene clientConnectScene;
+    private StartPageCtrl startPage;
+    private Scene startPageScene;
 
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add, Pair<HomeScreenCtrl, Parent> home) {
+                           Pair<AddQuoteCtrl, Parent> add,
+                           Pair<HomeScreenCtrl, Parent> home,
+                           Pair<ClientConnectCtrl, Parent> clientConnect,
+                           Pair<StartPageCtrl, Parent> startPage) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -47,11 +50,33 @@ MainCtrl {
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
+        this.clientConnect = clientConnect.getKey();
+        this.clientConnectScene = new Scene(clientConnect.getValue());
+
+        this.startPage = startPage.getKey();
+        this.startPageScene = new Scene(startPage.getValue());
+
         this.home = home.getKey();
         this.homeScene = new Scene(home.getValue());
 
-        showOverview();
+        showClientConnectPage();
         primaryStage.show();
+    }
+
+
+    public void showClientConnectPage() {
+        primaryStage.setTitle("Talio: Client connect");
+        primaryStage.setScene(clientConnectScene);
+    }
+
+    public void showStartPage() {
+        primaryStage.setTitle("Talio: Start page");
+        primaryStage.setScene(startPageScene);
+    }
+
+    public void showBoardPage() {
+        primaryStage.setTitle("Talio: Board page");
+        primaryStage.setScene(homeScene);
     }
 
     public void showOverview() {
