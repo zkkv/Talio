@@ -2,21 +2,34 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import javafx.fxml.FXML;
+
+import javafx.scene.control.TextField;
+import java.io.IOException;
 
 public class ClientConnectCtrl {
 
-    private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    @FXML
+    private TextField ipAddress;
 
 
     @Inject
-    public ClientConnectCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ClientConnectCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
-        this.server = server;
     }
 
-    public void goToStartPage() {
-        mainCtrl.showStartPage();
+    public void connect() {
+        try {
+            ServerUtils.setServer(ipAddress.getText());
+            ServerUtils.testConnection();
+            mainCtrl.showStartPage();
+        }
+        catch (IOException e) {
+            System.out.println("Wrong ip");
+        }
+
     }
 
 }
