@@ -30,13 +30,14 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    private HomeScreenCtrl home;
-    private Scene homeScene;
-    private ClientConnectCtrl clientConnect;
-    private Scene clientConnectScene;
-    private StartPageCtrl startPage;
-    private Scene startPageScene;
+    private HomeScreenCtrl homeScreenCtrl;
+    private Scene home;
 
+    private ClientConnectCtrl clientConnectCtrl;
+    private Scene clientConnect;
+
+    private StartPageCtrl startPageCtrl;
+    private Scene startPage;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                            Pair<AddQuoteCtrl, Parent> add,
@@ -50,14 +51,14 @@ public class MainCtrl {
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
 
-        this.clientConnect = clientConnect.getKey();
-        this.clientConnectScene = new Scene(clientConnect.getValue());
+        this.clientConnectCtrl = clientConnect.getKey();
+        this.clientConnect = new Scene(clientConnect.getValue());
 
-        this.startPage = startPage.getKey();
-        this.startPageScene = new Scene(startPage.getValue());
+        this.startPageCtrl = startPage.getKey();
+        this.startPage = new Scene(startPage.getValue());
 
-        this.home = home.getKey();
-        this.homeScene = new Scene(home.getValue());
+        this.homeScreenCtrl = home.getKey();
+        this.home = new Scene(home.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -66,22 +67,22 @@ public class MainCtrl {
 
     public void showClientConnectPage() {
         primaryStage.setTitle("Talio: Client connect");
-        primaryStage.setScene(clientConnectScene);
+        primaryStage.setScene(clientConnect);
     }
 
     public void showStartPage() {
         primaryStage.setTitle("Talio: Start page");
-        primaryStage.setScene(startPageScene);
+        primaryStage.setScene(startPage);
     }
 
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
-        primaryStage.setScene(homeScene);
+        primaryStage.setScene(home);
     }
 
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(homeScene);
+        primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 

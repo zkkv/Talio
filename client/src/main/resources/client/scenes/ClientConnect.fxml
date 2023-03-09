@@ -31,8 +31,8 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ip" />
-                  <Button mnemonicParsing="false" onAction="#goToStartPage" text="Connect" />
+                  <TextField fx:id="ipAddress" />
+                  <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
                </children>
                <padding>
                   <Insets bottom="20.0" />
