@@ -48,4 +48,11 @@ public class BoardController {
         return ResponseEntity.ok(br.findAll().get(0));
     }
 
+    @PutMapping("/addCardList")
+    public ResponseEntity<String> addCardList(@RequestBody CardList cardList){
+        Board board1 = br.findAll().get(0);
+        board1.cardLists.add(cardList);
+        br.save(board1);
+        return ResponseEntity.ok("Added successfully!");
+    }
 }
