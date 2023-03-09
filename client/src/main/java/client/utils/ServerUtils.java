@@ -69,7 +69,7 @@ public class ServerUtils {
     
     public Board getOrCreateBoard(){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/boards/create") //
+                .target(server).path("api/boards/create") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Board>(){});
@@ -77,7 +77,7 @@ public class ServerUtils {
 
     public String addCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/boards/addCardList") //
+                .target(server).path("api/boards/addCardList") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(cardList, APPLICATION_JSON), String.class);
