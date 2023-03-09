@@ -20,7 +20,6 @@ public class HomeScreenCtrl {
     public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
     public void createList(){
         VBox vbox = new VBox();
@@ -32,6 +31,5 @@ public class HomeScreenCtrl {
         vbox.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
         panel.getChildren().add(vbox);
     }
-
 
 }

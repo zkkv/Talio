@@ -31,7 +31,6 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
-
     private static final String SERVER = "http://localhost:8080/";
 
     public void getQuotesTheHardWay() throws IOException {
