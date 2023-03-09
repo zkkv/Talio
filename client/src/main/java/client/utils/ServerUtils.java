@@ -68,7 +68,7 @@ public class ServerUtils {
     
     public Board getOrCreateBoard(){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/boards/create") //
+                .target(server).path("api/boards/create") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<Board>(){});
