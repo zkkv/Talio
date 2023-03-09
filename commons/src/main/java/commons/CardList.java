@@ -17,7 +17,7 @@ public class CardList {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     public List<Card> list;
 
     public String title;
