@@ -19,65 +19,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import java.util.Random;
+import java.util.ArrayList;
 
+import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import commons.Person;
-import commons.Quote;
 
-public class QuoteControllerTest {
+public class CardListControllerTest {
 
-    public int nextInt;
-    private MyRandom random;
-    private TestQuoteRepository repo;
+    private TestCardListRepository repo;
 
-    private QuoteController sut;
+    private CardListController sut;
 
     @BeforeEach
     public void setup() {
-        random = new MyRandom();
-        repo = new TestQuoteRepository();
-        sut = new QuoteController(random, repo);
+        repo = new TestCardListRepository();
+        sut = new CardListController(repo);
     }
 
     @Test
-    public void cannotAddNullPerson() {
-        var actual = sut.add(getQuote(null));
+    public void cannotAddNullList() {
+        var actual = sut.add(new CardList(null, "Title"));
         assertEquals(BAD_REQUEST, actual.getStatusCode());
     }
 
     @Test
-    public void randomSelection() {
-        sut.add(getQuote("q1"));
-        sut.add(getQuote("q2"));
-        nextInt = 1;
-        var actual = sut.getRandom();
-
-        assertTrue(random.wasCalled);
-        assertEquals("q2", actual.getBody().quote);
-    }
-
-    @Test
     public void databaseIsUsed() {
-        sut.add(getQuote("q1"));
+        sut.add(new CardList(new ArrayList<>(), "Title"));
         assertTrue(repo.calledMethods.contains("save"));
-    }
-
-    private static Quote getQuote(String q) {
-        return new Quote(new Person(q, q), q);
-    }
-
-    @SuppressWarnings("serial")
-    public class MyRandom extends Random {
-
-        public boolean wasCalled = false;
-
-        @Override
-        public int nextInt(int bound) {
-            wasCalled = true;
-            return nextInt;
-        }
     }
 }
