@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="34.0" layoutY="60.0" prefHeight="319.0" prefWidth="530.0" spacing="60.0">
@@ -16,7 +15,7 @@
                   <Font name="Perpetua Bold" size="61.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="START" textAlignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#goToHomeScreen" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="START" textAlignment="CENTER">
                <font>
                   <Font size="23.0" />
                </font>

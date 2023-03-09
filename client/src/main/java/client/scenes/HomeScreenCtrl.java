@@ -24,7 +24,6 @@ public class HomeScreenCtrl {
     public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
     public void createList(){
         BorderPane bp = new BorderPane();
