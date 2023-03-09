@@ -75,4 +75,10 @@ public class HomeScreenCtrl {
         vbox.getChildren().add(hbox);
         panel.getChildren().add(vbox);
     }
+
+    public void addRetrievedCardLists() {
+        for (int i = 0; i < server.getAllCardLists().size(); i++) {
+            drawCardList(server.getAllCardLists().get(i).title);
+        }
+    }
 }
