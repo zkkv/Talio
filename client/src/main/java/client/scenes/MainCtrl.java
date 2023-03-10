@@ -17,6 +17,7 @@ package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -100,8 +101,13 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-    public void showAddTask() {
+    public void showAddTask(Button button) {
         primaryStage.setTitle("Talio: Adding Task");
+        addTaskCtrl.setButton(button);
         primaryStage.setScene(addTask);
+    }
+
+    public void changeName(Button button,String title){
+        button.setText(title);
     }
 }

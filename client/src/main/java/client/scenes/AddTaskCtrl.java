@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class AddTaskCtrl {
@@ -10,6 +11,8 @@ public class AddTaskCtrl {
     private final ServerUtils server;
 
     private final MainCtrl mainCtrl;
+
+    private Button button;
 
     @FXML
     private TextField title;
@@ -24,9 +27,11 @@ public class AddTaskCtrl {
         title.clear();
         mainCtrl.showBoardPage();
     }
-
+    public void setButton(Button button){
+        this.button = button;
+    }
     public void create() {
-        title.clear();
+        mainCtrl.changeName(button,title.getText());
         mainCtrl.showBoardPage();
     }
 
