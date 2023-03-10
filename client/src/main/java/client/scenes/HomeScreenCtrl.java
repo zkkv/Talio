@@ -6,9 +6,14 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 
 
 public class HomeScreenCtrl {
@@ -56,12 +61,42 @@ public class HomeScreenCtrl {
         ap.getChildren().add(button);
         bp.setTop(ap);
         VBox vbox = new VBox();
+        vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
-        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(10.0);
+        drawAddCardButton(vbox);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
     }
+    public void drawAddCardButton(VBox vbox){
+        Button addCard = new Button("+");
+        addCard.setAlignment(Pos.CENTER);
+        addCard.setMnemonicParsing(false);
+        addCard.setPrefHeight(36);
+        addCard.setPrefWidth(100);
+        addCard.setStyle("-fx-border-color: black;");
+        addCard.setOnAction(event -> {
+            drawCard(vbox,addCard,"Card");
+        });
+        vbox.getChildren().add(addCard);
+    }
+    public void drawCard(VBox vbox,Button button, String title){
+        Button task = new Button(title);
+        task.setAlignment(Pos.CENTER);
+        task.setMnemonicParsing(false);
+        task.setPrefHeight(36);
+        task.setPrefWidth(100);
+        task.setStyle("-fx-border-color: black");
+        task.setOnAction(event -> {
+            mainCtrl.showAddTask(task);
+
+        });
+        vbox.getChildren().remove(button);
+        vbox.getChildren().add(task);
+        drawAddCardButton(vbox);
+    }
+
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
