@@ -32,4 +32,9 @@ public class HomeScreenCtrl {
         panel.getChildren().add(vbox);
     }
 
+    public void disconnect() {
+        ServerUtils.closeConnection();
+        mainCtrl.showClientConnectPage();
+    }
+
 }
