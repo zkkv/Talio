@@ -33,6 +33,10 @@ public class MainCtrl {
     private HomeScreenCtrl homeScreenCtrl;
     private Scene home;
 
+    private AddTaskCtrl addTaskCtrl;
+
+    private Scene addTask;
+
     private ClientConnectCtrl clientConnectCtrl;
     private Scene clientConnect;
 
@@ -43,7 +47,8 @@ public class MainCtrl {
                            Pair<AddQuoteCtrl, Parent> add,
                            Pair<HomeScreenCtrl, Parent> home,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
-                           Pair<StartPageCtrl, Parent> startPage) {
+                           Pair<StartPageCtrl, Parent> startPage,
+                           Pair<AddTaskCtrl, Parent> addTask) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -59,6 +64,9 @@ public class MainCtrl {
 
         this.homeScreenCtrl = home.getKey();
         this.home = new Scene(home.getValue());
+
+        this.addTaskCtrl = addTask.getKey();
+        this.addTask = new Scene(addTask.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -90,5 +98,10 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+
+    public void showAddTask() {
+        primaryStage.setTitle("Talio: Adding Task");
+        primaryStage.setScene(addTask);
     }
 }
