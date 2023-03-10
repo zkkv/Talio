@@ -62,4 +62,8 @@ public class HomeScreenCtrl {
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
     }
+    public void disconnect() {
+        ServerUtils.closeConnection();
+        mainCtrl.showClientConnectPage();
+    }
 }

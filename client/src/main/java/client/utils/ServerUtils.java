@@ -18,6 +18,7 @@ package client.utils;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
@@ -30,13 +31,20 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
     private static String server;
+    private static HttpURLConnection connection;
 
     public static void setServer(String server) {
         ServerUtils.server = server;
     }
 
     public static void testConnection() throws IOException {
-        var url = new URL(server + "/api/quotes").openConnection();
+        var url = new URL(server + "/api/quotes");
+        connection = (HttpURLConnection) url.openConnection();
+    }
+
+    public static void closeConnection() {
+        connection.disconnect();
+        server = null;
     }
 
     /*public void getQuotesTheHardWay() throws IOException {

@@ -20,5 +20,6 @@
          </content>
       </ScrollPane>
       <Button layoutX="488.0" layoutY="14.0" mnemonicParsing="false" onAction="#createList" text="Add new list" AnchorPane.rightAnchor="30.400000000000006" />
+      <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#disconnect" text="Disconnect" />
    </children>
 </AnchorPane>
