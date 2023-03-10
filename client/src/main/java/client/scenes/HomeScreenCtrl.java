@@ -54,4 +54,9 @@ public class HomeScreenCtrl {
         list.getChildren().add(button);
     }
 
+    public void disconnect() {
+        ServerUtils.closeConnection();
+        mainCtrl.showClientConnectPage();
+    }
+
 }
