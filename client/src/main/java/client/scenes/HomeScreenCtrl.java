@@ -26,6 +26,10 @@ public class HomeScreenCtrl {
         this.server = server;
     }
     public void createList(){
+        drawCardList("Name");
+    }
+
+    public void drawCardList(String text){
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
@@ -43,7 +47,7 @@ public class HomeScreenCtrl {
         label.setLayoutY(9.0);
         label.setPrefHeight(18.0);
         label.setPrefWidth(95.0);
-        label.setText("Name");
+        label.setText(text);
         Font font = new Font(16.0);
         label.setFont(font);
         AnchorPane ap = new AnchorPane();
