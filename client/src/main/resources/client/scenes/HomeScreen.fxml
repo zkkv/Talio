@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="panel" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HomeScreenCtrl">
+<AnchorPane id="anchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HomeScreenCtrl">
    <children>
       <Label layoutX="208.0" layoutY="14.0" text="BOARD NAME">
          <font>
@@ -19,195 +16,10 @@
       </Label>
       <ScrollPane layoutX="36.0" layoutY="70.0" prefHeight="294.0" prefWidth="518.0">
          <content>
-            <HBox id="panel" fx:id="panel">
-               <children>
-                  <VBox prefHeight="259.0" prefWidth="128.0" spacing="10.0" style="-fx-background-color: #d9cdad; -fx-border-color: black;">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <children>
-                        <HBox>
-                           <children>
-                              <Region layoutX="63.0" layoutY="10.0">
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
-                              </Region>
-                              <Label alignment="TOP_CENTER" text="DONE">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Region>
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Region>
-                              <Button alignment="TOP_CENTER" mnemonicParsing="false" style="-fx-background-color: #a3957c;" text="⋮" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="Arial Nova Cond" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <VBox alignment="CENTER" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 1">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="11.0" layoutY="47.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 2">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="21.0" layoutY="93.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="+">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </VBox>
-                  <VBox prefHeight="259.0" prefWidth="128.0" spacing="10.0" style="-fx-background-color: #d9cdad; -fx-border-color: black;">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <children>
-                        <HBox>
-                           <children>
-                              <Region layoutX="63.0" layoutY="10.0">
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
-                              </Region>
-                              <Label alignment="TOP_CENTER" text="DOING">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Region>
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Region>
-                              <Button alignment="TOP_CENTER" mnemonicParsing="false" style="-fx-background-color: #a3957c;" text="⋮" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="Arial Nova Cond" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <VBox alignment="CENTER" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 1">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="11.0" layoutY="47.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 2">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="21.0" layoutY="93.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="+">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </VBox>
-                  <VBox prefHeight="274.0" prefWidth="121.0" spacing="10.0" style="-fx-background-color: #d9cdad; -fx-border-color: black;">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <children>
-                        <HBox>
-                           <children>
-                              <Region layoutX="63.0" layoutY="10.0">
-                                 <padding>
-                                    <Insets right="20.0" />
-                                 </padding>
-                              </Region>
-                              <Label alignment="TOP_CENTER" text="TO DO ">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <Region>
-                                 <padding>
-                                    <Insets right="5.0" />
-                                 </padding>
-                              </Region>
-                              <Button alignment="TOP_CENTER" mnemonicParsing="false" style="-fx-background-color: #a3957c;" text="⋮" textAlignment="CENTER">
-                                 <font>
-                                    <Font name="Arial Nova Cond" size="13.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <VBox alignment="CENTER" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 1">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="11.0" layoutY="47.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="Card 2">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="21.0" layoutY="93.0" prefHeight="36.0" prefWidth="126.0" style="-fx-border-color: black;">
-                           <children>
-                              <Label text="+">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </HBox>
+            <HBox id="panel" fx:id="panel" spacing="10.0" />
          </content>
       </ScrollPane>
       <Button layoutX="488.0" layoutY="14.0" mnemonicParsing="false" onAction="#createList" text="Add new list" AnchorPane.rightAnchor="30.400000000000006" />
+      <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#disconnect" text="Disconnect" />
    </children>
 </AnchorPane>
