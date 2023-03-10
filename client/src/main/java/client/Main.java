@@ -43,8 +43,9 @@ public class Main extends Application {
         var home = FXML.load(HomeScreenCtrl.class, "client", "scenes", "HomeScreen.fxml");
         var clientConnect = FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
         var startPage = FXML.load(StartPageCtrl.class, "client", "scenes", "StartPage.fxml");
+        var addTask = FXML.load(AddTaskCtrl.class, "client", "scenes", "AddTask.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, home, clientConnect, startPage);
+        mainCtrl.initialize(primaryStage, overview, add, home, clientConnect, startPage, addTask);
     }
 }
