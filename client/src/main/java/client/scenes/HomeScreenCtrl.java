@@ -8,9 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
-
-import java.awt.*;
 
 public class HomeScreenCtrl {
     private final ServerUtils server;

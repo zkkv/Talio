@@ -3,11 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-
-import java.awt.*;
 
 public class AddTaskCtrl {
 
