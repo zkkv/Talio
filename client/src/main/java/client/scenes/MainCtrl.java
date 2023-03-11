@@ -17,6 +17,7 @@ package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -33,6 +34,10 @@ public class MainCtrl {
     private HomeScreenCtrl homeScreenCtrl;
     private Scene home;
 
+    private AddTaskCtrl addTaskCtrl;
+
+    private Scene addTask;
+
     private ClientConnectCtrl clientConnectCtrl;
     private Scene clientConnect;
 
@@ -43,7 +48,8 @@ public class MainCtrl {
                            Pair<AddQuoteCtrl, Parent> add,
                            Pair<HomeScreenCtrl, Parent> home,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
-                           Pair<StartPageCtrl, Parent> startPage) {
+                           Pair<StartPageCtrl, Parent> startPage,
+                           Pair<AddTaskCtrl, Parent> addTask) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
@@ -59,6 +65,9 @@ public class MainCtrl {
 
         this.homeScreenCtrl = home.getKey();
         this.home = new Scene(home.getValue());
+
+        this.addTaskCtrl = addTask.getKey();
+        this.addTask = new Scene(addTask.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -77,8 +86,11 @@ public class MainCtrl {
 
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
-        homeScreenCtrl.addRetrievedCardLists();
         primaryStage.setScene(home);
+    }
+
+    public void loadBoardOverview(){
+        homeScreenCtrl.addRetrievedCardLists();
     }
 
     public void showOverview() {
@@ -91,5 +103,15 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+
+    public void showAddTask(Button button) {
+        primaryStage.setTitle("Talio: Adding Task");
+        addTaskCtrl.setButton(button);
+        primaryStage.setScene(addTask);
+    }
+
+    public void changeName(Button button,String title){
+        button.setText(title);
     }
 }
