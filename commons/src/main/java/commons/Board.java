@@ -16,18 +16,15 @@ public class Board {
     @GeneratedValue(strategy=GenerationType.AUTO)
     public long key;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     public List<CardList> cardLists;
-    @OneToMany
-    public List<Card> cards;
 
     private Board(){
 
     }
 
-    public Board(List<CardList> cardLists,List<Card> cards){
+    public Board(List<CardList> cardLists){
         this.cardLists = cardLists;
-        this.cards = cards;
     }
 
     @Override

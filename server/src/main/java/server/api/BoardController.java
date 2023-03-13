@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Board;
+import commons.CardList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
@@ -34,16 +35,17 @@ public class BoardController {
         return s == null;
     }
 
-    @GetMapping("/board/")
-    public ResponseEntity<Board> getBoard() {
-        Board board = new Board(new ArrayList<>(),new ArrayList<>());
-        Board saved = null;
-        if (this.br.findAll().isEmpty()) {
-            return ResponseEntity.ok(br.saveAndFlush(board));
+    @GetMapping("/create")
+    public ResponseEntity<Board> getOrCreateBoard() {
+        if(br.findAll().isEmpty()){
+            Board board =new Board(new ArrayList<>());
+            board.cardLists.add(new CardList(new ArrayList<>(), "TO DO"));
+            board.cardLists.add(new CardList(new ArrayList<>(), "DOING"));
+            board.cardLists.add(new CardList(new ArrayList<>(), "DONE"));
+            Board board1 = br.save(board);
+            return ResponseEntity.ok(board1);
         }
-        saved = br.findAll().stream().findFirst().get();
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(br.findAll().get(0));
     }
-
 
 }
