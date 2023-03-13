@@ -10,11 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.util.ArrayList;
 
 
@@ -103,7 +100,6 @@ public class HomeScreenCtrl {
         task.setStyle("-fx-border-color: black");
         task.setOnAction(event -> {
             mainCtrl.showAddTask(task);
-
         });
         vbox.getChildren().remove(button);
         vbox.getChildren().add(task);
