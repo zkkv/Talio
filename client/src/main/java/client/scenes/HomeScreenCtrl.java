@@ -6,10 +6,8 @@ import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -59,7 +57,7 @@ public class HomeScreenCtrl {
         button.setStyle("-fx-background-color: #a3957c;");
 
         //List Name
-        TextField label = new TextField();
+        TextField label = new TextField(text);
         label.setStyle("-fx-background-color: #d9cdad; -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
         label.setId("listName");
