@@ -4,10 +4,76 @@
         "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name = "Checker">
-    <module name="TreeWalker">
-        <module name="UnusedImports" />
+
+    <module name="LineLength">
+        <property name="severity" value="warning"/>
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="100"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
     </module>
 
-    <!-- TODO: decide in your team with other checkers to add! -->
+    <module name="TreeWalker">
+        <module name="CyclomaticComplexity">
+            <property name="severity" value="warning"/>
+            <property name="switchBlockAsSingleDecisionPoint" value="true"/>
+            <property name="max" value="6"/>
+        </module>
+
+        <module name="Indentation">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="UnusedImports">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="MethodLength">
+            <property name="severity" value="warning"/>
+            <property name="tokens" value="METHOD_DEF, CTOR_DEF, COMPACT_CTOR_DEF"/>
+            <property name="max" value="50"/>
+        </module>
+
+        <module name="CommentsIndentation">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="SingleSpaceSeparator">
+            <property name="severity" value="warning"/>
+            <property name="validateComments" value="true"/>
+        </module>
+
+        <module name="NeedBraces">
+            <property name="severity" value="warning"/>
+            <property name="tokens" value="LITERAL_CASE, LITERAL_DEFAULT"/>
+            <property name="allowSingleLineStatement" value="true"/>
+        </module>
+
+        <module name="StringLiteralEquality">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="SimplifyBooleanReturn">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="EqualsHashCode">
+            <property name="severity" value="warning"/>
+        </module>
+
+        <module name="RightCurly">
+            <property name="option" value="alone_or_singleline"/>
+            <property name="tokens" value="LITERAL_IF, METHOD_DEF, LITERAL_TRY"/>
+        </module>
+
+        <module name="ConstantName">
+            <property name="format"
+                      value="^log(ger)?$|^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+        </module>
+
+        <module name="LeftCurly">
+            <property name="severity" value="warning"/>
+        </module>
+
+    </module>
 
 </module>
