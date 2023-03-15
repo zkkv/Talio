@@ -15,7 +15,7 @@
                   <Font name="Perpetua Bold" size="61.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#goToHomeScreen" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="START" textAlignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#goToBoardOverview" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="START" textAlignment="CENTER">
                <font>
                   <Font size="23.0" />
                </font>

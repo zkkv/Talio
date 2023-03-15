@@ -32,30 +32,29 @@ public class BoardTest {
 
     @Test
     public void checkConstructor() {
-        var b = new Board(cardLists,cards);
+        var b = new Board(cardLists);
         assertEquals(cardLists, b.cardLists);
-        assertEquals(cards, b.cards);
     }
 
     @Test
     public void equalsHashCode() {
-        var b1 = new Board(cardLists,cards);
-        var b2 = new Board(cardLists,cards);
+        var b1 = new Board(cardLists);
+        var b2 = new Board(cardLists);
         assertEquals(b1, b2);
         assertEquals(b1.hashCode(), b2.hashCode());
     }
 
     @Test
     public void notEqualsHashCode() {
-        var b1 = new Board(cardLists,cards);
-        var b2 = new Board(cardLists2,cards2);
+        var b1 = new Board(cardLists);
+        var b2 = new Board(cardLists2);
         assertNotEquals(b1, b2);
         assertNotEquals(b1.hashCode(), b2.hashCode());
     }
 
     @Test
     public void hasToString() {
-        var actual = new Board(cardLists, cards).toString();
+        var actual = new Board(cardLists).toString();
         assertTrue(actual.contains(Board.class.getSimpleName()));
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("cardLists"));

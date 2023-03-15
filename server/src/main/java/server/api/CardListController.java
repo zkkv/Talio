@@ -33,8 +33,8 @@ public class CardListController {
     }
 
     @GetMapping(path = { "", "/" })
-    public List<CardList> getAll() {
-        return repo.findAll();
+    public ResponseEntity<List<CardList>> getAll() {
+        return ResponseEntity.ok(repo.findAll());
     }
 
     @GetMapping("/{id}")

@@ -14,8 +14,9 @@ public class StartPageCtrl {
         this.server = server;
     }
 
-    public void goToHomeScreen() {
+    public void goToBoardOverview(){
+        server.getOrCreateBoard();
+        mainCtrl.loadBoardOverview();
         mainCtrl.showBoardPage();
     }
-
 }

@@ -89,6 +89,10 @@ public class MainCtrl {
         primaryStage.setScene(home);
     }
 
+    public void loadBoardOverview(){
+        homeScreenCtrl.addRetrievedCardLists();
+    }
+
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);

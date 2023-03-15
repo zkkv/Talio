@@ -19,8 +19,7 @@ public class BoardControllerTest {
 
     @Test
     public void databaseIsUsed() {
-        sut.getBoard();
+        sut.getOrCreateBoard();
         repo.calledMethods.contains("save");
     }
-
 }

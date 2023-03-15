@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -10,15 +11,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+import java.util.ArrayList;
 
 
 public class HomeScreenCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
     @FXML
     private HBox panel;
 
@@ -30,9 +31,19 @@ public class HomeScreenCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
-    public void createList(){
-        drawCardList("Name");
+
+
+    public void createList() {
+        drawCardList("Label");
+        server.addCardListToBoard(new CardList(new ArrayList<>(), "Label"));
     }
+
+    public void addRetrievedCardLists() {
+        for (int i = 0; i < server.getAllCardLists().size(); i++) {
+            drawCardList(server.getAllCardLists().get(i).title);
+        }
+    }
+
 
     public void drawCardList(String text){
         BorderPane bp = new BorderPane();
@@ -92,7 +103,6 @@ public class HomeScreenCtrl {
         task.setStyle("-fx-border-color: black");
         task.setOnAction(event -> {
             mainCtrl.showAddTask(task);
-
         });
         vbox.getChildren().remove(button);
         vbox.getChildren().add(task);
@@ -104,3 +114,4 @@ public class HomeScreenCtrl {
         mainCtrl.showClientConnectPage();
     }
 }
+

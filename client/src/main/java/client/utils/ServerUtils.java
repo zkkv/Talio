@@ -22,6 +22,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import commons.Board;
+import commons.CardList;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.Quote;
@@ -71,5 +73,29 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    }
+    
+    public Board getOrCreateBoard(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/boards/create") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<Board>(){});
+    }
+
+    public String addCardListToBoard(CardList cardList) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/boards/addCardList") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(cardList, APPLICATION_JSON), String.class);
+    }
+
+    public List<CardList> getAllCardLists(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card-list") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<CardList>>() {});
     }
 }
