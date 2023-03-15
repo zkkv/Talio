@@ -17,7 +17,6 @@ public class ClientConnectCtrl {
     @FXML
     private TextField ipAddress;
 
-
     @Inject
     public ClientConnectCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -28,7 +27,8 @@ public class ClientConnectCtrl {
             ServerUtils.setServer(ipAddress.getText());
             ServerUtils.testConnection();
             mainCtrl.showStartPage();
-        } catch (IOException | ClassCastException e) {
+        }
+        catch (IOException | ClassCastException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connection Error");
             alert.setHeaderText("Connection Error");
@@ -39,7 +39,5 @@ public class ClientConnectCtrl {
             alert.initOwner(currentStage);
             alert.showAndWait();
         }
-
     }
-
 }

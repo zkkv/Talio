@@ -47,7 +47,6 @@ public class CardListController {
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<CardList> add(@RequestBody CardList cardList) {
-
         if (cardList.list == null) {
             return ResponseEntity.badRequest().build();
         }
