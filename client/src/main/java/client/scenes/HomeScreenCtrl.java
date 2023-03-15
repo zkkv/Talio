@@ -58,7 +58,8 @@ public class HomeScreenCtrl {
 
         //List Name
         TextField label = new TextField(text);
-        label.setStyle("-fx-background-color: #d9cdad; -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        label.setStyle("-fx-background-color: #d9cdad;" +
+            " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
         label.setId("listName");
         label.setAlignment(Pos.CENTER);
