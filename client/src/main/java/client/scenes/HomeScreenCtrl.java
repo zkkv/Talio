@@ -6,9 +6,8 @@ import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -56,20 +55,22 @@ public class HomeScreenCtrl {
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
         button.setStyle("-fx-background-color: #a3957c;");
-        Label label = new Label();
-        label.setAlignment(Pos.TOP_CENTER);
-        label.setLayoutX(12.0);
-        label.setLayoutY(9.0);
-        label.setPrefHeight(18.0);
-        label.setPrefWidth(95.0);
-        label.setText(text);
-        Font font = new Font(16.0);
-        label.setFont(font);
-        AnchorPane ap = new AnchorPane();
-        ap.setPrefHeight(34.0);
-        ap.getChildren().add(label);
-        ap.getChildren().add(button);
-        bp.setTop(ap);
+
+        //List Name
+        TextField label = new TextField(text);
+        label.setStyle("-fx-background-color: #d9cdad; -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        label.setPromptText("Enter list name...");
+        label.setId("listName");
+        label.setAlignment(Pos.CENTER);
+
+        //List Header
+        HBox hbox = new HBox();
+        hbox.setStyle("-fx-start-margin: 10; -fx-end-margin: 10");
+        hbox.setSpacing(3);
+        hbox.getChildren().add(label);
+        hbox.getChildren().add(button);
+        bp.setTop(hbox);
+
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_CENTER);
         vbox.setPrefHeight(221.0);
