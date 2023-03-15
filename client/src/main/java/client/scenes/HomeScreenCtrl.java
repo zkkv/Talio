@@ -31,18 +31,16 @@ public class HomeScreenCtrl {
         this.server = server;
     }
 
-
     public void createList() {
         drawCardList("Label");
         server.addCardListToBoard(new CardList(new ArrayList<>(), "Label"));
     }
 
     public void addRetrievedCardLists() {
-        for (int i = 0; i < server.getAllCardLists().size(); i++) {
-            drawCardList(server.getAllCardLists().get(i).title);
+        for (CardList cardList : server.getAllCardLists()) {
+            drawCardList(cardList.title);
         }
     }
-
 
     public void drawCardList(String text){
         BorderPane bp = new BorderPane();
@@ -79,6 +77,7 @@ public class HomeScreenCtrl {
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
     }
+
     public void drawAddCardButton(VBox vbox){
         Button addCard = new Button("+");
         addCard.setAlignment(Pos.CENTER);
@@ -91,6 +90,7 @@ public class HomeScreenCtrl {
         });
         vbox.getChildren().add(addCard);
     }
+
     public void drawCard(VBox vbox,Button button, String title){
         Button task = new Button(title);
         task.setAlignment(Pos.CENTER);
