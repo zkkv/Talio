@@ -90,4 +90,12 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(cardList, APPLICATION_JSON), String.class);
     }
+
+    public List<CardList> getAllCardLists(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card-list") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<CardList>>() {});
+    }
 }

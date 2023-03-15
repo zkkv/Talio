@@ -10,12 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-
 import javafx.scene.layout.HBox;
-
 import javafx.scene.layout.VBox;
-
-
 import java.util.ArrayList;
 
 
@@ -35,10 +31,18 @@ public class HomeScreenCtrl {
         this.server = server;
     }
 
+
     public void createList() {
         drawCardList("Label");
         server.addCardListToBoard(new CardList(new ArrayList<>(), "Label"));
     }
+
+    public void addRetrievedCardLists() {
+        for (int i = 0; i < server.getAllCardLists().size(); i++) {
+            drawCardList(server.getAllCardLists().get(i).title);
+        }
+    }
+
 
     public void drawCardList(String text){
         BorderPane bp = new BorderPane();
