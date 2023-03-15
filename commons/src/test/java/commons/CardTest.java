@@ -40,9 +40,9 @@ class CardTest {
         assertNotEquals(card1.hashCode(), card2.hashCode());
     }
 
-//    @Test
-//    void testToString() {
-//        Card card = new Card("card");
-//        assertEquals("", card.toString());
-//    }
+    //    @Test
+    //    void testToString() {
+    //        Card card = new Card("card");
+    //        assertEquals("", card.toString());
+    //    }
 }

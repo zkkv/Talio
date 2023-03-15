@@ -34,7 +34,4 @@ public class AddTaskCtrl {
         mainCtrl.changeName(button,title.getText());
         mainCtrl.showBoardPage();
     }
-
-
-
 }
