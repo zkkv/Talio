@@ -47,11 +47,14 @@ public class HomeScreenCtrl {
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
+
+        //List Button
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
         Button button = new Button(":");
+        button.setOnAction(event -> {
+            mainCtrl.showListMenu(button);
+        });
         button.setAlignment(Pos.TOP_CENTER);
-        button.setLayoutX(95.0);
-        button.setLayoutY(6.0);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
         button.setStyle("-fx-background-color: #a3957c;");

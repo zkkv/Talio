@@ -24,6 +24,7 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage listMenuStage;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -44,13 +45,17 @@ public class MainCtrl {
     private StartPageCtrl startPageCtrl;
     private Scene startPage;
 
+    private ListMenuCtrl listMenuCtrl;
+    private Scene listMenu;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                            Pair<AddQuoteCtrl, Parent> add,
                            Pair<HomeScreenCtrl, Parent> home,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
-                           Pair<AddTaskCtrl, Parent> addTask) {
+                           Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
         this.primaryStage = primaryStage;
+
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
@@ -68,6 +73,11 @@ public class MainCtrl {
 
         this.addTaskCtrl = addTask.getKey();
         this.addTask = new Scene(addTask.getValue());
+
+        this.listMenuCtrl = listMenu.getKey();
+        this.listMenu = new Scene(listMenu.getValue());
+        this.listMenuStage = new Stage();
+        this.listMenuStage.setScene(this.listMenu);
 
         showClientConnectPage();
         primaryStage.show();
@@ -112,5 +122,16 @@ public class MainCtrl {
 
     public void changeName(Button button,String title){
         button.setText(title);
+    }
+
+    public void showListMenu(Button button){
+        if(!listMenuStage.isShowing()){
+            listMenuStage.setTitle("Talio: List Menu");
+//            listMenuStage.setScene(listMenu);
+            listMenuStage.show();
+        }
+        else{
+            listMenuStage.hide();
+        }
     }
 }
