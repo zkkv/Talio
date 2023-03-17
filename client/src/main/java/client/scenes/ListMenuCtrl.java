@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -24,8 +25,13 @@ public class ListMenuCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void changeListLabel(TextField listLabel){
+    public void changeListLabel(TextField listLabel, CardList cardList){
         listMenuButton.setOnAction(event -> listLabel.setText(listMenuTextField.getText()));
+//        for(CardList list: server.getAllCardLists()){
+//            if(list.equals(cardList)){
+//                list.title = listMenuTextField.getText();
+//            }
+//        }
     }
 
 

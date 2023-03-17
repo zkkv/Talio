@@ -34,7 +34,6 @@ public class HomeScreenCtrl {
 
     public void createList() {
         drawCardList("Label");
-        server.addCardListToBoard(new CardList(new ArrayList<>(), "Label"));
     }
 
     public void addRetrievedCardLists() {
@@ -45,6 +44,9 @@ public class HomeScreenCtrl {
 
 
     public void drawCardList(String text){
+        CardList newCardList = new CardList(new ArrayList<>(), "Label");
+        server.addCardListToBoard(newCardList);
+
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
@@ -63,7 +65,7 @@ public class HomeScreenCtrl {
         button.setOnAction(event -> {
             mainCtrl.showListMenu(button);
 
-            selectListLabel(label);
+            selectListLabelAndObject(label, newCardList);
         });
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
@@ -121,8 +123,8 @@ public class HomeScreenCtrl {
         mainCtrl.showClientConnectPage();
     }
 
-    public void selectListLabel(TextField label){
-        listMenuCtrl.changeListLabel(label);
+    public void selectListLabelAndObject(TextField label, CardList cardList){
+        listMenuCtrl.changeListLabel(label, cardList);
     }
 }
 
