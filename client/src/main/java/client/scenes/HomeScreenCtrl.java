@@ -2,11 +2,14 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -30,7 +33,6 @@ public class HomeScreenCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
-
 
     public void createList() {
         drawCardList("Label");
@@ -78,6 +80,20 @@ public class HomeScreenCtrl {
         drawAddCardButton(vbox);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
+        deletingList(bp, button);
+    }
+    public void deletingList(BorderPane bp, Button button) {
+        ContextMenu cm = new ContextMenu();
+        MenuItem removeItem = new MenuItem("Remove list");
+        cm.getItems().add(removeItem);
+        button.setContextMenu(cm);
+        removeItem.setOnAction(event -> {
+            panel.getChildren().remove(bp);
+            server.removeCardListToBoard(server.getAllCardLists().get(1));
+        });
+        button.setOnMouseClicked(event -> {
+            cm.show(button, event.getScreenX(), event.getScreenY());
+        });
     }
     public void drawAddCardButton(VBox vbox){
         Button addCard = new Button("+");
