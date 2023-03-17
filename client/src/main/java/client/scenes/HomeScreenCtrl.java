@@ -18,51 +18,63 @@ public class HomeScreenCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private final ListMenuCtrl listMenuCtrl;
+
     @FXML
     private HBox panel;
 
-    @FXML
-    private AnchorPane anchorPane;
 
     @Inject
-    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl, ListMenuCtrl listMenuCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.listMenuCtrl = listMenuCtrl;
     }
 
 
     public void createList() {
         drawCardList("Label");
-        server.addCardListToBoard(new CardList(new ArrayList<>(), "Label"));
+        CardList newCardList = new CardList(new ArrayList<>(), "Label");
+        server.addCardListToBoard(newCardList);
     }
 
     public void addRetrievedCardLists() {
-        for (int i = 0; i < server.getAllCardLists().size(); i++) {
+        int size = server.getAllCardLists().size();
+        System.out.println(size);
+        for (int i = 0; i < size; i++) {
             drawCardList(server.getAllCardLists().get(i).title);
         }
     }
 
 
     public void drawCardList(String text){
+
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
-        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
-        Button button = new Button(":");
-        button.setAlignment(Pos.TOP_CENTER);
-        button.setLayoutX(95.0);
-        button.setLayoutY(6.0);
-        button.setTextAlignment(TextAlignment.CENTER);
-        button.setMnemonicParsing(false);
-        button.setStyle("-fx-background-color: #a3957c;");
 
         //List Name
         TextField label = new TextField(text);
         label.setStyle("-fx-background-color: #d9cdad;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
         label.setId("listName");
         label.setAlignment(Pos.CENTER);
+
+        //List Button
+        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
+        Button button = new Button(":");
+        button.setOnAction(event -> {
+            mainCtrl.showListMenu(button);
+
+            selectListLabelAndObject(label);
+        });
+        button.setAlignment(Pos.TOP_CENTER);
+        button.setTextAlignment(TextAlignment.CENTER);
+        button.setMnemonicParsing(false);
+        button.setStyle("-fx-background-color: #a3957c;");
+
+
 
         //List Header
         HBox hbox = new HBox();
@@ -111,6 +123,10 @@ public class HomeScreenCtrl {
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
+    }
+
+    public void selectListLabelAndObject(TextField label){
+        listMenuCtrl.changeListLabel(label);
     }
 }
 
