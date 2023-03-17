@@ -27,11 +27,6 @@ public class ListMenuCtrl {
 
     public void changeListLabel(TextField listLabel, CardList cardList){
         listMenuButton.setOnAction(event -> listLabel.setText(listMenuTextField.getText()));
-//        for(CardList list: server.getAllCardLists()){
-//            if(list.equals(cardList)){
-//                list.title = listMenuTextField.getText();
-//            }
-//        }
     }
 
 
