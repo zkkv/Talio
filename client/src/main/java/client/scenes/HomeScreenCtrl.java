@@ -40,6 +40,7 @@ public class HomeScreenCtrl {
 
     public void addRetrievedCardLists() {
         int size = server.getAllCardLists().size();
+        System.out.println(size);
         for (int i = 0; i < size; i++) {
             drawCardList(server.getAllCardLists().get(i).title);
         }
@@ -47,7 +48,6 @@ public class HomeScreenCtrl {
 
 
     public void drawCardList(String text){
-
 
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
