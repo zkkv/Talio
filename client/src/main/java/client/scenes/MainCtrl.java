@@ -127,7 +127,6 @@ public class MainCtrl {
     public void showListMenu(Button button){
         if(!listMenuStage.isShowing()){
             listMenuStage.setTitle("Talio: List Menu");
-//            listMenuStage.setScene(listMenu);
             listMenuStage.show();
         }
         else{

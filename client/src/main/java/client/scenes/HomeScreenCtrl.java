@@ -18,16 +18,17 @@ public class HomeScreenCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
+    private final ListMenuCtrl listMenuCtrl;
+
     @FXML
     private HBox panel;
 
-    @FXML
-    private AnchorPane anchorPane;
 
     @Inject
-    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl, ListMenuCtrl listMenuCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.listMenuCtrl = listMenuCtrl;
     }
 
 
@@ -48,24 +49,28 @@ public class HomeScreenCtrl {
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
 
+        //List Name
+        TextField label = new TextField(text);
+        label.setStyle("-fx-background-color: #d9cdad;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        label.setPromptText("Enter list name...");
+        label.setId("listName");
+        label.setAlignment(Pos.CENTER);
+
         //List Button
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
         Button button = new Button(":");
         button.setOnAction(event -> {
             mainCtrl.showListMenu(button);
+
+            selectListLabel(label);
         });
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
         button.setStyle("-fx-background-color: #a3957c;");
 
-        //List Name
-        TextField label = new TextField(text);
-        label.setStyle("-fx-background-color: #d9cdad;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
-        label.setPromptText("Enter list name...");
-        label.setId("listName");
-        label.setAlignment(Pos.CENTER);
+
 
         //List Header
         HBox hbox = new HBox();
@@ -114,6 +119,10 @@ public class HomeScreenCtrl {
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
+    }
+
+    public void selectListLabel(TextField label){
+        listMenuCtrl.changeListLabel(label);
     }
 }
 
