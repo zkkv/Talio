@@ -25,7 +25,7 @@ public class ListMenuCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void changeListLabel(TextField listLabela){
+    public void changeListLabel(TextField listLabel){
         listMenuButton.setOnAction(event -> listLabel.setText(listMenuTextField.getText()));
     }
 
