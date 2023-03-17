@@ -73,7 +73,6 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-
     public void showClientConnectPage() {
         primaryStage.setTitle("Talio: Client connect");
         primaryStage.setScene(clientConnect);

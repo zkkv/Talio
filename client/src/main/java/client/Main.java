@@ -41,7 +41,8 @@ public class Main extends Application {
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
         var home = FXML.load(HomeScreenCtrl.class, "client", "scenes", "HomeScreen.fxml");
-        var clientConnect = FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
+        var clientConnect =
+            FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
         var startPage = FXML.load(StartPageCtrl.class, "client", "scenes", "StartPage.fxml");
         var addTask = FXML.load(AddTaskCtrl.class, "client", "scenes", "AddTask.fxml");
 

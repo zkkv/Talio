@@ -16,7 +16,6 @@ import server.database.CardRepository;
 @RestController
 @RequestMapping("/api/card")
 public class CardController {
-
     private final CardRepository repo;
 
     public CardController(CardRepository repo) {
@@ -38,7 +37,6 @@ public class CardController {
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<Card> add(@RequestBody Card card) {
-
         if (card.title == null){
             return ResponseEntity.badRequest().build();
         }
