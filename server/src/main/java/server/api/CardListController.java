@@ -59,7 +59,7 @@ public class CardListController {
         if(id<0||!repo.existsById(id)){
             return ResponseEntity.notFound().build();
         }
-        CardList list =  repo.findById(id).get();
+        CardList list = repo.findById(id).get();
         repo.deleteById(id);
         return ResponseEntity.ok(list);
     }
