@@ -101,11 +101,8 @@ public class ServerUtils {
     }
 
     public Card addCardToCardList(Card card, long cardListID) {
-        System.out.println(card);
-        System.out.println("id = " + cardListID);
-        String path = "api/card-lists/" + cardListID + "/cards";
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path(path)
+                .target(server).path("api/card-lists/" + cardListID + "/cards")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);

@@ -63,26 +63,11 @@ public class CardListController {
     @GetMapping("/{id}/cards")
     public ResponseEntity<List<Card>> getCards(@PathVariable("id") long id) {
         return ResponseEntity.ok(repo.findById(id).get().list);
-/*
-        br.save(board1);
-        return ResponseEntity.ok("Added successfully!");
-
-        CardList cardList = repo.findAll().get(0)
-
-        Card saved = repo.save(card);
-        return ResponseEntity.ok(saved);*/
     }
 
     @PostMapping("/{id}/cards")
     public ResponseEntity<Card> addCard(@RequestBody Card card, @PathVariable("id") long id) {
-
-        System.out.println(id);
-        System.out.println(card);
-
         Card saved = cardRepo.save(card);
-
-        System.out.println(saved);
-
         CardList cardList = repo.findById(id).get();
 
         cardList.list.add(saved);

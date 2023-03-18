@@ -104,10 +104,7 @@ public class HomeScreenCtrl {
         addCard.setOnAction(event -> {
             String title = "Card";
             drawCard(vbox, addCard, title, id);
-            System.out.println("id = " + id);
-            Card card = new Card(title);
-            System.out.println(card);
-            server.addCardToCardList(card, id);
+            server.addCardToCardList(new Card(title), id);
         });
         vbox.getChildren().add(addCard);
     }
