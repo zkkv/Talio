@@ -21,12 +21,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -75,7 +74,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
-    
+
     public Board getOrCreateBoard(){
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/boards/create") //
@@ -84,13 +83,21 @@ public class ServerUtils {
                 .get(new GenericType<Board>(){});
     }
 
-    public String addCardListToBoard(CardList cardList) {
+    public CardList addCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/boards/add-card-list") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(cardList, APPLICATION_JSON), String.class);
+                .put(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
+    public Response removeCardListToBoard(CardList cardList) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card-list/removeCardList/" + cardList.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
+    }
+
 
     public List<CardList> getAllCardLists(){
         return ClientBuilder.newClient(new ClientConfig()) //

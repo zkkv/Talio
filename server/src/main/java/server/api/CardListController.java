@@ -51,7 +51,6 @@ public class CardListController {
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<CardList> add(@RequestBody CardList cardList) {
-
         if (cardList.list == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -74,5 +73,15 @@ public class CardListController {
 
         repo.save(cardList);
         return ResponseEntity.ok(card);
+    }
+
+    @DeleteMapping("/removeCardList/{id}")
+    public ResponseEntity<CardList> removeCardList(@PathVariable(name = "id") long id) {
+        if(id<0||!repo.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        CardList list = repo.findById(id).get();
+        repo.deleteById(id);
+        return ResponseEntity.ok(list);
     }
 }

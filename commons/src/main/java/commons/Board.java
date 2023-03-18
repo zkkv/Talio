@@ -16,7 +16,7 @@ public class Board {
     @GeneratedValue(strategy=GenerationType.AUTO)
     public long key;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "relatedBoard")
     public List<CardList> cardLists;
 
     private Board(){

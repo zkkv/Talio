@@ -17,7 +17,6 @@ public class ClientConnectCtrl {
     @FXML
     private TextField ipAddress;
 
-
     @Inject
     public ClientConnectCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -40,7 +39,5 @@ public class ClientConnectCtrl {
             alert.initOwner(currentStage);
             alert.showAndWait();
         }
-
     }
-
 }

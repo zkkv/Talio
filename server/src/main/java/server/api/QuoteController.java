@@ -56,8 +56,8 @@ public class QuoteController {
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<Quote> add(@RequestBody Quote quote) {
-
-        if (quote.person == null || isNullOrEmpty(quote.person.firstName) || isNullOrEmpty(quote.person.lastName)
+        if (quote.person == null || isNullOrEmpty(quote.person.firstName)
+            || isNullOrEmpty(quote.person.lastName)
                 || isNullOrEmpty(quote.quote)) {
             return ResponseEntity.badRequest().build();
         }
@@ -76,4 +76,5 @@ public class QuoteController {
         var idx = random.nextInt((int) repo.count());
         return ResponseEntity.ok(quotes.get(idx));
     }
+
 }

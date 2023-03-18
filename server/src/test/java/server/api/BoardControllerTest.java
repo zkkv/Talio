@@ -7,13 +7,15 @@ import org.junit.jupiter.api.Test;
 public class BoardControllerTest {
 
     private TestBoardRepository repo;
+    private TestCardListRepository cr;
 
     private BoardController sut;
 
     @BeforeEach
     public void setup(){
         repo = new TestBoardRepository();
-        sut = new BoardController(repo);
+        cr = new TestCardListRepository();
+        sut = new BoardController(repo, cr);
     }
 
 

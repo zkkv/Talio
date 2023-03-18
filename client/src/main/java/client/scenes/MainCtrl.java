@@ -15,15 +15,18 @@
  */
 package client.scenes;
 
+import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage listMenuStage;
 
     private QuoteOverviewCtrl overviewCtrl;
     private Scene overview;
@@ -44,13 +47,17 @@ public class MainCtrl {
     private StartPageCtrl startPageCtrl;
     private Scene startPage;
 
+    private ListMenuCtrl listMenuCtrl;
+    private Scene listMenu;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                            Pair<AddQuoteCtrl, Parent> add,
                            Pair<HomeScreenCtrl, Parent> home,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
-                           Pair<AddTaskCtrl, Parent> addTask) {
+                           Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
         this.primaryStage = primaryStage;
+
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
@@ -69,10 +76,14 @@ public class MainCtrl {
         this.addTaskCtrl = addTask.getKey();
         this.addTask = new Scene(addTask.getValue());
 
+        this.listMenuCtrl = listMenu.getKey();
+        this.listMenu = new Scene(listMenu.getValue());
+        this.listMenuStage = new Stage();
+        this.listMenuStage.setScene(this.listMenu);
+
         showClientConnectPage();
         primaryStage.show();
     }
-
 
     public void showClientConnectPage() {
         primaryStage.setTitle("Talio: Client connect");
@@ -113,5 +124,19 @@ public class MainCtrl {
 
     public void changeName(Button button,String title){
         button.setText(title);
+    }
+
+    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
+        listMenuCtrl.setCardListBorderPane(cardList, borderPane);
+        if(!listMenuStage.isShowing()){
+            listMenuStage.setTitle("Talio: List Menu");
+            listMenuStage.show();
+        }
+        else{
+            listMenuStage.hide();
+        }
+    }
+    public void closeMenu (){
+        listMenuStage.hide();
     }
 }
