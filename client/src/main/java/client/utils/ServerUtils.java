@@ -23,11 +23,9 @@ import java.net.URL;
 import java.util.List;
 
 import commons.Board;
-import commons.Card;
 import commons.CardList;
 import jakarta.ws.rs.core.Response;
-import org.glassfish.jersey.client.ClientConfig;
-
+import org.glassfish.jersey.client.ClientConfig;git
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
