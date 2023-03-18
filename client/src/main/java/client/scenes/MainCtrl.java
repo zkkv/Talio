@@ -15,9 +15,11 @@
  */
 package client.scenes;
 
+import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -124,7 +126,8 @@ public class MainCtrl {
         button.setText(title);
     }
 
-    public void showListMenu(Button button){
+    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
+        listMenuCtrl.setCardListBorderPane(cardList, borderPane);
         if(!listMenuStage.isShowing()){
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
@@ -132,5 +135,8 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+    public void closeMenu (){
+        listMenuStage.hide();
     }
 }

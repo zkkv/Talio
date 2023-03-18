@@ -16,6 +16,9 @@ public class Card {
 
     public String title;
 
+    @ManyToOne
+    public CardList cardList;
+
     private Card(){
 
     }
