@@ -33,28 +33,28 @@ public class HomeScreenCtrl {
     }
 
     public void createList() {
-        drawCardList("Label");
         CardList newCardList = new CardList(new ArrayList<>(), "Label");
-        server.addCardListToBoard(newCardList);
+        newCardList = server.addCardListToBoard(newCardList);
+        drawCardList(newCardList);
     }
 
     public void addRetrievedCardLists() {
-        int size = server.getAllCardLists().size();
-        System.out.println(size);
-        for (int i = 0; i < size; i++) {
-            drawCardList(server.getAllCardLists().get(i).title);
+        var lists = server.getAllCardLists();
+        panel.getChildren().clear();
+        for (CardList list : lists) {
+            drawCardList(list);
         }
     }
 
 
-    public void drawCardList(String text){
+    public void drawCardList(CardList cardList){
 
         BorderPane bp = new BorderPane();
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
 
         //List Name
-        TextField label = new TextField(text);
+        TextField label = new TextField(cardList.getTitle());
         label.setStyle("-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
@@ -65,15 +65,13 @@ public class HomeScreenCtrl {
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
         Button button = new Button(":");
         button.setOnAction(event -> {
-            mainCtrl.showListMenu(button);
-
+            mainCtrl.showListMenu(button, cardList, bp);
             selectListLabelAndObject(label);
         });
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
         button.setStyle("-fx-background-color: #a3957c;");
-
 
 
         //List Header
@@ -92,20 +90,7 @@ public class HomeScreenCtrl {
         drawAddCardButton(vbox);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
-        deletingList(bp, button);
-    }
-    public void deletingList(BorderPane bp, Button button) {
-        ContextMenu cm = new ContextMenu();
-        MenuItem removeItem = new MenuItem("Remove list");
-        cm.getItems().add(removeItem);
-        button.setContextMenu(cm);
-        removeItem.setOnAction(event -> {
-            panel.getChildren().remove(bp);
-            server.removeCardListToBoard(server.getAllCardLists().get(1));
-        });
-        button.setOnMouseClicked(event -> {
-            cm.show(button, event.getScreenX(), event.getScreenY());
-        });
+        listMenuCtrl.deletingList(panel);
     }
     public void drawAddCardButton(VBox vbox){
         Button addCard = new Button("+");
