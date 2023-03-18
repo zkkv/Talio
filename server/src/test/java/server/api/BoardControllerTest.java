@@ -13,7 +13,7 @@ public class BoardControllerTest {
     @BeforeEach
     public void setup(){
         repo = new TestBoardRepository();
-        sut = new BoardController(repo);
+//        sut = new BoardController(repo, cr);
     }
 
 

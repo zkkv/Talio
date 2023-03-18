@@ -5,7 +5,7 @@ import commons.CardList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
-
+import server.database.CardListRepository;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +13,11 @@ import java.util.List;
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardRepository br;
+    private final CardListRepository cr;
 
-    public BoardController(BoardRepository br) {
+    public BoardController(BoardRepository br, CardListRepository cr) {
         this.br = br;
+        this.cr = cr;
     }
 
     @GetMapping(path = {"", "/"})
@@ -49,10 +51,11 @@ public class BoardController {
     }
 
     @PutMapping("/addCardList")
-    public ResponseEntity<String> addCardList(@RequestBody CardList cardList){
+    public ResponseEntity<CardList> addCardList(@RequestBody CardList cardList){
+        var saved = cr.save(cardList);//We first save the card list to update the id
         Board board1 = br.findAll().get(0);
         board1.cardLists.add(cardList);
         br.save(board1);
-        return ResponseEntity.ok("Added successfully!");
+        return ResponseEntity.ok(saved);
     }
 }
