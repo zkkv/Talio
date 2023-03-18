@@ -12,7 +12,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeScreenCtrl {
@@ -46,16 +45,12 @@ public class HomeScreenCtrl {
         }
     }
 
-    public void drawCardList(CardList cardList){
-        long id = cardList.id;
-        String text = cardList.title;
-
-        BorderPane bp = new BorderPane();
+    public VBox initializeListVBox(CardList cardList, BorderPane bp) {
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
 
         //List Name
-        TextField label = new TextField(text);
+        TextField label = new TextField(cardList.getTitle());
         label.setStyle("-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
@@ -88,6 +83,17 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
+
+        return vbox;
+    }
+
+    public void drawCardList(CardList cardList){
+        long id = cardList.id;
+        String text = cardList.title;
+
+        BorderPane bp = new BorderPane();
+
+        VBox vbox = initializeListVBox(cardList, bp);
 
         var listOfCards = server.getCardsOfCardList(id);
 
