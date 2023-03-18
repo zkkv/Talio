@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.List;
 
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -85,7 +86,7 @@ public class ServerUtils {
 
     public String addCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/addCardList") //
+                .target(server).path("api/boards/add-card-list") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(cardList, APPLICATION_JSON), String.class);
@@ -93,9 +94,28 @@ public class ServerUtils {
 
     public List<CardList> getAllCardLists(){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-list") //
+                .target(server).path("api/card-lists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<CardList>>() {});
+    }
+
+    public Card addCardToCardList(Card card, long cardListID) {
+        System.out.println(card);
+        System.out.println("id = " + cardListID);
+        String path = "api/card-lists/" + cardListID + "/cards";
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path(path)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    public List<Card> getCardsOfCardList(long cardListID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/card-lists/" + cardListID + "/cards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Card>>() {});
     }
 }
