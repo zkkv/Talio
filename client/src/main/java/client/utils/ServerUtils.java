@@ -92,7 +92,7 @@ public class ServerUtils {
     }
     public Response removeCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-list/removeCardList/" + cardList.getId()) //
+                .target(server).path("api/card-lists/removeCardList/" + cardList.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
