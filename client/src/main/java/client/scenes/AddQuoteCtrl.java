@@ -56,7 +56,8 @@ public class AddQuoteCtrl {
     public void ok() {
         try {
             server.addQuote(getQuote());
-        } catch (WebApplicationException e) {
+        }
+        catch (WebApplicationException e) {
 
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -83,14 +84,17 @@ public class AddQuoteCtrl {
 
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
-        case ENTER:
-            ok();
-            break;
-        case ESCAPE:
-            cancel();
-            break;
-        default:
-            break;
+            case ENTER: {
+                ok();
+                break;
+            }
+            case ESCAPE: {
+                cancel();
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 }

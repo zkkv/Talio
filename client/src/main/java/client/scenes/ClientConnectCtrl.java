@@ -28,7 +28,8 @@ public class ClientConnectCtrl {
             ServerUtils.setServer(ipAddress.getText());
             ServerUtils.testConnection();
             mainCtrl.showStartPage();
-        } catch (IOException | ClassCastException e) {
+        }
+        catch (IOException | ClassCastException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connection Error");
             alert.setHeaderText("Connection Error");
