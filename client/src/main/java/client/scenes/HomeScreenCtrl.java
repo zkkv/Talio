@@ -1,6 +1,7 @@
 package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -44,10 +45,7 @@ public class HomeScreenCtrl {
         }
     }
 
-
-    public void drawCardList(CardList cardList){
-
-        BorderPane bp = new BorderPane();
+    public VBox initializeListVBox(CardList cardList, BorderPane bp) {
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
 
@@ -61,6 +59,7 @@ public class HomeScreenCtrl {
 
         //List Button
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
+
         Button button = new Button(":");
         button.setOnAction(event -> {
             mainCtrl.showListMenu(button, cardList, bp);
@@ -70,7 +69,6 @@ public class HomeScreenCtrl {
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
         button.setStyle("-fx-background-color: #a3957c;");
-
 
         //List Header
         HBox hbox = new HBox();
@@ -85,12 +83,31 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
-        drawAddCardButton(vbox);
+
+        return vbox;
+    }
+
+    public void drawCardList(CardList cardList){
+        long id = cardList.id;
+        String text = cardList.title;
+
+        BorderPane bp = new BorderPane();
+
+        VBox vbox = initializeListVBox(cardList, bp);
+
+        var listOfCards = server.getCardsOfCardList(id);
+
+        for (Card card : listOfCards) {
+            drawCard(vbox, null, card.title, id);
+        }
+
+        drawAddCardButton(vbox, id);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
         listMenuCtrl.deletingList(panel);
     }
-    public void drawAddCardButton(VBox vbox){
+
+    public void drawAddCardButton(VBox vbox, long id){
         Button addCard = new Button("+");
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
@@ -98,11 +115,14 @@ public class HomeScreenCtrl {
         addCard.setPrefWidth(100);
         addCard.setStyle("-fx-border-color: black;");
         addCard.setOnAction(event -> {
-            drawCard(vbox,addCard,"Card");
+            String title = "Card";
+            drawCard(vbox, addCard, title, id);
+            server.addCardToCardList(new Card(title), id);
         });
         vbox.getChildren().add(addCard);
     }
-    public void drawCard(VBox vbox,Button button, String title){
+
+    public void drawCard(VBox vbox, Button button, String title, long id){
         Button task = new Button(title);
         task.setAlignment(Pos.CENTER);
         task.setMnemonicParsing(false);
@@ -112,9 +132,12 @@ public class HomeScreenCtrl {
         task.setOnAction(event -> {
             mainCtrl.showAddTask(task);
         });
-        vbox.getChildren().remove(button);
+
+        if (button != null) {
+            vbox.getChildren().remove(button);
+        }
         vbox.getChildren().add(task);
-        drawAddCardButton(vbox);
+        drawAddCardButton(vbox, id);
     }
 
     public void disconnect() {

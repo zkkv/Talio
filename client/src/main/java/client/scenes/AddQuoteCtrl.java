@@ -85,11 +85,11 @@ public class AddQuoteCtrl {
                 ok();
                 break;
             }
-            case ESCAPE:{
+            case ESCAPE: {
                 cancel();
                 break;
             }
-            default:{
+            default: {
                 break;
             }
         }

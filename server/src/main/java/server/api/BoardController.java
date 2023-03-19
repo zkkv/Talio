@@ -50,7 +50,7 @@ public class BoardController {
         return ResponseEntity.ok(br.findAll().get(0));
     }
 
-    @PutMapping("/addCardList")
+    @PutMapping("/add-card-list")
     public ResponseEntity<CardList> addCardList(@RequestBody CardList cardList){
         var saved = cr.save(cardList);//We first save the card list to update the id
         Board board1 = br.findAll().get(0);

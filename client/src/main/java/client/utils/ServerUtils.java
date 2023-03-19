@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
@@ -84,14 +85,14 @@ public class ServerUtils {
 
     public CardList addCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/addCardList") //
+                .target(server).path("api/boards/add-card-list") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
     public Response removeCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-list/removeCardList/" + cardList.getId()) //
+                .target(server).path("api/card-lists/removeCardList/" + cardList.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
@@ -100,9 +101,25 @@ public class ServerUtils {
 
     public List<CardList> getAllCardLists(){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-list") //
+                .target(server).path("api/card-lists") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<CardList>>() {});
+    }
+
+    public Card addCardToCardList(Card card, long cardListID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/card-lists/" + cardListID + "/cards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    public List<Card> getCardsOfCardList(long cardListID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/card-lists/" + cardListID + "/cards")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Card>>() {});
     }
 }

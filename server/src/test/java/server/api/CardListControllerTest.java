@@ -35,7 +35,7 @@ public class CardListControllerTest {
     @BeforeEach
     public void setup() {
         repo = new TestCardListRepository();
-        sut = new CardListController(repo);
+        sut = new CardListController(repo, null);
     }
 
     @Test
