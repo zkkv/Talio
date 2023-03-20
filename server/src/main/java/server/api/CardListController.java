@@ -17,6 +17,7 @@ package server.api;
 
 import commons.Card;
 import commons.CardList;
+import commons.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardListRepository;
@@ -51,7 +52,7 @@ public class CardListController {
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<CardList> add(@RequestBody CardList cardList) {
-        if (cardList.list == null) {
+        if (cardList.cards == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -61,7 +62,7 @@ public class CardListController {
 
     @GetMapping("/{id}/cards")
     public ResponseEntity<List<Card>> getCards(@PathVariable("id") long id) {
-        return ResponseEntity.ok(repo.findById(id).get().list);
+        return ResponseEntity.ok(repo.findById(id).get().cards);
     }
 
     @PostMapping("/{id}/cards")
@@ -69,13 +70,13 @@ public class CardListController {
         Card saved = cardRepo.save(card);
         CardList cardList = repo.findById(id).get();
 
-        cardList.list.add(saved);
+        cardList.cards.add(saved);
 
         repo.save(cardList);
         return ResponseEntity.ok(card);
     }
 
-    @DeleteMapping("/removeCardList/{id}")
+    @DeleteMapping("/remove-card-list/{id}")
     public ResponseEntity<CardList> removeCardList(@PathVariable(name = "id") long id) {
         if(id<0||!repo.existsById(id)){
             return ResponseEntity.notFound().build();
@@ -83,5 +84,12 @@ public class CardListController {
         CardList list = repo.findById(id).get();
         repo.deleteById(id);
         return ResponseEntity.ok(list);
+    }
+    
+    @PutMapping("/update-title")
+    public ResponseEntity<CardList> updateTitle(@RequestBody Pair<CardList,String> request){
+        CardList cardList = request.getLeft();
+        cardList.title = request.getRight();
+        return ResponseEntity.ok(repo.save(cardList));
     }
 }

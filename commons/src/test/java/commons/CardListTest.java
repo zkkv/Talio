@@ -39,7 +39,7 @@ public class CardListTest {
     public void constructorTest() {
         CardList cardList1 = new CardList(list1, "TODO");
         assertEquals("TODO", cardList1.title);
-        assertEquals(list1, cardList1.list);
+        assertEquals(list1, cardList1.cards);
     }
 
     @Test

@@ -21,12 +21,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import commons.Board;
-import commons.Card;
-import commons.CardList;
+
+import commons.*;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -92,7 +90,7 @@ public class ServerUtils {
     }
     public Response removeCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/removeCardList/" + cardList.getId()) //
+                .target(server).path("api/card-lists/remove-card-list/" + cardList.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
@@ -105,6 +103,22 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<CardList>>() {});
+    }
+
+    public CardList getCardList(long id){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card-lists/"+id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<CardList>() {});
+    }
+
+    public CardList updateCardListTitle(Pair<CardList,String> request){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card-lists/update-title") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(request,APPLICATION_JSON), CardList.class);
     }
 
     public Card addCardToCardList(Card card, long cardListID) {

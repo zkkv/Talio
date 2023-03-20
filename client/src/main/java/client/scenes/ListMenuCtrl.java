@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
+import commons.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -31,8 +32,12 @@ public class ListMenuCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void changeListLabel(TextField listLabel){
-        listMenuButton.setOnAction(event -> listLabel.setText(listMenuTextField.getText()));
+    public void changeListLabel(CardList cardList, TextField listLabel){
+        listMenuButton.setOnAction(event -> {
+            listLabel.setText(listMenuTextField.getText());
+            Pair<CardList,String> request = new Pair<>(cardList,listLabel.getText());
+            server.updateCardListTitle(request);
+        });
     }
 
     public void setCardListBorderPane(CardList cardList, BorderPane bp) {
