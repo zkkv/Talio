@@ -111,7 +111,6 @@ public class HomeScreenCtrl {
         BorderPane bp = new BorderPane();
 
         VBox vbox = initializeListVBox(cardList, bp);
-
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
@@ -133,6 +132,7 @@ public class HomeScreenCtrl {
         addCard.setOnAction(event -> {
             String title = "Card";
             drawCard(vbox, addCard, title, cardListId);
+            drawAddCardButton(vbox, cardListId);
             server.addCardToCardList(new Card(title), cardListId);
         });
         vbox.getChildren().add(addCard);
@@ -172,7 +172,6 @@ public class HomeScreenCtrl {
             vbox.getChildren().remove(button);
         }
         vbox.getChildren().add(task);
-        drawAddCardButton(vbox, cardListId);
     }
 
     public void disconnect() {
