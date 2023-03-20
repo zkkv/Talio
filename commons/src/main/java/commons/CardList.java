@@ -17,20 +17,18 @@ public class CardList {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "cardList")
-    public List<Card> list;
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Card> cards;
 
     public String title;
-    @ManyToOne
-    public Board relatedBoard;
 
     @SuppressWarnings("unused")
     private CardList() {
         // for object mapper
     }
 
-    public CardList(List<Card> list, String title) {
-        this.list = list;
+    public CardList(List<Card> cards, String title) {
+        this.cards = cards;
         this.title = title;
     }
 
@@ -42,12 +40,12 @@ public class CardList {
         this.id = id;
     }
 
-    public List<Card> getList() {
-        return list;
+    public List<Card> getCards() {
+        return cards;
     }
 
-    public void setList(List<Card> list) {
-        this.list = list;
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 
     public String getTitle() {

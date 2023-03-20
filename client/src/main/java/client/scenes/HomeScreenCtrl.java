@@ -3,9 +3,15 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
+import commons.Pair;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
@@ -53,8 +59,8 @@ public class HomeScreenCtrl {
         label.setStyle("-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
-        label.setId("listName");
-        label.setAlignment(Pos.CENTER);
+        label.setId(String.valueOf(cardList.id));
+        configureTextField(label);
 
         //List Button
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
@@ -83,26 +89,41 @@ public class HomeScreenCtrl {
         return vbox;
     }
 
+    private void configureTextField(TextField label) {
+        label.setStyle("-fx-background-color: #d9cdad;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        label.setAlignment(Pos.CENTER);
+        label.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    CardList cardList = server.getCardList(Long.parseLong(label.getId()));
+                    Pair<CardList,String> request = new Pair<>(cardList, label.getText());
+                    server.updateCardListTitle(request);
+                }
+            }
+        });
+    }
+
     public void drawCardList(CardList cardList){
-        long id = cardList.id;
-        String text = cardList.title;
+        long cardListId = cardList.id;
 
         BorderPane bp = new BorderPane();
 
         VBox vbox = initializeListVBox(cardList, bp);
 
-        var listOfCards = server.getCardsOfCardList(id);
+        var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
-            drawCard(vbox, null, card.title, id);
+            drawCard(vbox, null, card.title, cardListId);
         }
 
-        drawAddCardButton(vbox, id);
+        drawAddCardButton(vbox, cardListId);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
     }
 
-    public void drawAddCardButton(VBox vbox, long id){
+    public void drawAddCardButton(VBox vbox, long cardListId){
         Button addCard = new Button("+");
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
@@ -111,8 +132,8 @@ public class HomeScreenCtrl {
         addCard.setStyle("-fx-border-color: black;");
         addCard.setOnAction(event -> {
             String title = "Card";
-            drawCard(vbox, addCard, title, id);
-            server.addCardToCardList(new Card(title), id);
+            drawCard(vbox, addCard, title, cardListId);
+            server.addCardToCardList(new Card(title), cardListId);
         });
         vbox.getChildren().add(addCard);
     }
@@ -129,14 +150,14 @@ public class HomeScreenCtrl {
         });
         edit.setOnAction(event -> {
             mainCtrl.showListMenu(button, cardList, bp);
-            listMenuCtrl.changeListLabel(label);
+            listMenuCtrl.changeListLabel(cardList,label);
         });
         button.setOnMouseClicked(event -> {
             cm.show(button, event.getScreenX(), event.getScreenY());
         });
     }
 
-    public void drawCard(VBox vbox, Button button, String title, long id){
+    public void drawCard(VBox vbox, Button button, String title, long cardListId){
         Button task = new Button(title);
         task.setAlignment(Pos.CENTER);
         task.setMnemonicParsing(false);
@@ -151,7 +172,7 @@ public class HomeScreenCtrl {
             vbox.getChildren().remove(button);
         }
         vbox.getChildren().add(task);
-        drawAddCardButton(vbox, id);
+        drawAddCardButton(vbox, cardListId);
     }
 
     public void disconnect() {
