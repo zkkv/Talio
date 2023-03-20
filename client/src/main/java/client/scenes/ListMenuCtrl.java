@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 
 public class ListMenuCtrl {
 
@@ -19,8 +18,6 @@ public class ListMenuCtrl {
 
     @FXML
     private Button listMenuButton;
-    @FXML
-    private Button removeList;
     @FXML
     private TextField listMenuTextField;
 
@@ -40,13 +37,6 @@ public class ListMenuCtrl {
         this.bp = bp;
     }
 
-    public void deletingList(HBox panel) {
-        removeList.setOnAction(event -> {
-            panel.getChildren().remove(bp);
-            server.removeCardListToBoard(this.cardList);
-            mainCtrl.closeMenu();
-        });
-    }
 
 
 }
