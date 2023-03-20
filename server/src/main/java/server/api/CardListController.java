@@ -76,16 +76,6 @@ public class CardListController {
         return ResponseEntity.ok(card);
     }
 
-//    @DeleteMapping("/removeCardList/{id}")
-//    public ResponseEntity<CardList> removeCardList(@PathVariable(name = "id") long id) {
-//        if(id<0||!repo.existsById(id)){
-//            return ResponseEntity.notFound().build();
-//        }
-//        CardList list = repo.findById(id).get();
-//        repo.deleteById(id);
-//        return ResponseEntity.ok(list);
-//    }
-    
     @PutMapping("/update-title")
     public ResponseEntity<CardList> updateTitle(@RequestBody Pair<CardList,String> request){
         CardList cardList = request.getLeft();

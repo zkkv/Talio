@@ -55,7 +55,7 @@ public class HomeScreenCtrl {
         bp.setPrefWidth(126);
 
         //List Name
-        TextField label = new TextField(cardList.getTitle());
+        TextField label = new TextField(cardList.title);
         label.setStyle("-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
