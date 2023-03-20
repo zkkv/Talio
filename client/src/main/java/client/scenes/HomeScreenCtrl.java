@@ -5,8 +5,7 @@ import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
@@ -61,10 +60,6 @@ public class HomeScreenCtrl {
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
 
         Button button = new Button(":");
-        button.setOnAction(event -> {
-            mainCtrl.showListMenu(button, cardList, bp);
-            selectListLabelAndObject(label);
-        });
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
@@ -83,6 +78,7 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
+        menu(bp,button, cardList,label);
 
         return vbox;
     }
@@ -104,7 +100,6 @@ public class HomeScreenCtrl {
         drawAddCardButton(vbox, id);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
-        listMenuCtrl.deletingList(panel);
     }
 
     public void drawAddCardButton(VBox vbox, long id){
@@ -120,6 +115,25 @@ public class HomeScreenCtrl {
             server.addCardToCardList(new Card(title), id);
         });
         vbox.getChildren().add(addCard);
+    }
+    public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
+        ContextMenu cm = new ContextMenu();
+        MenuItem removeItem = new MenuItem("Remove list");
+        MenuItem edit = new MenuItem("Edit list");
+        cm.getItems().add(removeItem);
+        cm.getItems().add(edit);
+        button.setContextMenu(cm);
+        removeItem.setOnAction(event -> {
+            panel.getChildren().remove(bp);
+            server.removeCardListToBoard(cardList);
+        });
+        edit.setOnAction(event -> {
+            mainCtrl.showListMenu(button, cardList, bp);
+            listMenuCtrl.changeListLabel(label);
+        });
+        button.setOnMouseClicked(event -> {
+            cm.show(button, event.getScreenX(), event.getScreenY());
+        });
     }
 
     public void drawCard(VBox vbox, Button button, String title, long id){
@@ -143,10 +157,6 @@ public class HomeScreenCtrl {
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
-    }
-
-    public void selectListLabelAndObject(TextField label){
-        listMenuCtrl.changeListLabel(label);
     }
 }
 
