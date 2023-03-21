@@ -42,6 +42,14 @@ public class HomeScreenCtrl {
         drawCardList(newCardList);
     }
 
+    //TEST TEST TEST
+    public void createCard(VBox vbox, Button button, String title, long cardListId) {
+        Card newCard = new Card(title);
+        newCard = server.addCardToCardList(newCard, cardListId);
+        drawCard(vbox, button, title, cardListId, newCard);
+    }
+    //TEST TEST TEST
+
     public void addRetrievedCardLists() {
         var lists = server.getAllCardLists();
         panel.getChildren().clear();
@@ -114,7 +122,7 @@ public class HomeScreenCtrl {
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
-            drawCard(vbox, null, card.title, cardListId);
+            drawCard(vbox, null, card.title, cardListId, card);
         }
 
         drawAddCardButton(vbox, cardListId);
@@ -131,9 +139,10 @@ public class HomeScreenCtrl {
         addCard.setStyle("-fx-border-color: black;");
         addCard.setOnAction(event -> {
             String title = "Card";
-            drawCard(vbox, addCard, title, cardListId);
+            createCard(vbox, addCard, title, cardListId);
+//            drawCard(vbox, addCard, title, cardListId, cardId);
             drawAddCardButton(vbox, cardListId);
-            server.addCardToCardList(new Card(title), cardListId);
+//            server.addCardToCardList(new Card(title), cardListId);
         });
         vbox.getChildren().add(addCard);
     }
@@ -157,7 +166,7 @@ public class HomeScreenCtrl {
         });
     }
 
-    public void drawCard(VBox vbox, Button button, String title, long cardListId){
+    public void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
         //Creating a hbox for the card title and the button
         HBox card = new HBox();
 
@@ -178,7 +187,7 @@ public class HomeScreenCtrl {
         task.setPrefWidth(80);
         task.setStyle("-fx-border-color: black");
 
-        cardMenu(card, menu);
+        cardMenu(vbox, card, menu, cardListId, cardEntity);
         task.setOnMouseClicked(event -> {
             mainCtrl.showAddTask(task);
         });
@@ -189,15 +198,23 @@ public class HomeScreenCtrl {
         vbox.getChildren().add(card);
     }
 
-    public void cardMenu(HBox hbox, Button button) {
+    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
         ContextMenu menu = new ContextMenu();
         MenuItem edit = new MenuItem("Edit card");
         MenuItem remove = new MenuItem("Remove card");
         menu.getItems().add(edit);
         menu.getItems().add(remove);
+        menu.setStyle("-fx-border-color: black");
         button.setContextMenu(menu);
+
         edit.setOnAction(event -> {
         });
+
+        remove.setOnAction(event -> {
+            vbox.getChildren().remove(hbox);
+            server.removeCardToList(cardListId, card);
+        });
+
         button.setOnMouseClicked(event -> {
             menu.show(button, event.getScreenX(), event.getScreenY());
         });
