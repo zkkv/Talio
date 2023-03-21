@@ -139,7 +139,8 @@ public class ServerUtils {
 
     public Response removeCardToList(long cardListId, Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(server).path("api/card-lists/remove-card-list/" + cardListId + "/remove-card/" + card.id) //
+            .target(server).path("api/card-lists/remove-card-list/" + cardListId
+                + "/remove-card/" + card.id) //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .delete();

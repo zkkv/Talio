@@ -84,7 +84,8 @@ public class CardListController {
     }
 
     @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}")
-    public ResponseEntity<Card> removeCard(@PathVariable(name = "listId") long listId, @PathVariable(name = "cardId") long cardId) {
+    public ResponseEntity<Card> removeCard(@PathVariable(name = "listId") long listId,
+                                           @PathVariable(name = "cardId") long cardId) {
         if(listId < 0 || !repo.existsById(listId)){
             return ResponseEntity.notFound().build();
         }
