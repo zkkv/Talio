@@ -15,7 +15,6 @@
  */
 package server.api;
 
-import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.Pair;

@@ -42,13 +42,11 @@ public class HomeScreenCtrl {
         drawCardList(newCardList);
     }
 
-    //TEST TEST TEST
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
         Card newCard = new Card(title);
         newCard = server.addCardToCardList(newCard, cardListId);
         drawCard(vbox, button, title, cardListId, newCard);
     }
-    //TEST TEST TEST
 
     public void addRetrievedCardLists() {
         var lists = server.getAllCardLists();
@@ -140,9 +138,7 @@ public class HomeScreenCtrl {
         addCard.setOnAction(event -> {
             String title = "Card";
             createCard(vbox, addCard, title, cardListId);
-//            drawCard(vbox, addCard, title, cardListId, cardId);
             drawAddCardButton(vbox, cardListId);
-//            server.addCardToCardList(new Card(title), cardListId);
         });
         vbox.getChildren().add(addCard);
     }
