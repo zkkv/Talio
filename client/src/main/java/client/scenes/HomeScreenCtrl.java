@@ -163,10 +163,8 @@ public class HomeScreenCtrl {
     }
 
     public void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
-        //Creating a hbox for the card title and the button
         HBox card = new HBox();
 
-        //Creating the label for the title and the button for the menu
         Label task = new Label(title);
         Button menu = new Button(":");
         card.getChildren().add(task);
