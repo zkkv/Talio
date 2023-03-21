@@ -37,7 +37,7 @@ public class HomeScreenCtrl {
     }
 
     public void createList() {
-        CardList newCardList = new CardList(new ArrayList<>(), "Label");
+        CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = server.addCardListToBoard(newCardList);
         drawCardList(newCardList);
     }
@@ -51,8 +51,10 @@ public class HomeScreenCtrl {
     }
 
     public VBox initializeListVBox(CardList cardList, BorderPane bp) {
+        //List Body
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
+        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
 
         //List Name
         TextField label = new TextField(cardList.title);
@@ -60,11 +62,10 @@ public class HomeScreenCtrl {
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.id));
+        label.setAlignment(Pos.CENTER);
         configureTextField(label);
 
         //List Button
-        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
-
         Button button = new Button(":");
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
@@ -90,9 +91,6 @@ public class HomeScreenCtrl {
     }
 
     private void configureTextField(TextField label) {
-        label.setStyle("-fx-background-color: #d9cdad;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
-        label.setAlignment(Pos.CENTER);
         label.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -139,12 +137,12 @@ public class HomeScreenCtrl {
     }
     public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
         ContextMenu cm = new ContextMenu();
-        MenuItem removeItem = new MenuItem("Remove list");
+        MenuItem remove = new MenuItem("Remove list");
         MenuItem edit = new MenuItem("Edit list");
-        cm.getItems().add(removeItem);
+        cm.getItems().add(remove);
         cm.getItems().add(edit);
         button.setContextMenu(cm);
-        removeItem.setOnAction(event -> {
+        remove.setOnAction(event -> {
             panel.getChildren().remove(bp);
             server.removeCardListToBoard(cardList);
         });
