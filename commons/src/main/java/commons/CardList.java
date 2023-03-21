@@ -32,29 +32,6 @@ public class CardList {
         this.title = title;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     @Override
     public boolean equals(Object obj) {
