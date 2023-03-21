@@ -158,20 +158,49 @@ public class HomeScreenCtrl {
     }
 
     public void drawCard(VBox vbox, Button button, String title, long cardListId){
-        Button task = new Button(title);
+        //Creating a hbox for the card title and the button
+        HBox card = new HBox();
+
+        //Creating the label for the title and the button for the menu
+        Label task = new Label(title);
+        Button menu = new Button(":");
+        card.getChildren().add(task);
+        card.getChildren().add(menu);
+        card.setAlignment(Pos.CENTER);
+
+        menu.setPrefHeight(36);
+        menu.setPrefWidth(20);
+        menu.setStyle("-fx-border-color: black");
+        menu.setMnemonicParsing(false);
+
         task.setAlignment(Pos.CENTER);
-        task.setMnemonicParsing(false);
         task.setPrefHeight(36);
-        task.setPrefWidth(100);
+        task.setPrefWidth(80);
         task.setStyle("-fx-border-color: black");
-        task.setOnAction(event -> {
+
+        cardMenu(card, menu);
+        task.setOnMouseClicked(event -> {
             mainCtrl.showAddTask(task);
         });
 
         if (button != null) {
             vbox.getChildren().remove(button);
         }
-        vbox.getChildren().add(task);
+        vbox.getChildren().add(card);
+    }
+
+    public void cardMenu(HBox hbox, Button button) {
+        ContextMenu menu = new ContextMenu();
+        MenuItem edit = new MenuItem("Edit card");
+        MenuItem remove = new MenuItem("Remove card");
+        menu.getItems().add(edit);
+        menu.getItems().add(remove);
+        button.setContextMenu(menu);
+        edit.setOnAction(event -> {
+        });
+        button.setOnMouseClicked(event -> {
+            menu.show(button, event.getScreenX(), event.getScreenY());
+        });
     }
 
     public void disconnect() {
