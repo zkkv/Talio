@@ -121,6 +121,14 @@ public class ServerUtils {
                 .put(Entity.entity(request,APPLICATION_JSON), CardList.class);
     }
 
+    public Card updateCardTitle(Pair<Card, String> request){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card/update-title") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(request,APPLICATION_JSON), Card.class);
+    }
+
     public Card addCardToCardList(Card card, long cardListID) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/card-lists/" + cardListID + "/cards")

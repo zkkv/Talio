@@ -25,15 +25,18 @@ public class HomeScreenCtrl {
 
     private final ListMenuCtrl listMenuCtrl;
 
+    private final AddTaskCtrl addTaskCtrl;
+
     @FXML
     private HBox panel;
 
 
     @Inject
-    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl, ListMenuCtrl listMenuCtrl) {
+    public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl, ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.listMenuCtrl = listMenuCtrl;
+        this.addTaskCtrl = addTaskCtrl;
     }
 
     public void createList() {
@@ -112,7 +115,7 @@ public class HomeScreenCtrl {
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
-            drawCard(vbox, null, card.title, cardListId);
+            drawCard(vbox, null, card.title, cardListId, card);
         }
 
         drawAddCardButton(vbox, cardListId);
@@ -129,9 +132,9 @@ public class HomeScreenCtrl {
         addCard.setStyle("-fx-border-color: black;");
         addCard.setOnAction(event -> {
             String title = "Card";
-            drawCard(vbox, addCard, title, cardListId);
+            Card card = server.addCardToCardList(new Card(title), cardListId);
+            drawCard(vbox, addCard, title, cardListId, card);
             drawAddCardButton(vbox, cardListId);
-            server.addCardToCardList(new Card(title), cardListId);
         });
         vbox.getChildren().add(addCard);
     }
@@ -155,8 +158,10 @@ public class HomeScreenCtrl {
         });
     }
 
-    public void drawCard(VBox vbox, Button button, String title, long cardListId){
+    public void drawCard(VBox vbox, Button button, String title, long cardListId, Card card){
+//        Card card = server.addCardToCardList(new Card(title), cardListId);
         Button task = new Button(title);
+        task.setId(String.valueOf(card.id));
         task.setAlignment(Pos.CENTER);
         task.setMnemonicParsing(false);
         task.setPrefHeight(36);
@@ -164,17 +169,23 @@ public class HomeScreenCtrl {
         task.setStyle("-fx-border-color: black");
         task.setOnAction(event -> {
             mainCtrl.showAddTask(task);
+            addTaskCtrl.configureEditButton(card);
         });
 
         if (button != null) {
             vbox.getChildren().remove(button);
         }
         vbox.getChildren().add(task);
+
     }
 
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
+    }
+
+    public Card selectCard(Card card){
+        return card;
     }
 }
 
