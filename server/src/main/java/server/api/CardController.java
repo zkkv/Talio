@@ -3,13 +3,9 @@ package server.api;
 import java.util.List;
 
 import commons.Card;
+import commons.Pair;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import server.database.CardRepository;
 
@@ -43,5 +39,12 @@ public class CardController {
 
         Card saved = repo.save(card);
         return ResponseEntity.ok(saved);
+    }
+
+    @PutMapping("/update-title")
+    public ResponseEntity<Card> updateTitle(@RequestBody Pair<Card,String> request){
+        Card card = request.getLeft();
+        card.title = request.getRight();
+        return ResponseEntity.ok(repo.save(card));
     }
 }
