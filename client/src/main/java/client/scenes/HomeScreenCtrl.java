@@ -7,6 +7,7 @@ import commons.Pair;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -41,6 +42,12 @@ public class HomeScreenCtrl {
         drawCardList(newCardList);
     }
 
+    public void createCard(VBox vbox, Button button, String title, long cardListId) {
+        Card newCard = new Card(title);
+        newCard = server.addCardToCardList(newCard, cardListId);
+        drawCard(vbox, button, title, cardListId, newCard);
+    }
+
     public void addRetrievedCardLists() {
         var lists = server.getAllCardLists();
         panel.getChildren().clear();
@@ -54,7 +61,7 @@ public class HomeScreenCtrl {
         bp.setPrefWidth(126);
 
         //List Name
-        TextField label = new TextField(cardList.getTitle());
+        TextField label = new TextField(cardList.title);
         label.setStyle("-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
         label.setPromptText("Enter list name...");
@@ -65,10 +72,6 @@ public class HomeScreenCtrl {
         bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
 
         Button button = new Button(":");
-        button.setOnAction(event -> {
-            mainCtrl.showListMenu(button, cardList, bp);
-            listMenuCtrl.changeListLabel(cardList,label);
-        });
         button.setAlignment(Pos.TOP_CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
         button.setMnemonicParsing(false);
@@ -87,6 +90,7 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
+        menu(bp,button, cardList,label);
 
         return vbox;
     }
@@ -113,17 +117,15 @@ public class HomeScreenCtrl {
         BorderPane bp = new BorderPane();
 
         VBox vbox = initializeListVBox(cardList, bp);
-
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
-            drawCard(vbox, null, card.title, cardListId);
+            drawCard(vbox, null, card.title, cardListId, card);
         }
 
         drawAddCardButton(vbox, cardListId);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
-        listMenuCtrl.deletingList(panel);
     }
 
     public void drawAddCardButton(VBox vbox, long cardListId){
@@ -135,35 +137,86 @@ public class HomeScreenCtrl {
         addCard.setStyle("-fx-border-color: black;");
         addCard.setOnAction(event -> {
             String title = "Card";
-            drawCard(vbox, addCard, title, cardListId);
-            server.addCardToCardList(new Card(title), cardListId);
+            createCard(vbox, addCard, title, cardListId);
+            drawAddCardButton(vbox, cardListId);
         });
         vbox.getChildren().add(addCard);
     }
+    public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
+        ContextMenu cm = new ContextMenu();
+        MenuItem removeItem = new MenuItem("Remove list");
+        MenuItem edit = new MenuItem("Edit list");
+        cm.getItems().add(removeItem);
+        cm.getItems().add(edit);
+        button.setContextMenu(cm);
+        removeItem.setOnAction(event -> {
+            panel.getChildren().remove(bp);
+            server.removeCardListToBoard(cardList);
+        });
+        edit.setOnAction(event -> {
+            mainCtrl.showListMenu(button, cardList, bp);
+            listMenuCtrl.changeListLabel(cardList,label);
+        });
+        button.setOnMouseClicked(event -> {
+            cm.show(button, event.getScreenX(), event.getScreenY());
+        });
+    }
 
-    public void drawCard(VBox vbox, Button button, String title, long cardListId){
-        Button task = new Button(title);
+    public void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
+        HBox card = new HBox();
+
+        Label task = new Label(title);
+        Button menu = new Button(":");
+        card.getChildren().add(task);
+        card.getChildren().add(menu);
+        card.setAlignment(Pos.CENTER);
+
+        menu.setPrefHeight(36);
+        menu.setPrefWidth(20);
+        menu.setStyle("-fx-border-color: black");
+        menu.setMnemonicParsing(false);
+
         task.setAlignment(Pos.CENTER);
-        task.setMnemonicParsing(false);
         task.setPrefHeight(36);
-        task.setPrefWidth(100);
+        task.setPrefWidth(80);
         task.setStyle("-fx-border-color: black");
-        task.setOnAction(event -> {
+
+        cardMenu(vbox, card, menu, cardListId, cardEntity);
+        task.setOnMouseClicked(event -> {
             mainCtrl.showAddTask(task);
         });
 
         if (button != null) {
             vbox.getChildren().remove(button);
         }
-        vbox.getChildren().add(task);
-        drawAddCardButton(vbox, cardListId);
+        vbox.getChildren().add(card);
+    }
+
+    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
+        ContextMenu menu = new ContextMenu();
+        MenuItem edit = new MenuItem("Edit card");
+        MenuItem remove = new MenuItem("Remove card");
+        menu.getItems().add(edit);
+        menu.getItems().add(remove);
+        menu.setStyle("-fx-border-color: black");
+        button.setContextMenu(menu);
+
+        edit.setOnAction(event -> {
+        });
+
+        remove.setOnAction(event -> {
+            vbox.getChildren().remove(hbox);
+            server.removeCardToList(cardListId, card);
+        });
+
+        button.setOnMouseClicked(event -> {
+            menu.show(button, event.getScreenX(), event.getScreenY());
+        });
     }
 
     public void disconnect() {
         ServerUtils.closeConnection();
         mainCtrl.showClientConnectPage();
     }
-
-
 }
 

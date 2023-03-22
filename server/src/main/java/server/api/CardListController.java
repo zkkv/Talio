@@ -67,7 +67,7 @@ public class CardListController {
 
     @PostMapping("/{id}/cards")
     public ResponseEntity<Card> addCard(@RequestBody Card card, @PathVariable("id") long id) {
-        Card saved = cardRepo.save(card);
+        var saved = cardRepo.save(card);
         CardList cardList = repo.findById(id).get();
 
         cardList.cards.add(saved);
@@ -76,20 +76,27 @@ public class CardListController {
         return ResponseEntity.ok(card);
     }
 
-    @DeleteMapping("/remove-card-list/{id}")
-    public ResponseEntity<CardList> removeCardList(@PathVariable(name = "id") long id) {
-        if(id<0||!repo.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-        CardList list = repo.findById(id).get();
-        repo.deleteById(id);
-        return ResponseEntity.ok(list);
-    }
-    
     @PutMapping("/update-title")
     public ResponseEntity<CardList> updateTitle(@RequestBody Pair<CardList,String> request){
         CardList cardList = request.getLeft();
         cardList.title = request.getRight();
         return ResponseEntity.ok(repo.save(cardList));
+    }
+
+    @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}")
+    public ResponseEntity<Card> removeCard(@PathVariable(name = "listId") long listId,
+                                           @PathVariable(name = "cardId") long cardId) {
+        if(listId < 0 || !repo.existsById(listId)){
+            return ResponseEntity.notFound().build();
+        }
+        if(cardId < 0 || !cardRepo.existsById(cardId)){
+            return ResponseEntity.notFound().build();
+        }
+        CardList list = repo.findById(listId).get();
+        Card card = cardRepo.findById(cardId).get();
+        list.cards.remove(card);
+        repo.save(list);
+        cardRepo.deleteById(cardId);
+        return ResponseEntity.ok(card);
     }
 }

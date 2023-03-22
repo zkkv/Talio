@@ -58,4 +58,17 @@ public class BoardController {
         br.save(board1);
         return ResponseEntity.ok(saved);
     }
+
+    @DeleteMapping("/remove-card-list/{id}")
+    public ResponseEntity<CardList> removeCardList(@PathVariable(name = "id") long id) {
+        if(id<0||!cr.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        Board board = br.findAll().get(0);
+        CardList list = cr.findById(id).get();
+        board.cardLists.remove(list);
+        br.save(board);
+        cr.deleteById(id);
+        return ResponseEntity.ok(list);
+    }
 }

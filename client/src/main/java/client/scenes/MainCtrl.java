@@ -19,6 +19,7 @@ import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -116,14 +117,14 @@ public class MainCtrl {
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
-    public void showAddTask(Button button) {
+    public void showAddTask(Label label) {
         primaryStage.setTitle("Talio: Adding Task");
-        addTaskCtrl.setButton(button);
+        addTaskCtrl.setLabel(label);
         primaryStage.setScene(addTask);
     }
 
-    public void changeName(Button button,String title){
-        button.setText(title);
+    public void changeName(Label label, String title){
+        label.setText(title);
     }
 
     public void showListMenu(Button button, CardList cardList, BorderPane borderPane){

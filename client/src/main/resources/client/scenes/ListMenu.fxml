@@ -47,11 +47,6 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="removeList" contentDisplay="TOP" mnemonicParsing="false" text="Remove List" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets left="5.0" />
-               </VBox.margin>
-            </Button>
          </children>
       </VBox>
    </children>
