@@ -35,7 +35,10 @@ public class AddTaskCtrl {
             mainCtrl.showBoardPage();
             Pair<Card, String> request = new Pair<>(card, title.getText());
             server.updateCardTitle(request);
+            card.title = title.getText();
         });
+
+        title.setText(card.title);
     }
     public void cancel() {
         title.clear();
