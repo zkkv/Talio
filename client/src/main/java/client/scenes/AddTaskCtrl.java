@@ -6,6 +6,7 @@ import commons.Card;
 import commons.Pair;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class AddTaskCtrl {
@@ -14,7 +15,7 @@ public class AddTaskCtrl {
 
     private final MainCtrl mainCtrl;
 
-    private Button button;
+    private Label label;
 
     @FXML
     private TextField title;
@@ -30,7 +31,7 @@ public class AddTaskCtrl {
 
     public void configureEditButton(Card card){
         editButton.setOnAction(event -> {
-            mainCtrl.changeName(button,title.getText());
+            mainCtrl.changeName(label,title.getText());
             mainCtrl.showBoardPage();
             Pair<Card, String> request = new Pair<>(card, title.getText());
             server.updateCardTitle(request);
@@ -40,11 +41,7 @@ public class AddTaskCtrl {
         title.clear();
         mainCtrl.showBoardPage();
     }
-    public void setButton(Button button){
-        this.button = button;
+    public void setLabel(Label label){
+        this.label = label;
     }
-//    public void create(Card card) {
-//        mainCtrl.changeName(button,title.getText());
-//        mainCtrl.showBoardPage();
-//    }
 }
