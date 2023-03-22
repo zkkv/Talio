@@ -3,7 +3,6 @@ package server.api;
 import java.util.List;
 
 import commons.Card;
-import commons.CardList;
 import commons.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
