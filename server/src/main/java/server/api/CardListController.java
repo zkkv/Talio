@@ -76,6 +76,17 @@ public class CardListController {
         return ResponseEntity.ok(card);
     }
 
+    @PostMapping("/{id}/cards/{index}")
+    public ResponseEntity<Card> addCardAtIndex(@RequestBody Card card,
+                                               @PathVariable("id") long id,
+                                               @PathVariable("index") int index) {
+        var saved = cardRepo.save(card);
+        CardList cardList = repo.findById(id).get();
+        cardList.cards.add(index, saved);
+        repo.save(cardList);
+        return ResponseEntity.ok(card);
+    }
+
     @PutMapping("/update-title")
     public ResponseEntity<CardList> updateTitle(@RequestBody Pair<CardList,String> request){
         CardList cardList = request.getLeft();

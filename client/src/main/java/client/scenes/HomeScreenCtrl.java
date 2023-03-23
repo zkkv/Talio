@@ -177,7 +177,7 @@ public class HomeScreenCtrl {
                     else {
                         String title = db.getString();
                         Card newCard = new Card(title);
-                        newCard = server.addCardToCardList(newCard, cardListId); //doesn't save at right index
+                        newCard = server.addCardToCardListWithIndex(newCard, cardListId, dropIndex);
                         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
 
                         vbox.getChildren().add(dropIndex, card);

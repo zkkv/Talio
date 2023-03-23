@@ -88,6 +88,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
+
     public Response removeCardListToBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/boards/remove-card-list/" + cardList.id) //
@@ -95,7 +96,6 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
-
 
     public List<CardList> getAllCardLists(){
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -135,6 +135,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    public Card addCardToCardListWithIndex(Card card, long cardListID, int index) {
+        return ClientBuilder.newClient(new ClientConfig())
+            .target(server).path("api/card-lists/" + cardListID + "/cards/"+index)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
     public List<Card> getCardsOfCardList(long cardListID) {
