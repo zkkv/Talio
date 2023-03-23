@@ -159,6 +159,7 @@ public class HomeScreenCtrl {
                 if (dropIndex == -1) { //if it is dropped under all the cards
                     String title = db.getString();
                     Card newCard = new Card(title);
+                    newCard = server.addCardToCardList(newCard, cardListId);
                     HBox card = drawCardAfterDrop(vbox, title, cardListId,
                         newCard);
 
@@ -168,6 +169,7 @@ public class HomeScreenCtrl {
                     if(dropIndex== cardList.cards.size()){ //card is dropped on the "+" button
                         String title = db.getString();
                         Card newCard = new Card(title);
+                        newCard = server.addCardToCardList(newCard, cardListId);
                         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
 
                         vbox.getChildren().add(dropIndex, card);
@@ -175,6 +177,7 @@ public class HomeScreenCtrl {
                     else {
                         String title = db.getString();
                         Card newCard = new Card(title);
+                        newCard = server.addCardToCardList(newCard, cardListId); //doesn't save at right index
                         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
 
                         vbox.getChildren().add(dropIndex, card);
@@ -258,6 +261,7 @@ public class HomeScreenCtrl {
             event.consume();
 
             vbox.getChildren().remove(card);
+            server.removeCardToList(cardListId, cardEntity);
         });
 
         if (button != null) {
@@ -303,6 +307,7 @@ public class HomeScreenCtrl {
             event.consume();
 
             vbox.getChildren().remove(card);
+            server.removeCardToList(cardListId, cardEntity);
         });
 
         return card;
