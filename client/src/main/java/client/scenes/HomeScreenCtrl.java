@@ -134,14 +134,14 @@ public class HomeScreenCtrl {
         });
 
         //drop detected
-        VboxDropDetected(cardList, cardListId, vbox);
+        vboxDropDetected(cardList, cardListId, vbox);
 
         drawAddCardButton(vbox, cardListId);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
     }
 
-    private void VboxDropDetected(CardList cardList, long cardListId, VBox vbox) {
+    private void vboxDropDetected(CardList cardList, long cardListId, VBox vbox) {
         vbox.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
