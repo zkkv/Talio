@@ -7,11 +7,11 @@ import commons.Pair;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
@@ -125,9 +125,75 @@ public class HomeScreenCtrl {
             drawCard(vbox, null, card.title, cardListId, card);
         }
 
+        //dragging detected
+        vbox.setOnDragOver(event -> {
+            if (event.getGestureSource() != vbox && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+                event.consume();
+            }
+        });
+
+        //drop detected
+        vboxDropDetected(cardList, cardListId, vbox);
+
         drawAddCardButton(vbox, cardListId);
         bp.setCenter(vbox);
         panel.getChildren().add(bp);
+    }
+
+    private void vboxDropDetected(CardList cardList, long cardListId, VBox vbox) {
+        vbox.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                int dropIndex = -1;
+                //find the right place in the card list
+                for (int i = 0; i < vbox.getChildren().size(); i++) {
+                    Node child = vbox.getChildren().get(i);
+                    if (event.getY() <= child.getBoundsInParent().getMinY() +
+                        child.getBoundsInParent().getHeight()) {
+                        dropIndex = i;
+                        break;
+                    }
+                }
+                if (dropIndex == -1) { //if it is dropped under all the cards
+                    HBox card = addCardToList(cardListId, vbox, db);
+
+                    vbox.getChildren().add(vbox.getChildren().size() - 1, card);
+                }
+                else {
+                    if(dropIndex== cardList.cards.size()){ //card is dropped on the "+" button
+                        HBox card = addCardToList(cardListId, vbox, db);
+
+                        vbox.getChildren().add(dropIndex, card);
+                    }
+                    else {
+                        HBox card = addCardToListWithIndex(cardListId, vbox, db, dropIndex);
+
+                        vbox.getChildren().add(dropIndex, card);
+                    }
+                }
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
+    private HBox addCardToList(long cardListId, VBox vbox, Dragboard db) {
+        String title = db.getString();
+        Card newCard = new Card(title);
+        newCard = server.addCardToCardList(newCard, cardListId);
+        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
+        return card;
+    }
+
+    private HBox addCardToListWithIndex(long cardListId, VBox vbox, Dragboard db, int dropIndex) {
+        String title = db.getString();
+        Card newCard = new Card(title);
+        newCard = server.addCardToCardListWithIndex(newCard, cardListId, dropIndex);
+        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
+        return card;
     }
 
     public void drawAddCardButton(VBox vbox, long cardListId){
@@ -166,6 +232,22 @@ public class HomeScreenCtrl {
 
 
     public void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
+        HBox card = makeNewCard(vbox, title, cardListId, cardEntity);
+
+        if (button != null) {
+            vbox.getChildren().remove(button);
+        }
+
+        vbox.getChildren().add(card);
+    }
+
+    public HBox drawCardAfterDrop(VBox vbox, String title, long cardListId, Card cardEntity){
+        HBox card = makeNewCard(vbox, title, cardListId, cardEntity);
+
+        return card;
+    }
+
+    private HBox makeNewCard(VBox vbox, String title, long cardListId, Card cardEntity) {
         HBox card = new HBox();
 
         Label task = new Label(title);
@@ -191,11 +273,19 @@ public class HomeScreenCtrl {
             addTaskCtrl.configureEditButton(cardEntity);
         });
 
-        if (button != null) {
-            vbox.getChildren().remove(button);
-        }
+        card.setOnDragDetected(event -> {
+            Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
 
-        vbox.getChildren().add(card);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(task.getText());
+            db.setContent(content);
+            db.setDragView(card.snapshot(null, null));
+            event.consume();
+
+            vbox.getChildren().remove(card);
+            server.removeCardToList(cardListId, cardEntity);
+        });
+        return card;
     }
 
     public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
