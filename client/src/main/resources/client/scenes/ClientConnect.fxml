@@ -38,6 +38,7 @@
                   <Insets bottom="20.0" />
                </padding>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#connectToDefaultServer" text="Connect to localhost:8080" />
          </children>
       </VBox>
    </children>

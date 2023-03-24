@@ -23,8 +23,16 @@ public class ClientConnectCtrl {
     }
 
     public void connect() {
+        connectTo(ipAddress.getText());
+    }
+
+    public void connectToDefaultServer() {
+        connectTo("http://localhost:8080/");
+    }
+
+    private void connectTo(String server) {
         try {
-            ServerUtils.setServer(ipAddress.getText());
+            ServerUtils.setServer(server);
             ServerUtils.testConnection();
             mainCtrl.showStartPage();
         }
