@@ -31,13 +31,14 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ipAddress" />
+                  <TextField fx:id="ipAddress" promptText="http://localhost:8080/"/>
                   <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
                </children>
                <padding>
                   <Insets bottom="20.0" />
                </padding>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#connectToDefaultServer" text="Connect to localhost:8080" />
          </children>
       </VBox>
    </children>

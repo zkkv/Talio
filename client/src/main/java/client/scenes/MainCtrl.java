@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -58,6 +59,12 @@ public class MainCtrl {
                            Pair<StartPageCtrl, Parent> startPage,
                            Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
         this.primaryStage = primaryStage;
+
+        /* Icon created by Freepik - Flaticon */
+        primaryStage.getIcons().add(new Image("file:client/img/icon16.png"));
+        primaryStage.getIcons().add(new Image("file:client/img/icon32.png"));
+        primaryStage.getIcons().add(new Image("file:client/img/icon64.png"));
+        primaryStage.getIcons().add(new Image("file:client/img/icon128.png"));
 
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());

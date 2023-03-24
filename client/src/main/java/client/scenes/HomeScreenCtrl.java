@@ -16,7 +16,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class HomeScreenCtrl {
@@ -29,6 +32,13 @@ public class HomeScreenCtrl {
 
     @FXML
     private HBox panel;
+
+    @FXML
+    // Used for requesting focus
+    private Label hiddenLabel;
+
+    @FXML
+    private Label addConfirmationLabel;
 
 
     @Inject
@@ -43,6 +53,17 @@ public class HomeScreenCtrl {
     public void createList() {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = server.addCardListToBoard(newCardList);
+
+        addConfirmationLabel.setVisible(true);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                addConfirmationLabel.setVisible(false);
+            }
+        };
+        timer.schedule(task, 3000);
+
         drawCardList(newCardList);
     }
 
@@ -53,6 +74,7 @@ public class HomeScreenCtrl {
     }
 
     public void addRetrievedCardLists() {
+        hiddenLabel.requestFocus();
         var lists = server.getAllCardLists();
         panel.getChildren().clear();
         for (CardList list : lists) {
@@ -60,20 +82,23 @@ public class HomeScreenCtrl {
         }
     }
 
-    public VBox initializeListVBox(CardList cardList, BorderPane bp) {
+    public VBox initializeListVBox(CardList cardList, BorderPane bp, ScrollPane sp) {
         //List Body
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
-        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
+        bp.setStyle("-fx-border-color: black;");
 
         //List Name
         TextField label = new TextField(cardList.title);
-        label.setStyle("-fx-background-color: #d9cdad;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+        String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+        label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.id));
         label.setAlignment(Pos.CENTER);
-        configureTextField(label);
+        configureTextField(label, NORMAL_TITLE_STYLE, HOVERED_BUTTON_STYLE);
 
         //List Button
         Button button = new Button(":");
@@ -95,12 +120,14 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
-        menu(bp,button, cardList,label);
+        menu(sp, bp, button, cardList,label);
 
         return vbox;
     }
 
-    private void configureTextField(TextField label) {
+    private void configureTextField(TextField label,
+                                    final String NORMAL_BUTTON_STYLE,
+                                    final String HOVERED_BUTTON_STYLE) {
         label.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -111,6 +138,9 @@ public class HomeScreenCtrl {
                 }
             }
         });
+
+        label.setOnMouseEntered(e -> label.setStyle(HOVERED_BUTTON_STYLE));
+        label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
     public void drawCardList(CardList cardList){
@@ -118,7 +148,14 @@ public class HomeScreenCtrl {
 
         BorderPane bp = new BorderPane();
 
-        VBox vbox = initializeListVBox(cardList, bp);
+        ScrollPane sp = new ScrollPane();
+        sp.setContent(bp);
+        sp.setStyle("-fx-background-color: black;");
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        sp.setPannable(true);
+
+        VBox vbox = initializeListVBox(cardList, bp, sp);
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
@@ -137,8 +174,10 @@ public class HomeScreenCtrl {
         vboxDropDetected(cardList, cardListId, vbox);
 
         drawAddCardButton(vbox, cardListId);
+
         bp.setCenter(vbox);
-        panel.getChildren().add(bp);
+
+        panel.getChildren().add(sp);
     }
 
     private void vboxDropDetected(CardList cardList, long cardListId, VBox vbox) {
@@ -198,6 +237,7 @@ public class HomeScreenCtrl {
 
     public void drawAddCardButton(VBox vbox, long cardListId){
         Button addCard = new Button("+");
+        addCard.setFocusTraversable(false);
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
         addCard.setPrefHeight(36);
@@ -210,7 +250,12 @@ public class HomeScreenCtrl {
         });
         vbox.getChildren().add(addCard);
     }
-    public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
+
+    public void menu(ScrollPane sp,
+                     BorderPane bp,
+                     Button button,
+                     CardList cardList,
+                     TextField label) {
         ContextMenu cm = new ContextMenu();
         MenuItem remove = new MenuItem("Remove list");
         MenuItem edit = new MenuItem("Edit list");
@@ -218,7 +263,7 @@ public class HomeScreenCtrl {
         cm.getItems().add(edit);
         button.setContextMenu(cm);
         remove.setOnAction(event -> {
-            panel.getChildren().remove(bp);
+            panel.getChildren().remove(sp);
             server.removeCardListToBoard(cardList);
         });
         edit.setOnAction(event -> {

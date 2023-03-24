@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -14,12 +15,18 @@
             <Font size="29.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="36.0" layoutY="70.0" prefHeight="294.0" prefWidth="518.0">
+      <ScrollPane layoutX="36.0" layoutY="70.0" pannable="true" prefHeight="294.0" prefWidth="518.0" vbarPolicy="NEVER">
          <content>
             <HBox id="panel" fx:id="panel" spacing="10.0" />
          </content>
       </ScrollPane>
       <Button layoutX="488.0" layoutY="14.0" mnemonicParsing="false" onAction="#createList" text="Add new list" AnchorPane.rightAnchor="30.400000000000006" />
       <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#disconnect" text="Disconnect" />
+      <Label fx:id="hiddenLabel" layoutX="52.0" layoutY="18.0" opacity="0.0" text="Label" />
+      <Label fx:id="addConfirmationLabel" layoutX="489.0" layoutY="48.0" text="List was added" textFill="#ff3232" visible="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Label>
    </children>
 </AnchorPane>
