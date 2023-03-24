@@ -14,7 +14,7 @@
             <Font size="29.0" />
          </font>
       </Label>
-      <ScrollPane layoutX="36.0" layoutY="70.0" prefHeight="294.0" prefWidth="518.0">
+      <ScrollPane layoutX="36.0" layoutY="70.0" prefHeight="294.0" prefWidth="518.0" pannable="true" vbarPolicy="NEVER">
          <content>
             <HBox id="panel" fx:id="panel" spacing="10.0" />
          </content>

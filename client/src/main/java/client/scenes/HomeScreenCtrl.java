@@ -65,11 +65,11 @@ public class HomeScreenCtrl {
         }
     }
 
-    public VBox initializeListVBox(CardList cardList, BorderPane bp) {
+    public VBox initializeListVBox(CardList cardList, BorderPane bp, ScrollPane sp) {
         //List Body
         bp.setPrefHeight(274);
         bp.setPrefWidth(126);
-        bp.setStyle("-fx-background-color: #d9cdad; -fx-border-color: black;");
+        bp.setStyle("-fx-border-color: black;");
 
         //List Name
         TextField label = new TextField(cardList.title);
@@ -100,7 +100,7 @@ public class HomeScreenCtrl {
         vbox.setPrefHeight(221.0);
         vbox.setPrefWidth(109.0);
         vbox.setSpacing(10.0);
-        menu(bp,button, cardList,label);
+        menu(sp, bp, button, cardList,label);
 
         return vbox;
     }
@@ -123,7 +123,14 @@ public class HomeScreenCtrl {
 
         BorderPane bp = new BorderPane();
 
-        VBox vbox = initializeListVBox(cardList, bp);
+        ScrollPane sp = new ScrollPane();
+        sp.setContent(bp);
+        sp.setStyle("-fx-background-color: black;");
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        sp.setPannable(true);
+
+        VBox vbox = initializeListVBox(cardList, bp, sp);
         var listOfCards = server.getCardsOfCardList(cardListId);
 
         for (Card card : listOfCards) {
@@ -142,8 +149,10 @@ public class HomeScreenCtrl {
         vboxDropDetected(cardList, cardListId, vbox);
 
         drawAddCardButton(vbox, cardListId);
+
         bp.setCenter(vbox);
-        panel.getChildren().add(bp);
+
+        panel.getChildren().add(sp);
     }
 
     private void vboxDropDetected(CardList cardList, long cardListId, VBox vbox) {
@@ -217,7 +226,7 @@ public class HomeScreenCtrl {
         vbox.getChildren().add(addCard);
     }
 
-    public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
+    public void menu(ScrollPane sp, BorderPane bp, Button button, CardList cardList, TextField label) {
         ContextMenu cm = new ContextMenu();
         MenuItem remove = new MenuItem("Remove list");
         MenuItem edit = new MenuItem("Edit list");
@@ -225,7 +234,7 @@ public class HomeScreenCtrl {
         cm.getItems().add(edit);
         button.setContextMenu(cm);
         remove.setOnAction(event -> {
-            panel.getChildren().remove(bp);
+            panel.getChildren().remove(sp);
             server.removeCardListToBoard(cardList);
         });
         edit.setOnAction(event -> {
