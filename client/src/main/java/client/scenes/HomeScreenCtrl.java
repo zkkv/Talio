@@ -251,7 +251,11 @@ public class HomeScreenCtrl {
         vbox.getChildren().add(addCard);
     }
 
-    public void menu(ScrollPane sp, BorderPane bp, Button button, CardList cardList, TextField label) {
+    public void menu(ScrollPane sp,
+                     BorderPane bp,
+                     Button button,
+                     CardList cardList,
+                     TextField label) {
         ContextMenu cm = new ContextMenu();
         MenuItem remove = new MenuItem("Remove list");
         MenuItem edit = new MenuItem("Edit list");
