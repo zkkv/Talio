@@ -30,6 +30,10 @@ public class HomeScreenCtrl {
     @FXML
     private HBox panel;
 
+    @FXML
+    // Used for requesting focus
+    private Label hiddenLabel;
+
 
     @Inject
     public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl,
@@ -53,6 +57,7 @@ public class HomeScreenCtrl {
     }
 
     public void addRetrievedCardLists() {
+        hiddenLabel.requestFocus();
         var lists = server.getAllCardLists();
         panel.getChildren().clear();
         for (CardList list : lists) {
@@ -198,6 +203,7 @@ public class HomeScreenCtrl {
 
     public void drawAddCardButton(VBox vbox, long cardListId){
         Button addCard = new Button("+");
+        addCard.setFocusTraversable(false);
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
         addCard.setPrefHeight(36);
@@ -210,6 +216,7 @@ public class HomeScreenCtrl {
         });
         vbox.getChildren().add(addCard);
     }
+
     public void menu(BorderPane bp, Button button, CardList cardList, TextField label) {
         ContextMenu cm = new ContextMenu();
         MenuItem remove = new MenuItem("Remove list");
