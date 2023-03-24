@@ -16,6 +16,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 
@@ -73,12 +75,15 @@ public class HomeScreenCtrl {
 
         //List Name
         TextField label = new TextField(cardList.title);
-        label.setStyle("-fx-background-color: #d9cdad;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true");
+        final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+        String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
+                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+        label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.id));
         label.setAlignment(Pos.CENTER);
-        configureTextField(label);
+        configureTextField(label, NORMAL_TITLE_STYLE, HOVERED_BUTTON_STYLE);
 
         //List Button
         Button button = new Button(":");
@@ -105,7 +110,9 @@ public class HomeScreenCtrl {
         return vbox;
     }
 
-    private void configureTextField(TextField label) {
+    private void configureTextField(TextField label,
+                                    final String NORMAL_BUTTON_STYLE,
+                                    final String HOVERED_BUTTON_STYLE) {
         label.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -116,6 +123,9 @@ public class HomeScreenCtrl {
                 }
             }
         });
+
+        label.setOnMouseEntered(e -> label.setStyle(HOVERED_BUTTON_STYLE));
+        label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
     public void drawCardList(CardList cardList){
