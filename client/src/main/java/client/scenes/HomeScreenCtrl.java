@@ -17,8 +17,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class HomeScreenCtrl {
@@ -36,6 +37,9 @@ public class HomeScreenCtrl {
     // Used for requesting focus
     private Label hiddenLabel;
 
+    @FXML
+    private Label addConfirmationLabel;
+
 
     @Inject
     public HomeScreenCtrl(ServerUtils server, MainCtrl mainCtrl,
@@ -49,6 +53,17 @@ public class HomeScreenCtrl {
     public void createList() {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = server.addCardListToBoard(newCardList);
+
+        addConfirmationLabel.setVisible(true);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                addConfirmationLabel.setVisible(false);
+            }
+        };
+        timer.schedule(task, 3000);
+
         drawCardList(newCardList);
     }
 
