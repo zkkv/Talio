@@ -31,7 +31,7 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ipAddress" />
+                  <TextField fx:id="ipAddress" promptText="http://localhost:8080/"/>
                   <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
                </children>
                <padding>
