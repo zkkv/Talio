@@ -89,9 +89,9 @@ public class ServerUtils {
                 .put(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
 
-    public Response removeCardListToBoard(CardList cardList) {
+    public Response removeCardListFromBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/remove-card-list/" + cardList.id) //
+                .target(server).path("api/boards/remove-card-list/" + cardList.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
@@ -113,20 +113,20 @@ public class ServerUtils {
                 .get(new GenericType<CardList>() {});
     }
 
-    public CardList updateCardListTitle(Pair<CardList,String> request){
+    public CardList updateCardListTitle(long cardListId,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/update-title") //
+                .target(server).path("api/card-lists/update-title/"+cardListId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(request,APPLICATION_JSON), CardList.class);
+                .put(Entity.entity(title,APPLICATION_JSON), CardList.class);
     }
 
-    public Card updateCardTitle(Pair<Card, String> request){
+    public Card updateCardTitle(long cardId,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-title") //
+                .target(server).path("api/card/update-title/"+cardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(request,APPLICATION_JSON), Card.class);
+                .put(Entity.entity(title,APPLICATION_JSON), Card.class);
     }
 
     public Card addCardToCardList(Card card, long cardListID) {
@@ -153,10 +153,10 @@ public class ServerUtils {
                 .get(new GenericType<List<Card>>() {});
     }
 
-    public Response removeCardToList(long cardListId, Card card) {
+    public Response removeCardFromList(Card card,long cardListId) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/card-lists/remove-card-list/" + cardListId
-                + "/remove-card/" + card.id) //
+                + "/remove-card/" + card.getId()) //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .delete();
