@@ -30,12 +30,6 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage listMenuStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
-
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
 
@@ -52,8 +46,7 @@ public class MainCtrl {
     private ListMenuCtrl listMenuCtrl;
     private Scene listMenu;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add,
+    public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
@@ -65,12 +58,6 @@ public class MainCtrl {
         primaryStage.getIcons().add(new Image("file:client/img/icon32.png"));
         primaryStage.getIcons().add(new Image("file:client/img/icon64.png"));
         primaryStage.getIcons().add(new Image("file:client/img/icon128.png"));
-
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -110,18 +97,6 @@ public class MainCtrl {
 
     public void loadBoardOverview(){
         boardOverviewCtrl.addRetrievedCardLists();
-    }
-
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 
     public void showAddTask(Label label) {
