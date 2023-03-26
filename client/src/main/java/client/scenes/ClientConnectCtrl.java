@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.services.BoardOverviewService;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 
