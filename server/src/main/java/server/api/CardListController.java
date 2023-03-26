@@ -17,11 +17,10 @@ package server.api;
 
 import commons.Card;
 import commons.CardList;
-import commons.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardListRepository;
-import server.database.CardRepository;
+import server.services.CardListService;
+import server.services.CardService;
 
 import java.util.List;
 
@@ -29,50 +28,39 @@ import java.util.List;
 @RequestMapping("/api/card-lists")
 public class CardListController {
 
-    private final CardListRepository repo;
-    private final CardRepository cardRepo;
-
-    public CardListController(CardListRepository repo, CardRepository cardRepo) {
-        this.repo = repo;
-        this.cardRepo = cardRepo;
+    private final CardListService cardListService;
+    private final CardService cardService;
+    public CardListController(CardListService cardListService, CardService cardService) {
+        this.cardListService = cardListService;
+        this.cardService = cardService;
     }
 
     @GetMapping(path = { "", "/" })
     public ResponseEntity<List<CardList>> getAll() {
-        return ResponseEntity.ok(repo.findAll());
+        return ResponseEntity.ok(cardListService.getAllCardLists());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CardList> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        if (id < 0 || !cardListService.exists(id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(repo.findById(id).get());
-    }
-
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<CardList> add(@RequestBody CardList cardList) {
-        if (cardList.cards == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        CardList saved = repo.save(cardList);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(cardListService.getCardList(id));
     }
 
     @GetMapping("/{id}/cards")
     public ResponseEntity<List<Card>> getCards(@PathVariable("id") long id) {
-        return ResponseEntity.ok(repo.findById(id).get().cards);
+        return ResponseEntity.ok(cardListService.getCardList(id).getCards());
     }
 
     @PostMapping("/{id}/cards")
     public ResponseEntity<Card> addCard(@RequestBody Card card, @PathVariable("id") long id) {
-        var saved = cardRepo.save(card);
-        CardList cardList = repo.findById(id).get();
+        var saved = cardService.save(card);
+        CardList cardList = cardListService.getCardList(id);
 
-        cardList.cards.add(saved);
+        cardList.getCards().add(saved);
 
-        repo.save(cardList);
+        cardListService.save(cardList);
         return ResponseEntity.ok(card);
     }
 
@@ -80,34 +68,32 @@ public class CardListController {
     public ResponseEntity<Card> addCardAtIndex(@RequestBody Card card,
                                                @PathVariable("id") long id,
                                                @PathVariable("index") int index) {
-        var saved = cardRepo.save(card);
-        CardList cardList = repo.findById(id).get();
-        cardList.cards.add(index, saved);
-        repo.save(cardList);
-        return ResponseEntity.ok(card);
+        var saved = cardService.save(card);
+        CardList cardList = cardListService.getCardList(id);
+        cardList.getCards().add(index, saved);
+        cardListService.save(cardList);
+        return ResponseEntity.ok(saved);
     }
 
-    @PutMapping("/update-title")
-    public ResponseEntity<CardList> updateTitle(@RequestBody Pair<CardList,String> request){
-        CardList cardList = request.getLeft();
-        cardList.title = request.getRight();
-        return ResponseEntity.ok(repo.save(cardList));
+    @PutMapping("/update-title/{id}")
+    public ResponseEntity<CardList> updateTitle(@RequestBody String title,
+                                                @PathVariable("id") long id){
+        CardList cardList = cardListService.getCardList(id);
+        cardList.setTitle(title);
+        return ResponseEntity.ok(cardListService.save(cardList));
     }
 
     @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}")
     public ResponseEntity<Card> removeCard(@PathVariable(name = "listId") long listId,
                                            @PathVariable(name = "cardId") long cardId) {
-        if(listId < 0 || !repo.existsById(listId)){
+        if(listId < 0 || !cardListService.exists(listId)||cardId < 0 || !cardService.exists(cardId)){
             return ResponseEntity.notFound().build();
         }
-        if(cardId < 0 || !cardRepo.existsById(cardId)){
-            return ResponseEntity.notFound().build();
-        }
-        CardList list = repo.findById(listId).get();
-        Card card = cardRepo.findById(cardId).get();
-        list.cards.remove(card);
-        repo.save(list);
-        cardRepo.deleteById(cardId);
+        CardList list = cardListService.getCardList(listId);
+        Card card = cardService.getCard(cardId);
+        list.getCards().remove(card);
+        cardListService.save(list);
+        cardService.delete(cardId);
         return ResponseEntity.ok(card);
     }
 }
