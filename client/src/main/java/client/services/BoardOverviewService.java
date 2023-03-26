@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.CardList;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BoardOverviewService {
@@ -53,5 +54,17 @@ public class BoardOverviewService {
 
     public Card updateCardTitle(long cardId,String title){
         return serverUtils.updateCardTitle(cardId,title);
+    }
+
+    public void setServerAddress(String ip){
+        serverUtils.setServer(ip);
+    }
+
+    public void testServerConnection() throws IOException {
+        serverUtils.testConnection();
+    }
+
+    public void closeServerConnection(){
+        serverUtils.closeConnection();
     }
 }
