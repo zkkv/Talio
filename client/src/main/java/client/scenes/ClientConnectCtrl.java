@@ -27,7 +27,7 @@ public class ClientConnectCtrl {
     }
 
     public void connectToDefaultServer() {
-        connectTo("http://localhost:8080/");
+        connectTo("localhost:8080");
     }
 
     private void connectTo(String server) {

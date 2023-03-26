@@ -34,7 +34,7 @@ public class ServerUtils {
     private static HttpURLConnection connection;
 
     public static void setServer(String server) {
-        ServerUtils.server = server;
+        ServerUtils.server ="http://"+ server;
     }
 
     public static void testConnection() throws IOException {
