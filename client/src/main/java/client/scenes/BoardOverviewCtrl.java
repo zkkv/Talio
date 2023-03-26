@@ -375,7 +375,7 @@ public class BoardOverviewCtrl {
     }
 
     public void disconnect() {
-        ServerUtils.closeConnection();
+        boardOverviewService.closeServerConnection();
         mainCtrl.showClientConnectPage();
     }
 }
