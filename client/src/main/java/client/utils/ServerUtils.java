@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import com.google.inject.Singleton;
 import commons.*;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
@@ -29,20 +30,22 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
+@Singleton
 public class ServerUtils {
-    private static String server;
-    private static HttpURLConnection connection;
+    private String server;
+    private HttpURLConnection connection;
 
-    public static void setServer(String server) {
-        ServerUtils.server ="http://"+ server;
+
+    public void setServer(String server) {
+        this.server ="http://"+ server;
     }
 
-    public static void testConnection() throws IOException {
+    public void testConnection() throws IOException {
         var url = new URL(server + "/api/quotes");
         connection = (HttpURLConnection) url.openConnection();
     }
 
-    public static void closeConnection() {
+    public void closeConnection() {
         connection.disconnect();
         server = null;
     }
