@@ -40,7 +40,7 @@ public class Main extends Application {
 
         var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
         var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-        var home = FXML.load(HomeScreenCtrl.class, "client", "scenes", "HomeScreen.fxml");
+        var board = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
         var clientConnect =
                 FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
         var startPage = FXML.load(StartPageCtrl.class, "client", "scenes", "StartPage.fxml");
@@ -49,7 +49,7 @@ public class Main extends Application {
 
         var mainCtrl =
                 INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, home,
+        mainCtrl.initialize(primaryStage, overview, add, board,
                 clientConnect, startPage, addTask, listMenu);
     }
 }

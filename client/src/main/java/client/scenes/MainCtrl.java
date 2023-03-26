@@ -36,8 +36,8 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
-    private HomeScreenCtrl homeScreenCtrl;
-    private Scene home;
+    private BoardOverviewCtrl boardOverviewCtrl;
+    private Scene board;
 
     private AddTaskCtrl addTaskCtrl;
 
@@ -54,7 +54,7 @@ public class MainCtrl {
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
                            Pair<AddQuoteCtrl, Parent> add,
-                           Pair<HomeScreenCtrl, Parent> home,
+                           Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
                            Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
@@ -78,8 +78,8 @@ public class MainCtrl {
         this.startPageCtrl = startPage.getKey();
         this.startPage = new Scene(startPage.getValue());
 
-        this.homeScreenCtrl = home.getKey();
-        this.home = new Scene(home.getValue());
+        this.boardOverviewCtrl = board.getKey();
+        this.board = new Scene(board.getValue());
 
         this.addTaskCtrl = addTask.getKey();
         this.addTask = new Scene(addTask.getValue());
@@ -105,11 +105,11 @@ public class MainCtrl {
 
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
-        primaryStage.setScene(home);
+        primaryStage.setScene(board);
     }
 
     public void loadBoardOverview(){
-        homeScreenCtrl.addRetrievedCardLists();
+        boardOverviewCtrl.addRetrievedCardLists();
     }
 
     public void showOverview() {
