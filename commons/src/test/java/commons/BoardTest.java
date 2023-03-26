@@ -33,7 +33,7 @@ public class BoardTest {
     @Test
     public void checkConstructor() {
         var b = new Board(cardLists);
-        assertEquals(cardLists, b.cardLists);
+        assertEquals(cardLists, b.getCardLists());
     }
 
     @Test
