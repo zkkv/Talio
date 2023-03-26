@@ -9,7 +9,7 @@ class CardTest {
     @Test
     public void checkConstructor() {
         Card card = new Card("card");
-        assertEquals("card", card.title);
+        assertEquals("card", card.getTitle());
     }
 
     @Test
