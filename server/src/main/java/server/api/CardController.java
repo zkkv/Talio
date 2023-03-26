@@ -3,48 +3,37 @@ package server.api;
 import java.util.List;
 
 import commons.Card;
-import commons.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import server.database.CardRepository;
+import server.services.CardService;
 
 @RestController
 @RequestMapping("/api/card")
 public class CardController {
-    private final CardRepository repo;
+    private final CardService cardService;
 
-    public CardController(CardRepository repo) {
-        this.repo = repo;
+    public CardController(CardService cardService) {
+        this.cardService = cardService;
     }
 
     @GetMapping(path = { "", "/" })
-    public List<Card> getAll() {
-        return repo.findAll();
+    public ResponseEntity<List<Card>> getAll() {
+        return ResponseEntity.ok(cardService.getAllCards());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Card> getById(@PathVariable("id") long id) {
-        if (id < 0 || !repo.existsById(id)) {
+        if (id < 0 || !cardService.exists(id)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(repo.findById(id).get());
+        return ResponseEntity.ok(cardService.getCard(id));
     }
 
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<Card> add(@RequestBody Card card) {
-        if (card.title == null){
-            return ResponseEntity.badRequest().build();
-        }
-
-        Card saved = repo.save(card);
-        return ResponseEntity.ok(saved);
-    }
-
-    @PutMapping("/update-title")
-    public ResponseEntity<Card> updateTitle(@RequestBody Pair<Card,String> request){
-        Card card = request.getLeft();
-        card.title = request.getRight();
-        return ResponseEntity.ok(repo.save(card));
+    @PutMapping("/update-title/{id}")
+    public ResponseEntity<Card> updateTitle(@RequestBody String title,@PathVariable("id") long id){
+        Card card = cardService.getCard(id);
+        card.setTitle(title);
+        return ResponseEntity.ok(cardService.save(card));
     }
 }
