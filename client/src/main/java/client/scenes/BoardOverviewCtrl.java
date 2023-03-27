@@ -13,7 +13,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -48,7 +49,7 @@ public class BoardOverviewCtrl {
         this.addTaskCtrl = addTaskCtrl;
     }
 
-    public void createList() {
+    public void createList(Button addList) {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = boardOverviewService.addCardList(newCardList);
 
@@ -61,10 +62,29 @@ public class BoardOverviewCtrl {
             }
         };
         timer.schedule(task, 3000);
-
+        panel.getChildren().remove(addList);
         drawCardList(newCardList);
+        addListButton();
     }
 
+    private void addListButton(){
+        Button addList = new Button("+");
+        configureAddListButton(addList);
+        addList.setOnAction(event -> {
+            createList(addList);
+        });
+        addListMessage(addList);
+        panel.getChildren().add(addList);
+    }
+
+    private void addListMessage(Button addList){
+        Tooltip tooltip = new Tooltip("Add a new card");
+        tooltip.setFont(Font.font("Verdana", 14));
+        tooltip.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+        tooltip.setShowDelay(Duration.ZERO);
+        tooltip.setHideDelay(Duration.ZERO);
+        addList.setTooltip(tooltip);
+    }
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCard(newCard, cardListId);
@@ -78,6 +98,7 @@ public class BoardOverviewCtrl {
         for (CardList list : lists) {
             drawCardList(list);
         }
+        addListButton();
     }
 
     public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
@@ -233,9 +254,18 @@ public class BoardOverviewCtrl {
         addCard.setFocusTraversable(false);
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
-        addCard.setPrefHeight(36);
-        addCard.setPrefWidth(100);
+        addCard.setPrefHeight(46);
+        addCard.setPrefWidth(140);
         addCard.setStyle("-fx-border-color: black;");
+    }
+    private void configureAddListButton(Button addList){
+        addList.setFocusTraversable(false);
+        addList.setAlignment(Pos.CENTER);
+        addList.setMnemonicParsing(false);
+        addList.setPrefHeight(70);
+        addList.setPrefWidth(70);
+        addList.setFont(Font.font(20));
+        addList.setStyle("-fx-border-color: black;" );
     }
 
     private void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
@@ -289,30 +319,32 @@ public class BoardOverviewCtrl {
         card.getChildren().add(menu);
         card.setAlignment(Pos.CENTER);
 
-        menu.setPrefHeight(36);
+        menu.setPrefHeight(46);
         menu.setPrefWidth(20);
-        menu.setStyle("-fx-border-color: black");
+        menu.setStyle("-fx-border-color: black" );
         menu.setMnemonicParsing(false);
 
         task.setAlignment(Pos.CENTER);
-        task.setPrefHeight(36);
-        task.setPrefWidth(80);
-        task.setStyle("-fx-border-color: black");
+        task.setPrefHeight(46);
+        task.setPrefWidth(120);
+        task.setMinHeight(46);
+        task.setMinWidth(120);
+        task.setStyle("-fx-border-color: black;" +"-fx-background-color: #DAD2BF;");
         task.setId(String.valueOf(cardEntity.getId()));
     }
 
     private void configureCardListVBox(CardList cardList, BorderPane bp, ScrollPane sp, VBox vbox) {
         //List Body
-        bp.setPrefHeight(274);
-        bp.setPrefWidth(126);
-        bp.setStyle("-fx-border-color: black;");
+        bp.setPrefHeight(370);
+        bp.setPrefWidth(175);
+        bp.setStyle("-fx-background-color: #d9cdad;"+"-fx-border-color: black;");
 
         //List Name
         TextField label = new TextField(cardList.getTitle());
         final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+                " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
         String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 12; -fx-wrap-text: true";
+                " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
         label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.getId()));
@@ -320,15 +352,14 @@ public class BoardOverviewCtrl {
         configureTextField(label, NORMAL_TITLE_STYLE, HOVERED_BUTTON_STYLE);
 
         //List Button
-        Button button = new Button(":");
-        button.setAlignment(Pos.TOP_CENTER);
-        button.setTextAlignment(TextAlignment.CENTER);
-        button.setMnemonicParsing(false);
-        button.setStyle("-fx-background-color: #a3957c;");
+        Button button = new Button("\u22EE");
+        button.setFont(Font.font("Segoe UI Symbol", 16));
+        button.setMinHeight(35);
+        button.setStyle("-fx-background-color: #BEB38D");
 
         //List Header
         HBox hbox = new HBox();
-        hbox.setStyle("-fx-start-margin: 10; -fx-end-margin: 10");
+        hbox.setStyle("-fx-start-margin: 20; -fx-end-margin: 20");
         hbox.setSpacing(3);
         hbox.getChildren().add(label);
         hbox.getChildren().add(button);
