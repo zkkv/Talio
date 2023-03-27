@@ -30,14 +30,8 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage listMenuStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
-
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
-
-    private HomeScreenCtrl homeScreenCtrl;
-    private Scene home;
+    private BoardOverviewCtrl boardOverviewCtrl;
+    private Scene board;
 
     private AddTaskCtrl addTaskCtrl;
 
@@ -52,9 +46,8 @@ public class MainCtrl {
     private ListMenuCtrl listMenuCtrl;
     private Scene listMenu;
 
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-                           Pair<AddQuoteCtrl, Parent> add,
-                           Pair<HomeScreenCtrl, Parent> home,
+    public void initialize(Stage primaryStage,
+                           Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
                            Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
@@ -66,20 +59,14 @@ public class MainCtrl {
         primaryStage.getIcons().add(new Image("file:client/img/icon64.png"));
         primaryStage.getIcons().add(new Image("file:client/img/icon128.png"));
 
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
-
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
-
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
 
         this.startPageCtrl = startPage.getKey();
         this.startPage = new Scene(startPage.getValue());
 
-        this.homeScreenCtrl = home.getKey();
-        this.home = new Scene(home.getValue());
+        this.boardOverviewCtrl = board.getKey();
+        this.board = new Scene(board.getValue());
 
         this.addTaskCtrl = addTask.getKey();
         this.addTask = new Scene(addTask.getValue());
@@ -105,23 +92,11 @@ public class MainCtrl {
 
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
-        primaryStage.setScene(home);
+        primaryStage.setScene(board);
     }
 
     public void loadBoardOverview(){
-        homeScreenCtrl.addRetrievedCardLists();
-    }
-
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
-    }
-
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        boardOverviewCtrl.addRetrievedCardLists();
     }
 
     public void showAddTask(Label label) {

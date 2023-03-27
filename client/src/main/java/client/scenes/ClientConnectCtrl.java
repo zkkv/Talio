@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+import client.services.BoardOverviewService;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 
@@ -14,12 +14,15 @@ public class ClientConnectCtrl {
 
     private final MainCtrl mainCtrl;
 
+    private final BoardOverviewService boardOverviewService;
+
     @FXML
     private TextField ipAddress;
 
     @Inject
-    public ClientConnectCtrl(MainCtrl mainCtrl) {
+    public ClientConnectCtrl(MainCtrl mainCtrl, BoardOverviewService boardOverviewService) {
         this.mainCtrl = mainCtrl;
+        this.boardOverviewService = boardOverviewService;
     }
 
     public void connect() {
@@ -27,13 +30,13 @@ public class ClientConnectCtrl {
     }
 
     public void connectToDefaultServer() {
-        connectTo("http://localhost:8080/");
+        connectTo("localhost:8080");
     }
 
     private void connectTo(String server) {
         try {
-            ServerUtils.setServer(server);
-            ServerUtils.testConnection();
+            boardOverviewService.setServerAddress(server);
+            boardOverviewService.testServerConnection();
             mainCtrl.showStartPage();
         }
         catch (IOException | ClassCastException e) {

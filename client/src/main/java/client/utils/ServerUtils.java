@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import com.google.inject.Singleton;
 import commons.*;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
@@ -29,48 +30,24 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 
+@Singleton
 public class ServerUtils {
-    private static String server;
-    private static HttpURLConnection connection;
+    private String server;
+    private HttpURLConnection connection;
 
-    public static void setServer(String server) {
-        ServerUtils.server = server;
+
+    public void setServer(String server) {
+        this.server ="http://"+ server;
     }
 
-    public static void testConnection() throws IOException {
+    public void testConnection() throws IOException {
         var url = new URL(server + "/api/quotes");
         connection = (HttpURLConnection) url.openConnection();
     }
 
-    public static void closeConnection() {
+    public void closeConnection() {
         connection.disconnect();
         server = null;
-    }
-
-    /*public void getQuotesTheHardWay() throws IOException {
-        var url = new URL("http://localhost:8080/api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-    }*/
-
-    public List<Quote> getQuotes() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {});
-    }
-
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
     public Board getOrCreateBoard(){
@@ -89,9 +66,9 @@ public class ServerUtils {
                 .put(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
 
-    public Response removeCardListToBoard(CardList cardList) {
+    public Response removeCardListFromBoard(CardList cardList) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/remove-card-list/" + cardList.id) //
+                .target(server).path("api/boards/remove-card-list/" + cardList.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
@@ -113,20 +90,20 @@ public class ServerUtils {
                 .get(new GenericType<CardList>() {});
     }
 
-    public CardList updateCardListTitle(Pair<CardList,String> request){
+    public CardList updateCardListTitle(long cardListId,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/update-title") //
+                .target(server).path("api/card-lists/update-title/"+cardListId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(request,APPLICATION_JSON), CardList.class);
+                .put(Entity.entity(title,APPLICATION_JSON), CardList.class);
     }
 
-    public Card updateCardTitle(Pair<Card, String> request){
+    public Card updateCardTitle(long cardId,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-title") //
+                .target(server).path("api/card/update-title/"+cardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(request,APPLICATION_JSON), Card.class);
+                .put(Entity.entity(title,APPLICATION_JSON), Card.class);
     }
 
     public Card addCardToCardList(Card card, long cardListID) {
@@ -153,10 +130,10 @@ public class ServerUtils {
                 .get(new GenericType<List<Card>>() {});
     }
 
-    public Response removeCardToList(long cardListId, Card card) {
+    public Response removeCardFromList(Card card,long cardListId) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/card-lists/remove-card-list/" + cardListId
-                + "/remove-card/" + card.id) //
+                + "/remove-card/" + card.getId()) //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .delete();

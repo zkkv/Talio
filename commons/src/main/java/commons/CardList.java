@@ -15,15 +15,15 @@ public class CardList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    private long id;
 
     @OneToMany(cascade = CascadeType.ALL)
-    public List<Card> cards;
+    private List<Card> cards;
 
-    public String title;
+    private String title;
 
     @SuppressWarnings("unused")
-    private CardList() {
+    public CardList() {
         // for object mapper
     }
 
@@ -46,5 +46,29 @@ public class CardList {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getId(){
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

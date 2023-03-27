@@ -38,8 +38,8 @@ public class CardListTest {
     @Test
     public void constructorTest() {
         CardList cardList1 = new CardList(list1, "TODO");
-        assertEquals("TODO", cardList1.title);
-        assertEquals(list1, cardList1.cards);
+        assertEquals("TODO", cardList1.getTitle());
+        assertEquals(list1, cardList1.getCards());
     }
 
     @Test

@@ -25,9 +25,7 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(HomeScreenCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ClientConnectCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddTaskCtrl.class).in(Scopes.SINGLETON);
