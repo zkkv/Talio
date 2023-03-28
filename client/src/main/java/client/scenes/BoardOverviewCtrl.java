@@ -128,6 +128,7 @@ public class BoardOverviewCtrl {
         remove.setOnAction(event -> {
             panel.getChildren().remove(sp);
             boardOverviewService.removeCardList(cardList);
+            hiddenLabel.requestFocus();
         });
         edit.setOnAction(event -> {
             mainCtrl.showListMenu(button, cardList, bp);
@@ -254,8 +255,10 @@ public class BoardOverviewCtrl {
         addCard.setFocusTraversable(false);
         addCard.setAlignment(Pos.CENTER);
         addCard.setMnemonicParsing(false);
-        addCard.setPrefHeight(46);
+        addCard.setPrefHeight(34);
         addCard.setPrefWidth(140);
+        addCard.setMinHeight(34);
+        addCard.setMinWidth(140);
         addCard.setStyle("-fx-border-color: black;");
     }
     private void configureAddListButton(Button addList){
@@ -343,7 +346,7 @@ public class BoardOverviewCtrl {
         TextField label = new TextField(cardList.getTitle());
         final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
-        String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
+        final String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
                 " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
         label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
