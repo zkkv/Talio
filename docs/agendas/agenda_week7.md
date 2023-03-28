@@ -1,9 +1,9 @@
 # TEAM 66 AGENDA
 
-## Agenda Week 6
+## Agenda Week 7
 
 * __Location__: PC Hall 1
-* __Date__: 21.03.2023
+* __Date__: 28.03.2023
 * __Time__: 15:45-16:30
 * __Attendees__: Vinchentzo, Calin, Sofia, Diana, Aleksandar, Kirill
 * __Main focus__: Division of the tasks for the next sprint
