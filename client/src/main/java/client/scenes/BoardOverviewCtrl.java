@@ -78,7 +78,7 @@ public class BoardOverviewCtrl {
     }
 
     private void addListMessage(Button addList){
-        Tooltip tooltip = new Tooltip("Add a new card");
+        Tooltip tooltip = new Tooltip("Add a new list");
         tooltip.setFont(Font.font("Verdana", 14));
         tooltip.setStyle("-fx-background-color: white; -fx-text-fill: black;");
         tooltip.setShowDelay(Duration.ZERO);
