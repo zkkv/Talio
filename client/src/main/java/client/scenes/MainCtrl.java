@@ -83,6 +83,8 @@ public class MainCtrl {
     public void showClientConnectPage() {
         primaryStage.setTitle("Talio: Client connect");
         primaryStage.setScene(clientConnect);
+        setMinSize();
+
     }
 
     public void showStartPage() {
@@ -103,6 +105,7 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Adding Task");
         addTaskCtrl.setLabel(label);
         primaryStage.setScene(addTask);
+        setMinSizeForCardDetails();
     }
 
     public void changeName(Label label, String title){
@@ -118,6 +121,15 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+
+    public void setMinSize(){
+        primaryStage.setMinHeight(550);
+        primaryStage.setMinWidth(800);
+    }
+    public void setMinSizeForCardDetails(){
+        primaryStage.setMinHeight(170);
+        primaryStage.setMinWidth(297);
     }
     public void closeMenu (){
         listMenuStage.hide();
