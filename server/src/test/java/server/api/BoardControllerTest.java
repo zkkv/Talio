@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardListService;
 
@@ -26,6 +27,8 @@ class BoardControllerTest {
 
     @Mock
     private CardListService cardListService;
+    @Mock
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @InjectMocks
     private BoardController boardController;
