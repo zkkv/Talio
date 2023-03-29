@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 import commons.CardList;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 import server.services.CardListService;
@@ -14,10 +15,15 @@ import java.util.List;
 @RequestMapping("/api/boards")
 public class BoardController {
     private final BoardService boardService;
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
     private final CardListService cardListService;
 
-    public BoardController(BoardService boardService, CardListService cardListService) {
+    public BoardController(BoardService boardService,
+                           SimpMessagingTemplate simpMessagingTemplate,
+                           CardListService cardListService) {
         this.boardService = boardService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
         this.cardListService = cardListService;
     }
 
@@ -47,12 +53,13 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getAllBoards().get(0));
     }
 
-    @PutMapping("/add-card-list")
+    @PostMapping("/add-card-list")
     public ResponseEntity<CardList> addCardList(@RequestBody CardList cardList){
         var saved = cardListService.save(cardList);//We first save the card list to update the id
         Board board1 = boardService.getAllBoards().get(0);
         board1.getCardLists().add(cardList);
-        boardService.save(board1);
+        board1 = boardService.save(board1);
+        simpMessagingTemplate.convertAndSend("/topic/board",board1);
         return ResponseEntity.ok(saved);
     }
 
@@ -66,6 +73,7 @@ public class BoardController {
         board.getCardLists().remove(list);
         boardService.save(board);
         cardListService.delete(id);
+        simpMessagingTemplate.convertAndSend("/topic/board",list);
         return ResponseEntity.ok(list);
     }
 }

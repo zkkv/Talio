@@ -4,6 +4,7 @@ import java.util.List;
 
 import commons.Card;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import server.services.CardService;
@@ -13,8 +14,11 @@ import server.services.CardService;
 public class CardController {
     private final CardService cardService;
 
-    public CardController(CardService cardService) {
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public CardController(CardService cardService, SimpMessagingTemplate simpMessagingTemplate) {
         this.cardService = cardService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping(path = { "", "/" })
@@ -34,6 +38,8 @@ public class CardController {
     public ResponseEntity<Card> updateTitle(@RequestBody String title,@PathVariable("id") long id){
         Card card = cardService.getCard(id);
         card.setTitle(title);
-        return ResponseEntity.ok(cardService.save(card));
+        card = cardService.save(card);
+        simpMessagingTemplate.convertAndSend("/topic/board",card);
+        return ResponseEntity.ok(card);
     }
 }
