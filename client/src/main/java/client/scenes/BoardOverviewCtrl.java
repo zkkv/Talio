@@ -1,8 +1,10 @@
 package client.scenes;
 import client.services.BoardOverviewService;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
 import commons.CardList;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -405,6 +407,14 @@ public class BoardOverviewCtrl {
         menu.getItems().add(remove);
         menu.setStyle("-fx-border-color: black");
         button.setContextMenu(menu);
+    }
+
+    public void subscribeForUpdates(){
+        boardOverviewService.registerForUpdates("/topic/board", Board.class,board -> {
+            Platform.runLater(()->{
+                addRetrievedCardLists();
+            });
+        });
     }
 
     public void disconnect() {

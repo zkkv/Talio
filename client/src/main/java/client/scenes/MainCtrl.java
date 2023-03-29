@@ -101,6 +101,10 @@ public class MainCtrl {
         boardOverviewCtrl.addRetrievedCardLists();
     }
 
+    public void subscribeForUpdates(){
+        boardOverviewCtrl.subscribeForUpdates();
+    }
+
     public void showAddTask(Label label) {
         primaryStage.setTitle("Talio: Adding Task");
         addTaskCtrl.setLabel(label);
