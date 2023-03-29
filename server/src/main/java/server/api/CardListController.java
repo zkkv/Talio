@@ -18,6 +18,7 @@ package server.api;
 import commons.Card;
 import commons.CardList;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.services.CardListService;
 import server.services.CardService;
@@ -30,9 +31,14 @@ public class CardListController {
 
     private final CardListService cardListService;
     private final CardService cardService;
-    public CardListController(CardListService cardListService, CardService cardService) {
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    public CardListController(CardListService cardListService,
+                              CardService cardService,
+                              SimpMessagingTemplate simpMessagingTemplate) {
         this.cardListService = cardListService;
         this.cardService = cardService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping(path = { "", "/" })
@@ -61,6 +67,7 @@ public class CardListController {
         cardList.getCards().add(saved);
 
         cardListService.save(cardList);
+        simpMessagingTemplate.convertAndSend("/topic/board",card);
         return ResponseEntity.ok(card);
     }
 
@@ -72,6 +79,7 @@ public class CardListController {
         CardList cardList = cardListService.getCardList(id);
         cardList.getCards().add(index, saved);
         cardListService.save(cardList);
+        simpMessagingTemplate.convertAndSend("/topic/board",saved);
         return ResponseEntity.ok(saved);
     }
 
@@ -80,7 +88,9 @@ public class CardListController {
                                                 @PathVariable("id") long id){
         CardList cardList = cardListService.getCardList(id);
         cardList.setTitle(title);
-        return ResponseEntity.ok(cardListService.save(cardList));
+        cardList= cardListService.save(cardList);
+        simpMessagingTemplate.convertAndSend("/topic/board",cardList);
+        return ResponseEntity.ok(cardList);
     }
 
     @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}")
@@ -95,6 +105,7 @@ public class CardListController {
         list.getCards().remove(card);
         cardListService.save(list);
         cardService.delete(cardId);
+        simpMessagingTemplate.convertAndSend("/topic/board",card);
         return ResponseEntity.ok(card);
     }
 }

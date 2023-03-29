@@ -7,6 +7,7 @@ import commons.CardList;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BoardOverviewService {
     private final ServerUtils serverUtils;
@@ -66,5 +67,8 @@ public class BoardOverviewService {
 
     public void closeServerConnection(){
         serverUtils.closeConnection();
+    }
+    public <T> void registerForUpdates(String dest, Class<T> type, Consumer<T> consumer){
+        serverUtils.registerForMessages(dest,type,consumer);
     }
 }

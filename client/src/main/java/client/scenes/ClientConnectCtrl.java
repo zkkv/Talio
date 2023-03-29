@@ -37,6 +37,7 @@ public class ClientConnectCtrl {
         try {
             boardOverviewService.setServerAddress(server);
             boardOverviewService.testServerConnection();
+            mainCtrl.subscribeForUpdates();
             mainCtrl.showStartPage();
         }
         catch (IOException | ClassCastException e) {

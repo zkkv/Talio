@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.CardListService;
 import server.services.CardService;
 
@@ -25,6 +26,9 @@ public class CardListControllerTest {
 
     @Mock
     private CardService cardService;
+
+    @Mock
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @InjectMocks
     private CardListController cardListController;
