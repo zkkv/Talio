@@ -2,11 +2,13 @@ package server.api;
 
 import java.util.List;
 
+import commons.Board;
 import commons.Card;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import server.services.BoardService;
 import server.services.CardService;
 
 @RestController
@@ -14,10 +16,13 @@ import server.services.CardService;
 public class CardController {
     private final CardService cardService;
 
+    private final BoardService boardService;
+
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public CardController(CardService cardService, SimpMessagingTemplate simpMessagingTemplate) {
+    public CardController(CardService cardService, BoardService boardService, SimpMessagingTemplate simpMessagingTemplate) {
         this.cardService = cardService;
+        this.boardService = boardService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -40,7 +45,8 @@ public class CardController {
         Card card = cardService.getCard(id);
         card.setTitle(title);
         card = cardService.save(card);
-        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);
     }
 }

@@ -1,10 +1,12 @@
 package server.api;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import server.services.BoardService;
 import server.services.CardListService;
 import server.services.CardService;
 
@@ -17,12 +19,15 @@ public class CardListController {
     private final CardListService cardListService;
     private final CardService cardService;
 
+    private final BoardService boardService;
+
     private final SimpMessagingTemplate simpMessagingTemplate;
     public CardListController(CardListService cardListService,
                               CardService cardService,
-                              SimpMessagingTemplate simpMessagingTemplate) {
+                              BoardService boardService, SimpMessagingTemplate simpMessagingTemplate) {
         this.cardListService = cardListService;
         this.cardService = cardService;
+        this.boardService = boardService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -54,7 +59,9 @@ public class CardListController {
         cardList.getCards().add(saved);
 
         cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
+        Board board = boardService.getBoard(boardId);
+
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);
     }
 
@@ -67,7 +74,8 @@ public class CardListController {
         CardList cardList = cardListService.getCardList(id);
         cardList.getCards().add(index, saved);
         cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,saved);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(saved);
     }
 
@@ -78,7 +86,8 @@ public class CardListController {
         CardList cardList = cardListService.getCardList(id);
         cardList.setTitle(title);
         cardList= cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,cardList);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(cardList);
     }
 
@@ -95,7 +104,8 @@ public class CardListController {
         list.getCards().remove(card);
         cardListService.save(list);
         cardService.delete(cardId);
-        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);
     }
 }
