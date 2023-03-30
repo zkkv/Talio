@@ -112,7 +112,7 @@ public class CardListControllerTest {
         when(cardListService.getCardList(1L)).thenReturn(cardList);
         when(cardListService.save(cardList)).thenReturn(cardList);
 
-        ResponseEntity<Card> actualResponse = cardListController.addCard(card, 1L);
+        ResponseEntity<Card> actualResponse = cardListController.addCard(card, 1L,2L);
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(card, actualResponse.getBody());
         assertEquals(cardList.getCards().size(),1);
@@ -134,7 +134,7 @@ public class CardListControllerTest {
         when(cardService.save(savedCard)).thenReturn(savedCard);
         when(cardListService.getCardList(1L)).thenReturn(cardList);
 
-        ResponseEntity<Card> actualResponse = cardListController.addCardAtIndex(savedCard,1L,1);
+        ResponseEntity<Card> actualResponse = cardListController.addCardAtIndex(savedCard,1L,1,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardList.getCards().get(1),savedCard);
@@ -147,7 +147,7 @@ public class CardListControllerTest {
         when(cardListService.getCardList(1L)).thenReturn(cardListToRename);
         when(cardListService.save(cardListToRename)).thenReturn(cardListToRename);
 
-        ResponseEntity<CardList> actualResponse = cardListController.updateTitle("New Title",1L);
+        ResponseEntity<CardList> actualResponse = cardListController.updateTitle("New Title",1L,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardListToRename.getTitle(),actualResponse.getBody().getTitle());
@@ -169,7 +169,7 @@ public class CardListControllerTest {
 
         when(cardListService.save(cardList)).thenReturn(cardList);
 
-        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,1L);
+        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,1L,3L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardToBeRemoved,actualResponse.getBody());
@@ -180,7 +180,7 @@ public class CardListControllerTest {
     public void testRemoveCardInvalidCard(){
         when(cardService.exists(-1L)).thenReturn(false);
 
-        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,-1L);
+        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,-1L,3L);
 
         assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
     }
@@ -189,7 +189,7 @@ public class CardListControllerTest {
     public void testRemoveCardInvalidCardList(){
         when(cardListService.exists(-1L)).thenReturn(false);
 
-        ResponseEntity<Card> actualResponse = cardListController.removeCard(-1L,2L);
+        ResponseEntity<Card> actualResponse = cardListController.removeCard(-1L,2L,3L);
 
         assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
     }

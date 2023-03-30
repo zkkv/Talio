@@ -42,11 +42,11 @@ class BoardControllerTest {
     public void testGetAll() {
         List<Board> expectedBoards = new ArrayList<>();
         Board board1 = new Board();
-        board1.setKey(1L);
+        board1.setId(1L);
         expectedBoards.add(board1);
 
         Board board2 = new Board();
-        board2.setKey(2L);
+        board2.setId(2L);
         expectedBoards.add(board2);
 
         when(boardService.getAllBoards()).thenReturn(expectedBoards);
@@ -59,7 +59,7 @@ class BoardControllerTest {
     @Test
     public void testGetByIdWithValidId() {
         Board expectedBoard = new Board();
-        expectedBoard.setKey(1L);
+        expectedBoard.setId(1L);
 
         when(boardService.exists(1L)).thenReturn(true);
         when(boardService.getBoard(1L)).thenReturn(expectedBoard);
@@ -80,35 +80,61 @@ class BoardControllerTest {
     }
 
     @Test
-    public void testGetBoard() {
-        List<Board> expectedBoards = new ArrayList<>();
-        Board board = new Board();
-        board.setKey(1L);
-        expectedBoards.add(board);
+    public void testGetBoardValid() {
+        Board expectedBoard = new Board();
 
-        when(boardService.getAllBoards()).thenReturn(expectedBoards);
+        expectedBoard.setId(1L);
+        when(boardService.exists(1L)).thenReturn(true);
+        when(boardService.getBoard(1L)).thenReturn(expectedBoard);
 
-        ResponseEntity<Board> actualResponse = boardController.getOrCreateBoard();
+        ResponseEntity<Board> actualResponse = boardController.getById(1L);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
-        assertEquals(board, actualResponse.getBody());
+        assertEquals(expectedBoard, actualResponse.getBody());
     }
 
+    @Test
+    public void testGetBoardInvalid() {
+        Board expectedBoard = new Board();
+
+        expectedBoard.setId(-1L);
+        when(boardService.exists(-1L)).thenReturn(false);
+        ResponseEntity<Board> actualResponse = boardController.getById(-1L);
+
+        assertEquals(HttpStatus.BAD_REQUEST, actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testGetAllCardLists() {
+        Board expectedBoard = new Board();
+        List<CardList> expectedCardLists = new ArrayList<>();
+        expectedBoard.setCardLists(expectedCardLists);
+        expectedBoard.setId(1L);
+        when(boardService.getBoard(1L)).thenReturn(expectedBoard);
+
+        ResponseEntity<List<CardList>> actualResponse = boardController.getAllCardLists(1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(expectedCardLists, actualResponse.getBody());
+    }
+
+    //TODO join board
     @Test
     public void testCreateBoard() {
         when(boardService.getAllBoards()).thenReturn(new ArrayList<>());
 
-        Board expectedBoard = new Board(new ArrayList<>());
+        Board expectedBoard = new Board(new ArrayList<>(),"b1");
         expectedBoard.getCardLists().add(new CardList(new ArrayList<>(), "TO DO"));
         expectedBoard.getCardLists().add(new CardList(new ArrayList<>(), "DOING"));
         expectedBoard.getCardLists().add(new CardList(new ArrayList<>(), "DONE"));
 
         Board savedBoard = new Board();
-        savedBoard.setKey(1L);
+        savedBoard.setId(1L);
+        savedBoard.setTitle("Title");
 
         when(boardService.save(any(Board.class))).thenReturn(savedBoard);
 
-        ResponseEntity<Board> actualResponse = boardController.getOrCreateBoard();
+        ResponseEntity<Board> actualResponse = boardController.createBoard("Title");
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(savedBoard, actualResponse.getBody());
@@ -120,14 +146,15 @@ class BoardControllerTest {
         cardListToAdd.setId(1L);
 
         List<CardList> cardLists = new ArrayList<>();
-        Board board = new Board(cardLists);
+        Board board = new Board(cardLists,"b1");
+        board.setId(1L);
 
-        when(boardService.getAllBoards()).thenReturn(List.of(board));
+        when(boardService.getBoard(1L)).thenReturn(board);
         when(boardService.save(any(Board.class))).thenReturn(board);
 
         when(cardListService.save(any(CardList.class))).thenReturn(cardListToAdd);
 
-        ResponseEntity<CardList> actualResponse = boardController.addCardList(cardListToAdd);
+        ResponseEntity<CardList> actualResponse = boardController.addCardList(cardListToAdd,1L);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(cardListToAdd, actualResponse.getBody());
@@ -140,16 +167,17 @@ class BoardControllerTest {
 
         List<CardList> cardLists = new ArrayList<>();
         cardLists.add(cardListToRemove);
-        Board board = new Board(cardLists);
+        Board board = new Board(cardLists,"b1");
+        board.setId(2L);
 
-        when(boardService.getAllBoards()).thenReturn(List.of(board));
+        when(boardService.getBoard(2L)).thenReturn(board);
         when(boardService.save(any(Board.class))).thenReturn(board);
 
         when(cardListService.getCardList(1L)).thenReturn(cardListToRemove);
         when(cardListService.exists(1L)).thenReturn(true);
         doNothing().when(cardListService).delete(1L);
 
-        ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L);
+        ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L,2L);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(cardListToRemove, actualResponse.getBody());
@@ -159,7 +187,7 @@ class BoardControllerTest {
     public void testRemoveCardListInvalid() {
         when(cardListService.exists(1L)).thenReturn(false);
 
-        ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L);
+        ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L,2L);
 
         assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
     }

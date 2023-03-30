@@ -75,6 +75,7 @@ public class CardControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, actualResponse.getStatusCode());
     }
 
+
     @Test
     public void testUpdateTitleValid() {
         Card cardToRename = new Card();
@@ -82,7 +83,7 @@ public class CardControllerTest {
         when(cardService.getCard(1L)).thenReturn(cardToRename);
         when(cardService.save(cardToRename)).thenReturn(cardToRename);
 
-        ResponseEntity<Card> actualResponse = cardController.updateTitle("New Title",1L);
+        ResponseEntity<Card> actualResponse = cardController.updateTitle("New Title",1L,2L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardToRename.getTitle(),actualResponse.getBody().getTitle());
     }

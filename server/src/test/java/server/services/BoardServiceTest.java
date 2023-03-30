@@ -31,7 +31,7 @@ class BoardServiceTest {
     @Test
     public void testGetBoard() {
         Board expectedBoard = new Board();
-        expectedBoard.setKey(1L);
+        expectedBoard.setId(1L);
 
         when(boardRepository.findById(1L)).thenReturn(Optional.of(expectedBoard));
 
@@ -44,11 +44,11 @@ class BoardServiceTest {
     public void testGetAllBoards() {
         List<Board> expectedBoards = new ArrayList<>();
         Board board1 = new Board();
-        board1.setKey(1L);
+        board1.setId(1L);
         expectedBoards.add(board1);
 
         Board board2 = new Board();
-        board2.setKey(2L);
+        board2.setId(2L);
         expectedBoards.add(board2);
 
         when(boardRepository.findAll()).thenReturn(expectedBoards);
@@ -82,7 +82,7 @@ class BoardServiceTest {
 
 
         Board expectedSavedBoard = new Board();
-        expectedSavedBoard.setKey(1L);
+        expectedSavedBoard.setId(1L);
 
 
         when(boardRepository.save(boardToSave)).thenReturn(expectedSavedBoard);
