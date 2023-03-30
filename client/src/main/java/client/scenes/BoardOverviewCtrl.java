@@ -8,6 +8,7 @@ import commons.CardList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -19,12 +20,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class BoardOverviewCtrl {
+public class BoardOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
 
     private BoardIdentifier boardIdentifier;
@@ -39,6 +42,9 @@ public class BoardOverviewCtrl {
 
     @FXML
     private Label boardTitle;
+
+    @FXML
+    private Button settings;
 
     @FXML
     // Used for requesting focus
@@ -107,6 +113,7 @@ public class BoardOverviewCtrl {
         hiddenLabel.requestFocus();
         var lists = boardOverviewService.getCardLists(currentBoard);
         panel.getChildren().clear();
+        configureBoardTitle();
         for (CardList list : lists) {
             drawCardList(list);
         }
@@ -437,7 +444,57 @@ public class BoardOverviewCtrl {
                 addRetrievedCardLists(boardIdentifier.getCurrentBoard());
             });
         });
+        boardOverviewService.registerForUpdates("/topic/board/remove", Board.class, b -> {
+            Platform.runLater(() -> {
+                mainCtrl.showStartPage();
+            });
+        });
     }
+
+    public void configureSettings() {
+        ContextMenu settingsMenu = new ContextMenu();
+        MenuItem changeBoard = new MenuItem();
+        MenuItem disconnect = new MenuItem();
+        MenuItem boardSettings = new MenuItem();
+        settingsMenu.getItems().add(boardSettings);
+        settingsMenu.getItems().add(changeBoard);
+        settingsMenu.getItems().add(disconnect);
+        settings.setContextMenu(settingsMenu);
+        changeBoard.setText("Change Board");
+        disconnect.setText("Disconnect");
+        boardSettings.setText("Board Settings");
+
+        boardSettings.setOnAction(event -> {
+            mainCtrl.showBoardSettings();
+        });
+
+        changeBoard.setOnAction(event -> {
+            mainCtrl.showStartPage();
+        });
+
+        disconnect.setOnAction(event -> {
+            disconnect();
+        });
+
+        settings.setOnMouseClicked(event -> {
+            settingsMenu.show(settings, event.getScreenX(), event.getScreenY());
+        });
+    }
+
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     *                  the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        configureSettings();
+    }
+
 
     public void disconnect() {
         boardOverviewService.closeServerConnection();
