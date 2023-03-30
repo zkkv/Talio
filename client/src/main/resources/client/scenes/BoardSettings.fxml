@@ -44,7 +44,7 @@
                 <Font size="27.0" />
             </font>
         </Label>
-        <Button layoutX="425.0" layoutY="131.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="133.0" text="Copy">
+        <Button layoutX="425.0" layoutY="131.0" mnemonicParsing="false" onAction="#copyKeyToClipboard" prefHeight="39.0" prefWidth="133.0" text="Copy">
             <font>
                 <Font size="20.0" />
             </font>

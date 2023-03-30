@@ -5,30 +5,27 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-
 import java.util.List;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 @Entity
-public class Board {
+public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
 
-    private String title;
+    private String userName;
+    @ManyToMany
+    List<Board> joinedBoards;
 
-    private String key;
-    @OneToMany(cascade=CascadeType.ALL)
-    private List<CardList> cardLists;
-
-    public Board(){
+    public User(){
 
     }
 
-    public Board(List<CardList> cardLists,String title){
-        this.cardLists = cardLists;
-        this.title = title;
+    public User(String userName,List<Board> joinedBoards){
+        this.userName=userName;
+        this.joinedBoards = joinedBoards;
     }
 
     @Override
@@ -46,35 +43,27 @@ public class Board {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
-    public String getTitle() {
-        return title;
+    public List<Board> getJoinedBoards() {
+        return joinedBoards;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public long getId() {
-        return id;
+    public void setJoinedBoards(List<Board> joinedBoards) {
+        this.joinedBoards = joinedBoards;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public List<CardList> getCardLists() {
-        return cardLists;
+    public long getId() {
+        return id;
     }
 
-    public void setCardLists(List<CardList> cardLists) {
-        this.cardLists = cardLists;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
