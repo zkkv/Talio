@@ -9,6 +9,7 @@ import java.util.List;
 
 import commons.Board;
 import commons.CardList;
+import commons.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardListService;
+import server.services.UserService;
 
 class BoardControllerTest {
     @Mock
@@ -29,6 +31,9 @@ class BoardControllerTest {
     private CardListService cardListService;
     @Mock
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private BoardController boardController;
@@ -131,13 +136,15 @@ class BoardControllerTest {
         Board savedBoard = new Board();
         savedBoard.setId(1L);
         savedBoard.setTitle("Title");
+        User user = new User("user",new ArrayList<>());
 
         when(boardService.save(any(Board.class))).thenReturn(savedBoard);
 
-        ResponseEntity<Board> actualResponse = boardController.createBoard("Title");
+        ResponseEntity<Board> actualResponse = boardController.createBoard("Title", user.getUserName());
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(savedBoard, actualResponse.getBody());
+        assertEquals(user.getJoinedBoards().get(0), savedBoard);
     }
 
     @Test
