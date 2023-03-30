@@ -24,7 +24,8 @@ public class CardListController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     public CardListController(CardListService cardListService,
                               CardService cardService,
-                              BoardService boardService, SimpMessagingTemplate simpMessagingTemplate) {
+                              BoardService boardService,
+                              SimpMessagingTemplate simpMessagingTemplate) {
         this.cardListService = cardListService;
         this.cardService = cardService;
         this.boardService = boardService;

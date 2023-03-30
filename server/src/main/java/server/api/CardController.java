@@ -20,7 +20,8 @@ public class CardController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public CardController(CardService cardService, BoardService boardService, SimpMessagingTemplate simpMessagingTemplate) {
+    public CardController(CardService cardService, BoardService boardService,
+                          SimpMessagingTemplate simpMessagingTemplate) {
         this.cardService = cardService;
         this.boardService = boardService;
         this.simpMessagingTemplate = simpMessagingTemplate;

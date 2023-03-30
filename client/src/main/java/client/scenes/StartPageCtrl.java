@@ -39,7 +39,7 @@ public class StartPageCtrl implements Initializable {
         this.mainCtrl = mainCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
     }
-    
+
     public void initBoardList(){
         boardList.getChildren().clear();
         User user = boardUserIdentifier.getCurrentUser();

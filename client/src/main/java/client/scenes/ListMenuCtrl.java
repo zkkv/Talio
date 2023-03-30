@@ -26,7 +26,8 @@ public class ListMenuCtrl {
 
 
     @Inject
-    public ListMenuCtrl(BoardOverviewService boardOverviewService, BoardUserIdentifier boardUserIdentifier,
+    public ListMenuCtrl(BoardOverviewService boardOverviewService,
+                        BoardUserIdentifier boardUserIdentifier,
                         MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.boardUserIdentifier = boardUserIdentifier;

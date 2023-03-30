@@ -4,7 +4,6 @@ import commons.Board;
 import commons.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.generators.SequenceGenerator;
 import server.services.BoardService;
 import server.services.UserService;
 

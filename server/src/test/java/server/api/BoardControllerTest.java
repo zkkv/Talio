@@ -139,8 +139,11 @@ class BoardControllerTest {
         User user = new User("user",new ArrayList<>());
 
         when(boardService.save(any(Board.class))).thenReturn(savedBoard);
+        when(userService.getUser(user.getUserName())).thenReturn(user);
+        when(userService.save(user)).thenReturn(user);
 
-        ResponseEntity<Board> actualResponse = boardController.createBoard("Title", user.getUserName());
+        ResponseEntity<Board> actualResponse = boardController.createBoard("Title",
+                                                                    user.getUserName());
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(savedBoard, actualResponse.getBody());

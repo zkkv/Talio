@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import commons.Board;
 import commons.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import server.services.BoardService;
 import server.services.CardService;
 
 
@@ -22,6 +24,9 @@ public class CardControllerTest {
 
     @Mock
     private CardService cardService;
+
+    @Mock
+    private BoardService boardService;
 
     @Mock
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -80,8 +85,12 @@ public class CardControllerTest {
     public void testUpdateTitleValid() {
         Card cardToRename = new Card();
         cardToRename.setTitle("Title 1");
+        Board board = new Board();
+        board.setId(2L);
         when(cardService.getCard(1L)).thenReturn(cardToRename);
         when(cardService.save(cardToRename)).thenReturn(cardToRename);
+        when(boardService.getBoard(2L)).thenReturn(board);
+
 
         ResponseEntity<Card> actualResponse = cardController.updateTitle("New Title",1L,2L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
