@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +39,26 @@ public class BoardOverviewService {
         serverUtils.removeBoard(board);
     }
 
+    public Board getBoardByKey(String key){
+        return serverUtils.getBoardByKey(key);
+    }
+
+    public User addBoardToUser(String key,String userName){
+        return serverUtils.addBoardToUser(key,userName);
+    }
+
+    public List<Board> getUserBoards(String userName){
+        return serverUtils.getUserBoards(userName);
+    }
+
+    public User getUser(String userName){
+        return serverUtils.getUser(userName);
+    }
+
+    public User createUser(String userName){
+        return serverUtils.createUser(userName);
+    }
+
 
     public void removeCard(Card card, long cardListId,Board board) {
         serverUtils.removeCardFromList(card, cardListId,board);
@@ -63,8 +84,8 @@ public class BoardOverviewService {
         return serverUtils.getBoard(boardId);
     }
 
-    public Board createBoard(String title) {
-        return serverUtils.createBoard(title);
+    public Board createBoard(String title,String userName) {
+        return serverUtils.createBoard(title,userName);
     }
 
     public List<Board> getAllBoards() {
