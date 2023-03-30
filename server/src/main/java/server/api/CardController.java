@@ -34,12 +34,13 @@ public class CardController {
         return ResponseEntity.ok(cardService.getCard(id));
     }
 
-    @PutMapping("/update-title/{id}")
-    public ResponseEntity<Card> updateTitle(@RequestBody String title,@PathVariable("id") long id){
+    @PutMapping("/update-title/{id}/board/{boardId}")
+    public ResponseEntity<Card> updateTitle(@RequestBody String title,@PathVariable("id") long id,
+                                            @PathVariable("boardId") long boardId){
         Card card = cardService.getCard(id);
         card.setTitle(title);
         card = cardService.save(card);
-        simpMessagingTemplate.convertAndSend("/topic/board",card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
         return ResponseEntity.ok(card);
     }
 }

@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Board;
 import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,18 +47,23 @@ public class MainCtrl {
     private ListMenuCtrl listMenuCtrl;
     private Scene listMenu;
 
+    private CreateBoardCtrl createBoardCtrl;
+    private Scene createBoard;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
-                           Pair<AddTaskCtrl, Parent> addTask, Pair<ListMenuCtrl, Parent> listMenu) {
+                           Pair<AddTaskCtrl, Parent> addTask,
+                           Pair<ListMenuCtrl, Parent> listMenu,
+                           Pair<CreateBoardCtrl, Parent> createBoard) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
-        primaryStage.getIcons().add(new Image("file:client/img/icon16.png"));
-        primaryStage.getIcons().add(new Image("file:client/img/icon32.png"));
-        primaryStage.getIcons().add(new Image("file:client/img/icon64.png"));
-        primaryStage.getIcons().add(new Image("file:client/img/icon128.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -76,6 +82,10 @@ public class MainCtrl {
         this.listMenuStage = new Stage();
         this.listMenuStage.setScene(this.listMenu);
 
+        this.createBoardCtrl = createBoard.getKey();
+        this.createBoard = new Scene(createBoard.getValue());
+
+
         showClientConnectPage();
         primaryStage.show();
     }
@@ -92,17 +102,20 @@ public class MainCtrl {
         primaryStage.setScene(startPage);
     }
 
+    public void showCreateBoardPage() {
+        primaryStage.setTitle("Talio: Create a new Board");
+        primaryStage.setScene(createBoard);
+    }
+
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
+        boardOverviewCtrl.configureBoardTitle();
+        boardOverviewCtrl.drawBoard();
         primaryStage.setScene(board);
     }
 
-    public void loadBoardOverview(){
-        boardOverviewCtrl.addRetrievedCardLists();
-    }
-
-    public void subscribeForUpdates(){
-        boardOverviewCtrl.subscribeForUpdates();
+    public void subscribeForUpdates(Board board){
+        boardOverviewCtrl.subscribeForUpdates(board);
     }
 
     public void showAddTask(Label label) {

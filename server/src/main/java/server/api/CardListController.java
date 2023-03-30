@@ -1,18 +1,3 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package server.api;
 
 import commons.Card;
@@ -59,45 +44,50 @@ public class CardListController {
         return ResponseEntity.ok(cardListService.getCardList(id).getCards());
     }
 
-    @PostMapping("/{id}/cards")
-    public ResponseEntity<Card> addCard(@RequestBody Card card, @PathVariable("id") long id) {
+    @PostMapping("/{id}/cards/board/{boardId}")
+    public ResponseEntity<Card> addCard(@RequestBody Card card,
+                                        @PathVariable("id") long id,
+                                        @PathVariable("boardId") long boardId) {
         var saved = cardService.save(card);
         CardList cardList = cardListService.getCardList(id);
 
         cardList.getCards().add(saved);
 
         cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board",card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("/{id}/cards/{index}")
+    @PostMapping("/{id}/cards/{index}/board/{boardId}")
     public ResponseEntity<Card> addCardAtIndex(@RequestBody Card card,
                                                @PathVariable("id") long id,
-                                               @PathVariable("index") int index) {
+                                               @PathVariable("index") int index,
+                                               @PathVariable("boardId") long boardId) {
         var saved = cardService.save(card);
         CardList cardList = cardListService.getCardList(id);
         cardList.getCards().add(index, saved);
         cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board",saved);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,saved);
         return ResponseEntity.ok(saved);
     }
 
-    @PutMapping("/update-title/{id}")
+    @PutMapping("/update-title/{id}/board/{boardId}")
     public ResponseEntity<CardList> updateTitle(@RequestBody String title,
-                                                @PathVariable("id") long id){
+                                                @PathVariable("id") long id,
+                                                @PathVariable("boardId") long boardId){
         CardList cardList = cardListService.getCardList(id);
         cardList.setTitle(title);
         cardList= cardListService.save(cardList);
-        simpMessagingTemplate.convertAndSend("/topic/board",cardList);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,cardList);
         return ResponseEntity.ok(cardList);
     }
 
-    @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}")
+    @DeleteMapping("/remove-card-list/{listId}/remove-card/{cardId}/board/{boardId}")
     public ResponseEntity<Card> removeCard(@PathVariable(name = "listId") long listId,
-                                           @PathVariable(name = "cardId") long cardId) {
+                                           @PathVariable(name = "cardId") long cardId,
+                                           @PathVariable("boardId") long boardId) {
         if(listId < 0 || !cardListService.exists(listId)||
-                cardId < 0 || !cardService.exists(cardId)){
+            cardId < 0 || !cardService.exists(cardId)){
             return ResponseEntity.notFound().build();
         }
         CardList list = cardListService.getCardList(listId);
@@ -105,7 +95,7 @@ public class CardListController {
         list.getCards().remove(card);
         cardListService.save(list);
         cardService.delete(cardId);
-        simpMessagingTemplate.convertAndSend("/topic/board",card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,card);
         return ResponseEntity.ok(card);
     }
 }

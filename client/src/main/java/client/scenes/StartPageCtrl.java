@@ -14,9 +14,7 @@ public class StartPageCtrl {
         this.server = server;
     }
 
-    public void goToBoardOverview(){
-        server.getOrCreateBoard();
-        mainCtrl.loadBoardOverview();
-        mainCtrl.showBoardPage();
+    public void createNewBoard(){
+        mainCtrl.showCreateBoardPage();
     }
 }
