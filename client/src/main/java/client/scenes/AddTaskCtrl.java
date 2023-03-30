@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
 import com.google.inject.Inject;
 import commons.Card;
@@ -12,6 +13,8 @@ public class AddTaskCtrl {
 
     private final BoardOverviewService boardOverviewService;
 
+    private final BoardIdentifier boardIdentifier;
+
     private final MainCtrl mainCtrl;
 
     private Label label;
@@ -23,26 +26,31 @@ public class AddTaskCtrl {
     private Button editButton;
 
     @Inject
-    public AddTaskCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl) {
+    public AddTaskCtrl(BoardOverviewService boardOverviewService, BoardIdentifier boardIdentifier,
+                       MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
+        this.boardIdentifier = boardIdentifier;
         this.mainCtrl = mainCtrl;
     }
 
-    public void configureEditButton(Card card){
+    public void configureEditButton(Card card) {
         editButton.setOnAction(event -> {
-            mainCtrl.changeName(label,title.getText());
+            mainCtrl.changeName(label, title.getText());
             mainCtrl.showBoardPage();
-            boardOverviewService.updateCardTitle(card.getId(),title.getText());
+            boardOverviewService.updateCardTitle(card.getId(), title.getText(),
+                boardIdentifier.getCurrentBoard());
             card.setTitle(title.getText());
         });
 
         title.setText(card.getTitle());
     }
+
     public void cancel() {
         title.clear();
         mainCtrl.showBoardPage();
     }
-    public void setLabel(Label label){
+
+    public void setLabel(Label label) {
         this.label = label;
     }
 }

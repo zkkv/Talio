@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
 import com.google.inject.Inject;
 import commons.CardList;
@@ -12,6 +13,8 @@ public class ListMenuCtrl {
 
     private final BoardOverviewService boardOverviewService;
 
+    private final BoardIdentifier boardIdentifier;
+
     private final MainCtrl mainCtrl;
     private CardList cardList;
     private BorderPane bp;
@@ -23,15 +26,18 @@ public class ListMenuCtrl {
 
 
     @Inject
-    public ListMenuCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl) {
+    public ListMenuCtrl(BoardOverviewService boardOverviewService, BoardIdentifier boardIdentifier,
+                        MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
+        this.boardIdentifier = boardIdentifier;
         this.mainCtrl = mainCtrl;
     }
 
     public void changeListLabel(CardList cardList, TextField listLabel){
         listMenuButton.setOnAction(event -> {
             listLabel.setText(listMenuTextField.getText());
-            boardOverviewService.updateCardListTitle(cardList.getId(), listLabel.getText());
+            boardOverviewService.updateCardListTitle(cardList.getId(),
+                listLabel.getText(),boardIdentifier.getCurrentBoard());
         });
     }
 

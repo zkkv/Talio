@@ -1,4 +1,5 @@
 package client.scenes;
+import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
 import com.google.inject.Inject;
 import commons.Board;
@@ -25,6 +26,8 @@ import java.util.TimerTask;
 
 public class BoardOverviewCtrl {
     private final BoardOverviewService boardOverviewService;
+
+    private BoardIdentifier boardIdentifier;
     private final MainCtrl mainCtrl;
 
     private final ListMenuCtrl listMenuCtrl;
@@ -33,6 +36,9 @@ public class BoardOverviewCtrl {
 
     @FXML
     private HBox panel;
+
+    @FXML
+    private Label boardTitle;
 
     @FXML
     // Used for requesting focus
@@ -44,16 +50,19 @@ public class BoardOverviewCtrl {
 
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
-                             ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl) {
+                             ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
+                             BoardIdentifier boardIdentifier) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;
+        this.boardIdentifier = boardIdentifier;
         this.addTaskCtrl = addTaskCtrl;
     }
 
     public void createList(Button addList) {
         CardList newCardList = new CardList(new ArrayList<>(), "");
-        newCardList = boardOverviewService.addCardList(newCardList);
+        newCardList = boardOverviewService.addCardList(newCardList,
+            boardIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
         Timer timer = new Timer();
@@ -89,18 +98,27 @@ public class BoardOverviewCtrl {
     }
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
         Card newCard = new Card(title);
-        newCard = boardOverviewService.addCard(newCard, cardListId);
+        newCard = boardOverviewService.addCard(newCard, cardListId,
+            boardIdentifier.getCurrentBoard());
         drawCard(vbox, button, title, cardListId, newCard);
     }
 
-    public void addRetrievedCardLists() {
+    public void addRetrievedCardLists(Board currentBoard) {
         hiddenLabel.requestFocus();
-        var lists = boardOverviewService.getCardLists();
+        var lists = boardOverviewService.getCardLists(currentBoard);
         panel.getChildren().clear();
         for (CardList list : lists) {
             drawCardList(list);
         }
         addListButton();
+    }
+
+    public void drawBoard() {
+        addRetrievedCardLists(boardIdentifier.getCurrentBoard());
+    }
+
+    public void configureBoardTitle() {
+        boardTitle.setText(boardIdentifier.getCurrentBoard().getTitle());
     }
 
     public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
@@ -110,7 +128,7 @@ public class BoardOverviewCtrl {
 
         remove.setOnAction(event -> {
             vbox.getChildren().remove(hbox);
-            boardOverviewService.removeCard(card,cardListId);
+            boardOverviewService.removeCard(card,cardListId, boardIdentifier.getCurrentBoard());
         });
 
         button.setOnMouseClicked(event -> {
@@ -129,7 +147,7 @@ public class BoardOverviewCtrl {
         configureListMenu(button, cm, remove, edit);
         remove.setOnAction(event -> {
             panel.getChildren().remove(sp);
-            boardOverviewService.removeCardList(cardList);
+            boardOverviewService.removeCardList(cardList,boardIdentifier.getCurrentBoard());
             hiddenLabel.requestFocus();
         });
         edit.setOnAction(event -> {
@@ -144,7 +162,8 @@ public class BoardOverviewCtrl {
     public HBox getNewDroppedCard(long cardListId, VBox vbox, Dragboard db) {
         String title = db.getString();
         Card newCard = new Card(title);
-        newCard = boardOverviewService.addCard(newCard,cardListId);
+        newCard = boardOverviewService.addCard(newCard,cardListId,
+            boardIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -153,7 +172,8 @@ public class BoardOverviewCtrl {
                                            Dragboard db, int dropIndex) {
         String title = db.getString();
         Card newCard = new Card(title);
-        newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex);
+        newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
+            boardIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -224,7 +244,7 @@ public class BoardOverviewCtrl {
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
                 else {
-                    if(dropIndex== cardList.getCards().size()){ //card is dropped on the "+" button
+                    if(dropIndex== vbox.getChildren().size()-1){ //card is dropped on the "+" button
                         HBox card = getNewDroppedCard(cardListId, vbox, db);
 
                         vbox.getChildren().add(dropIndex, card);
@@ -303,7 +323,8 @@ public class BoardOverviewCtrl {
             Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
             configureDragboardAndClipboard(vbox, card, task, event, db, content);
-            boardOverviewService.removeCard(cardEntity,cardListId);
+            boardOverviewService.removeCard(cardEntity,cardListId,
+                boardIdentifier.getCurrentBoard());
         });
         return card;
     }
@@ -385,7 +406,8 @@ public class BoardOverviewCtrl {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     long cardListId = Long.parseLong(label.getId());
-                    boardOverviewService.updateCardListTitle(cardListId,label.getText());
+                    boardOverviewService.updateCardListTitle(cardListId,label.getText(),
+                        boardIdentifier.getCurrentBoard());
                 }
             }
         });
@@ -409,10 +431,10 @@ public class BoardOverviewCtrl {
         button.setContextMenu(menu);
     }
 
-    public void subscribeForUpdates(){
-        boardOverviewService.registerForUpdates("/topic/board", Board.class,board -> {
+    public void subscribeForUpdates(Board board){
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId(), Board.class,b -> {
             Platform.runLater(()->{
-                addRetrievedCardLists();
+                addRetrievedCardLists(boardIdentifier.getCurrentBoard());
             });
         });
     }
