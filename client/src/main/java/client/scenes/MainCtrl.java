@@ -195,6 +195,12 @@ public class MainCtrl {
         listMenuStage.hide();
     }
 
+    /**
+     * Sets the scene to adminLogin and passes the admin password to adminLoginCtrl
+     *
+     * @param pass  String with the admin password
+     * @author      Kirill Zhankov
+     */
     public void showAdminLogin(String pass){
         primaryStage.setTitle("Talio: Admin Login");
         primaryStage.setScene(adminLogin);

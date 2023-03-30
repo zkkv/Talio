@@ -44,6 +44,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(name));
     }
 
+    /**
+     * Returns a response string with an admin password
+     *
+     * @return      Response string with the admin password
+     * @author      Kirill Zhankov
+     */
     @GetMapping("/admin")
     public ResponseEntity<String> getPassword(){
         SequenceGenerator sequenceGenerator = new SequenceGenerator();

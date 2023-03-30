@@ -115,6 +115,12 @@ public class BoardOverviewService {
         serverUtils.registerForMessages(dest,type,consumer);
     }
 
+    /**
+     * Returns string with an admin password by calling a method in {@link ServerUtils}.
+     *
+     * @return      string with an admin password
+     * @author      Kirill Zhankov
+     */
     public String getAdminPassword(){
         return serverUtils.getAdminPassword();
     }

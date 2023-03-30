@@ -93,9 +93,13 @@ public class StartPageCtrl implements Initializable {
         mainCtrl.showJoinBoard();
     }
 
+    /**
+     * Gets admin password from boardOverviewService and passes it to mainCtrl
+     *
+     * @author      Kirill Zhankov
+     */
     public void loginAsAdmin(){
-        String pass = boardOverviewService.getAdminPassword();
-        mainCtrl.showAdminLogin(pass);
+        mainCtrl.showAdminLogin(boardOverviewService.getAdminPassword());
     }
 
     /**
