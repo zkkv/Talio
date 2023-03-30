@@ -45,10 +45,11 @@ public class Main extends Application {
         var addTask = FXML.load(AddTaskCtrl.class, "client", "scenes", "AddTask.fxml");
         var listMenu = FXML.load(ListMenuCtrl.class, "client", "scenes", "ListMenu.fxml");
         var createBoard = FXML.load(CreateBoardCtrl.class, "client", "scenes", "CreateBoard.fxml");
+        var boardSettings = FXML.load(BoardSettingsCtrl.class,"client", "scenes", "BoardSettings.fxml");
 
         var mainCtrl =
                 INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, board,
-                clientConnect, startPage, addTask, listMenu,createBoard);
+                clientConnect, startPage, addTask, listMenu,createBoard,boardSettings);
     }
 }
