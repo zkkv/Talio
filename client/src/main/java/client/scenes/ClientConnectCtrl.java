@@ -37,7 +37,7 @@ public class ClientConnectCtrl {
         try {
             boardOverviewService.setServerAddress(server);
             boardOverviewService.testServerConnection();
-            mainCtrl.showStartPage();
+            mainCtrl.showUserPage();
         }
         catch (IOException | ClassCastException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -1,7 +1,7 @@
 package client.scenes;
 
-import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
+import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Card;
 import javafx.fxml.FXML;
@@ -13,7 +13,7 @@ public class AddTaskCtrl {
 
     private final BoardOverviewService boardOverviewService;
 
-    private final BoardIdentifier boardIdentifier;
+    private final BoardUserIdentifier boardUserIdentifier;
 
     private final MainCtrl mainCtrl;
 
@@ -26,10 +26,10 @@ public class AddTaskCtrl {
     private Button editButton;
 
     @Inject
-    public AddTaskCtrl(BoardOverviewService boardOverviewService, BoardIdentifier boardIdentifier,
-                       MainCtrl mainCtrl) {
+    public AddTaskCtrl(BoardOverviewService boardOverviewService,
+                       BoardUserIdentifier boardUserIdentifier, MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
-        this.boardIdentifier = boardIdentifier;
+        this.boardUserIdentifier = boardUserIdentifier;
         this.mainCtrl = mainCtrl;
     }
 
@@ -38,7 +38,7 @@ public class AddTaskCtrl {
             mainCtrl.changeName(label, title.getText());
             mainCtrl.showBoardPage();
             boardOverviewService.updateCardTitle(card.getId(), title.getText(),
-                boardIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
             card.setTitle(title.getText());
         });
 

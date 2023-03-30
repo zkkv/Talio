@@ -64,9 +64,9 @@ public class ServerUtils {
     }
 
 
-    public Board createBoard(String title){
+    public Board createBoard(String title,String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(server).path("api/boards/create") //
+            .target(server).path("api/boards/create/"+userName) //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(title,APPLICATION_JSON),Board.class);
@@ -110,6 +110,46 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete();
+    }
+
+    public User addBoardToUser(String boardKey,String userName){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/users/"+userName+"/board/"+boardKey) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(boardKey,APPLICATION_JSON),User.class);
+    }
+
+    public List<Board> getUserBoards(String userName){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/boards/user/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<Board>>() {});
+    }
+
+    public User getUser(String userName){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/users/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<User>() {});
+    }
+
+    public User createUser(String userName){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/users/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(userName,APPLICATION_JSON), User.class);
+    }
+
+    public Board getBoardByKey(String key){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/boards/key/"+key) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<Board>(){});
     }
 
     public Response removeCardListFromBoard(CardList cardList,Board board) {
