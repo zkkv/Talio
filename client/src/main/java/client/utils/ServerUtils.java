@@ -96,13 +96,20 @@ public class ServerUtils {
             .post(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
 
-    //TODO rename board
     public Board updateBoardTitle(Board board,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/boards/update-title/"+board.getId()) //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .put(Entity.entity(title, APPLICATION_JSON), Board.class);
+    }
+
+    public Response removeBoard(Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/boards/remove-board/"+board.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete();
     }
 
     public Response removeCardListFromBoard(CardList cardList,Board board) {

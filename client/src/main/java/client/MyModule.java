@@ -27,6 +27,7 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CreateBoardCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(BoardSettingsCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ClientConnectCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddTaskCtrl.class).in(Scopes.SINGLETON);

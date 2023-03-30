@@ -10,7 +10,7 @@
 
 <AnchorPane id="anchorPane" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <children>
-      <Label layoutX="308.0" layoutY="14.0" text="BOARD NAME" AnchorPane.topAnchor="15">
+      <Label fx:id="boardTitle" layoutX="208.0" layoutY="14.0" text="BOARD NAME">
          <font>
             <Font size="29.0" />
          </font>
@@ -20,12 +20,12 @@
             <HBox id="panel" fx:id="panel" alignment="CENTER" spacing="10.0" />
          </content>
       </ScrollPane>
-      <Button layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#disconnect" text="Disconnect" AnchorPane.bottomAnchor="30.4" />
       <Label fx:id="hiddenLabel" layoutX="52.0" layoutY="18.0" opacity="0.0" text="Label" />
       <Label fx:id="addConfirmationLabel"  text="List was added" textFill="#ff3232" visible="false" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Label>
+      <Button fx:id="settings" layoutX="524.0" layoutY="14.0" mnemonicParsing="false" text="Settings" />
    </children>
 </AnchorPane>

@@ -30,6 +30,14 @@ public class BoardOverviewService {
         return serverUtils.getAllCardLists(board);
     }
 
+    public Board updateBoardTitle(Board board,String title){
+        return serverUtils.updateBoardTitle(board,title);
+    }
+
+    public void removeBoard(Board board){
+        serverUtils.removeBoard(board);
+    }
+
 
     public void removeCard(Card card, long cardListId,Board board) {
         serverUtils.removeCardFromList(card, cardListId,board);

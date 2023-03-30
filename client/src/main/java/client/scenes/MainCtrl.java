@@ -50,13 +50,17 @@ public class MainCtrl {
     private CreateBoardCtrl createBoardCtrl;
     private Scene createBoard;
 
+    private BoardSettingsCtrl boardSettingsCtrl;
+    private Scene boardSettings;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
                            Pair<AddTaskCtrl, Parent> addTask,
                            Pair<ListMenuCtrl, Parent> listMenu,
-                           Pair<CreateBoardCtrl, Parent> createBoard) {
+                           Pair<CreateBoardCtrl, Parent> createBoard,
+                           Pair<BoardSettingsCtrl, Parent> boardSettings) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
@@ -85,6 +89,10 @@ public class MainCtrl {
         this.createBoardCtrl = createBoard.getKey();
         this.createBoard = new Scene(createBoard.getValue());
 
+        this.boardSettingsCtrl = boardSettings.getKey();
+        this.boardSettings = new Scene(boardSettings.getValue());
+
+
 
         showClientConnectPage();
         primaryStage.show();
@@ -100,6 +108,7 @@ public class MainCtrl {
     public void showStartPage() {
         primaryStage.setTitle("Talio: Start page");
         primaryStage.setScene(startPage);
+        startPageCtrl.initBoardList();
     }
 
     public void showCreateBoardPage() {
@@ -109,7 +118,6 @@ public class MainCtrl {
 
     public void showBoardPage() {
         primaryStage.setTitle("Talio: Board page");
-        boardOverviewCtrl.configureBoardTitle();
         boardOverviewCtrl.drawBoard();
         primaryStage.setScene(board);
     }
@@ -123,6 +131,11 @@ public class MainCtrl {
         addTaskCtrl.setLabel(label);
         primaryStage.setScene(addTask);
         setMinSizeForCardDetails();
+    }
+
+    public void showBoardSettings() {
+        primaryStage.setTitle("Talio: Board Settings");
+        primaryStage.setScene(boardSettings);
     }
 
     public void changeName(Label label, String title){
