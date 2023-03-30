@@ -40,7 +40,6 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoard(id));
     }
 
-    //TODO create new board issue
     @PostMapping("/create")
     public ResponseEntity<Board> createBoard(@RequestBody String name) {
         Board board = new Board(new ArrayList<>(), name);
@@ -81,5 +80,24 @@ public class BoardController {
         cardListService.delete(cardListId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,list);
         return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("/update-title/{id}")
+    public ResponseEntity<Board> updateTitle(@PathVariable("id") long boardId,
+                                             @RequestBody String title){
+        Board board = boardService.getBoard(boardId);
+        board.setTitle(title);
+        board = boardService.save(board);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
+        return ResponseEntity.ok(board);
+    }
+
+
+    @DeleteMapping("/remove-board/{id}")
+    public ResponseEntity<Board> removeBoard(@PathVariable("id") long boardId){
+        Board board = boardService.getBoard(boardId);
+        boardService.delete(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/remove",board);
+        return ResponseEntity.ok(board);
     }
 }
