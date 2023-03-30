@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Card {
@@ -15,6 +16,9 @@ public class Card {
     private long id;
 
     private String title;
+
+    @ManyToMany
+    private List<Tag> tags;
 
     public Card(){
 
