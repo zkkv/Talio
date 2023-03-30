@@ -93,6 +93,11 @@ public class StartPageCtrl implements Initializable {
         mainCtrl.showJoinBoard();
     }
 
+    public void loginAsAdmin(){
+        String pass = boardOverviewService.getAdminPassword();
+        mainCtrl.showAdminLogin(pass);
+    }
+
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
