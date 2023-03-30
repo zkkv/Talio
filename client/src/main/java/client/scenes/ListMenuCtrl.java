@@ -1,7 +1,7 @@
 package client.scenes;
 
-import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
+import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.CardList;
 import javafx.fxml.FXML;
@@ -13,7 +13,7 @@ public class ListMenuCtrl {
 
     private final BoardOverviewService boardOverviewService;
 
-    private final BoardIdentifier boardIdentifier;
+    private final BoardUserIdentifier boardUserIdentifier;
 
     private final MainCtrl mainCtrl;
     private CardList cardList;
@@ -26,10 +26,10 @@ public class ListMenuCtrl {
 
 
     @Inject
-    public ListMenuCtrl(BoardOverviewService boardOverviewService, BoardIdentifier boardIdentifier,
+    public ListMenuCtrl(BoardOverviewService boardOverviewService, BoardUserIdentifier boardUserIdentifier,
                         MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
-        this.boardIdentifier = boardIdentifier;
+        this.boardUserIdentifier = boardUserIdentifier;
         this.mainCtrl = mainCtrl;
     }
 
@@ -37,7 +37,7 @@ public class ListMenuCtrl {
         listMenuButton.setOnAction(event -> {
             listLabel.setText(listMenuTextField.getText());
             boardOverviewService.updateCardListTitle(cardList.getId(),
-                listLabel.getText(),boardIdentifier.getCurrentBoard());
+                listLabel.getText(),boardUserIdentifier.getCurrentBoard());
         });
     }
 

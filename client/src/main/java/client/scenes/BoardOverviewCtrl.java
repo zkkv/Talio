@@ -1,6 +1,6 @@
 package client.scenes;
-import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
+import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
@@ -30,7 +30,7 @@ import java.util.TimerTask;
 public class BoardOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
 
-    private BoardIdentifier boardIdentifier;
+    private BoardUserIdentifier boardUserIdentifier;
     private final MainCtrl mainCtrl;
 
     private final ListMenuCtrl listMenuCtrl;
@@ -57,18 +57,18 @@ public class BoardOverviewCtrl implements Initializable {
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
                              ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
-                             BoardIdentifier boardIdentifier) {
+                             BoardUserIdentifier boardUserIdentifier) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;
-        this.boardIdentifier = boardIdentifier;
+        this.boardUserIdentifier = boardUserIdentifier;
         this.addTaskCtrl = addTaskCtrl;
     }
 
     public void createList(Button addList) {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = boardOverviewService.addCardList(newCardList,
-            boardIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
         Timer timer = new Timer();
@@ -105,7 +105,7 @@ public class BoardOverviewCtrl implements Initializable {
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCard(newCard, cardListId,
-            boardIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
         drawCard(vbox, button, title, cardListId, newCard);
     }
 
@@ -113,7 +113,6 @@ public class BoardOverviewCtrl implements Initializable {
         hiddenLabel.requestFocus();
         var lists = boardOverviewService.getCardLists(currentBoard);
         panel.getChildren().clear();
-        configureBoardTitle();
         for (CardList list : lists) {
             drawCardList(list);
         }
@@ -121,11 +120,12 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     public void drawBoard() {
-        addRetrievedCardLists(boardIdentifier.getCurrentBoard());
+        addRetrievedCardLists(boardUserIdentifier.getCurrentBoard());
+        configureBoardTitle();
     }
 
     public void configureBoardTitle() {
-        boardTitle.setText(boardIdentifier.getCurrentBoard().getTitle());
+        boardTitle.setText(boardUserIdentifier.getCurrentBoard().getTitle());
     }
 
     public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
@@ -135,7 +135,7 @@ public class BoardOverviewCtrl implements Initializable {
 
         remove.setOnAction(event -> {
             vbox.getChildren().remove(hbox);
-            boardOverviewService.removeCard(card,cardListId, boardIdentifier.getCurrentBoard());
+            boardOverviewService.removeCard(card,cardListId, boardUserIdentifier.getCurrentBoard());
         });
 
         button.setOnMouseClicked(event -> {
@@ -154,7 +154,7 @@ public class BoardOverviewCtrl implements Initializable {
         configureListMenu(button, cm, remove, edit);
         remove.setOnAction(event -> {
             panel.getChildren().remove(sp);
-            boardOverviewService.removeCardList(cardList,boardIdentifier.getCurrentBoard());
+            boardOverviewService.removeCardList(cardList,boardUserIdentifier.getCurrentBoard());
             hiddenLabel.requestFocus();
         });
         edit.setOnAction(event -> {
@@ -170,7 +170,7 @@ public class BoardOverviewCtrl implements Initializable {
         String title = db.getString();
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCard(newCard,cardListId,
-            boardIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -180,7 +180,7 @@ public class BoardOverviewCtrl implements Initializable {
         String title = db.getString();
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
-            boardIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -331,7 +331,7 @@ public class BoardOverviewCtrl implements Initializable {
             ClipboardContent content = new ClipboardContent();
             configureDragboardAndClipboard(vbox, card, task, event, db, content);
             boardOverviewService.removeCard(cardEntity,cardListId,
-                boardIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
         });
         return card;
     }
@@ -414,7 +414,7 @@ public class BoardOverviewCtrl implements Initializable {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     long cardListId = Long.parseLong(label.getId());
                     boardOverviewService.updateCardListTitle(cardListId,label.getText(),
-                        boardIdentifier.getCurrentBoard());
+                        boardUserIdentifier.getCurrentBoard());
                 }
             }
         });
@@ -441,7 +441,8 @@ public class BoardOverviewCtrl implements Initializable {
     public void subscribeForUpdates(Board board){
         boardOverviewService.registerForUpdates("/topic/board/"+board.getId(), Board.class,b -> {
             Platform.runLater(()->{
-                addRetrievedCardLists(boardIdentifier.getCurrentBoard());
+                boardUserIdentifier.setCurrentBoard(b);
+                drawBoard();
             });
         });
         boardOverviewService.registerForUpdates("/topic/board/remove", Board.class, b -> {
