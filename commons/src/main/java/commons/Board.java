@@ -17,6 +17,8 @@ public class Board {
     private long id;
 
     private String title;
+
+    private String key;
     @OneToMany(cascade=CascadeType.ALL)
     private List<CardList> cardLists;
 
@@ -66,5 +68,13 @@ public class Board {
 
     public void setCardLists(List<CardList> cardLists) {
         this.cardLists = cardLists;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
