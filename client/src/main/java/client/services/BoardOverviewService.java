@@ -2,6 +2,7 @@ package client.services;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 
@@ -17,47 +18,60 @@ public class BoardOverviewService {
         this.serverUtils = serverUtils;
     }
 
-    public CardList addCardList(CardList cardList) {
-        return serverUtils.addCardListToBoard(cardList);
+    public CardList addCardList(CardList cardList,Board board) {
+        return serverUtils.addCardListToBoard(cardList,board);
     }
 
-    public Card addCard(Card card, long cardListId) {
-        return serverUtils.addCardToCardList(card, cardListId);
+    public Card addCard(Card card, long cardListId,Board board) {
+        return serverUtils.addCardToCardList(card, cardListId,board);
     }
 
-    public List<CardList> getCardLists() {
-        return serverUtils.getAllCardLists();
+    public List<CardList> getCardLists(Board board) {
+        return serverUtils.getAllCardLists(board);
     }
 
-    public void removeCard(Card card, long cardListId) {
-        serverUtils.removeCardFromList(card, cardListId);
+
+    public void removeCard(Card card, long cardListId,Board board) {
+        serverUtils.removeCardFromList(card, cardListId,board);
     }
 
-    public void removeCardList(CardList cardList) {
-        serverUtils.removeCardListFromBoard(cardList);
+    public void removeCardList(CardList cardList,Board board) {
+        serverUtils.removeCardListFromBoard(cardList,board);
     }
 
-    public Card addCardAtIndex(Card card, long cardListId, int index) {
-        return serverUtils.addCardToCardListWithIndex(card, cardListId, index);
+    public Card addCardAtIndex(Card card, long cardListId, int index,Board board) {
+        return serverUtils.addCardToCardListWithIndex(card, cardListId, index,board);
     }
 
     public List<Card> getCards(long cardListId) {
         return serverUtils.getCardsOfCardList(cardListId);
     }
 
-    public CardList getCardList(long cardListId){
+    public CardList getCardList(long cardListId) {
         return serverUtils.getCardList(cardListId);
     }
 
-    public CardList updateCardListTitle(long cardListId,String title){
-        return serverUtils.updateCardListTitle(cardListId,title);
+    public Board getBoard(long boardId) {
+        return serverUtils.getBoard(boardId);
     }
 
-    public Card updateCardTitle(long cardId,String title){
-        return serverUtils.updateCardTitle(cardId,title);
+    public Board createBoard(String title) {
+        return serverUtils.createBoard(title);
     }
 
-    public void setServerAddress(String ip){
+    public List<Board> getAllBoards() {
+        return serverUtils.getAllBoards();
+    }
+
+    public CardList updateCardListTitle(long cardListId, String title,Board board) {
+        return serverUtils.updateCardListTitle(cardListId, title,board);
+    }
+
+    public Card updateCardTitle(long cardId, String title,Board board) {
+        return serverUtils.updateCardTitle(cardId, title,board);
+    }
+
+    public void setServerAddress(String ip) {
         serverUtils.setServer(ip);
     }
 
@@ -65,7 +79,7 @@ public class BoardOverviewService {
         serverUtils.testConnection();
     }
 
-    public void closeServerConnection(){
+    public void closeServerConnection() {
         serverUtils.closeConnection();
     }
     public <T> void registerForUpdates(String dest, Class<T> type, Consumer<T> consumer){
