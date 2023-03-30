@@ -4,6 +4,7 @@ import commons.Board;
 import commons.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.generators.SequenceGenerator;
 import server.services.BoardService;
 import server.services.UserService;
 
@@ -43,4 +44,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(name));
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<String> getPassword(){
+        SequenceGenerator sequenceGenerator = new SequenceGenerator();
+        String pass = sequenceGenerator.generate();
+        System.out.println("Admin password: "+pass);
+        return ResponseEntity.ok(pass);
+    }
 }
