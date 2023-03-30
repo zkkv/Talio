@@ -4,10 +4,7 @@ import client.services.BoardIdentifier;
 import client.services.BoardOverviewService;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 
 public class BoardSettingsCtrl {
 
