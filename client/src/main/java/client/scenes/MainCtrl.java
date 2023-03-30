@@ -59,6 +59,9 @@ public class MainCtrl {
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoard;
 
+    private AdminLoginCtrl adminLoginCtrl;
+    private Scene adminLogin;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -68,7 +71,8 @@ public class MainCtrl {
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
                            Pair<UserPageCtrl,Parent> userPage,
-                           Pair<JoinBoardCtrl,Parent> joinBoard) {
+                           Pair<JoinBoardCtrl,Parent> joinBoard,
+                           Pair<AdminLoginCtrl,Parent> adminLogin) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
@@ -106,6 +110,8 @@ public class MainCtrl {
         this.joinBoardCtrl = joinBoard.getKey();
         this.joinBoard = new Scene(joinBoard.getValue());
 
+        this.adminLoginCtrl = adminLogin.getKey();
+        this.adminLogin = new Scene(adminLogin.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -188,4 +194,11 @@ public class MainCtrl {
     public void closeMenu (){
         listMenuStage.hide();
     }
+
+    public void showAdminLogin(String pass){
+        primaryStage.setTitle("Talio: Admin Login");
+        primaryStage.setScene(adminLogin);
+        adminLoginCtrl.setPass(pass);
+    }
+
 }
