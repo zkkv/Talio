@@ -29,7 +29,7 @@
             <Font size="23.0" />
          </font>
       </Label>
-      <Button layoutX="161.0" layoutY="355.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="211.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Log in as Admin" textAlignment="CENTER">
+      <Button layoutX="161.0" layoutY="355.0" mnemonicParsing="false" onAction="#loginAsAdmin" prefHeight="52.0" prefWidth="211.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Log in as Admin" textAlignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>

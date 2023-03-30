@@ -114,4 +114,8 @@ public class BoardOverviewService {
     public <T> void registerForUpdates(String dest, Class<T> type, Consumer<T> consumer){
         serverUtils.registerForMessages(dest,type,consumer);
     }
+
+    public String getAdminPassword(){
+        return serverUtils.getAdminPassword();
+    }
 }

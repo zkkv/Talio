@@ -264,4 +264,12 @@ public class ServerUtils {
         }
         throw new IllegalArgumentException();
     }
+
+    public String getAdminPassword(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/users/admin") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<String>(){});
+    }
 }
