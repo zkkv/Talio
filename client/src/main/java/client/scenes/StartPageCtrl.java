@@ -1,18 +1,18 @@
 package client.scenes;
 
-import client.services.BoardIdentifier;
+
 import client.services.BoardOverviewService;
+import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Board;
+import commons.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.net.URL;
@@ -24,28 +24,26 @@ public class StartPageCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
     private final MainCtrl mainCtrl;
 
-    private BoardIdentifier boardIdentifier;
+    private BoardUserIdentifier boardUserIdentifier;
 
     @FXML
     private VBox boardList;
 
     @FXML
     private ScrollPane scrollPane;
+
     @Inject
-    public StartPageCtrl(BoardOverviewService boardOverviewService,
-                         MainCtrl mainCtrl, BoardIdentifier boardIdentifier) {
+    public StartPageCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
+                         BoardUserIdentifier boardUserIdentifier) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
-        this.boardIdentifier = boardIdentifier;
+        this.boardUserIdentifier = boardUserIdentifier;
     }
-
-    public void createNewBoard(){
-        mainCtrl.showCreateBoardPage();
-    }
-
+    
     public void initBoardList(){
         boardList.getChildren().clear();
-        List<Board> boards = boardOverviewService.getAllBoards();
+        User user = boardUserIdentifier.getCurrentUser();
+        List<Board> boards = boardOverviewService.getUserBoards(user.getUserName());
         for(Board board:boards){
             GridPane boardTab = new GridPane();
             configureBoardTab(boardTab,board);
@@ -53,8 +51,7 @@ public class StartPageCtrl implements Initializable {
         }
     }
 
-    //TODO see a list of all boards
-    public void configureBoardTab(GridPane gridPane, Board board){
+    public void configureBoardTab(GridPane gridPane,Board board){
         Label boardTitle = new Label();
         Button removeBoard = new Button();
         Button leaveBoard = new Button();
@@ -82,9 +79,18 @@ public class StartPageCtrl implements Initializable {
         gridPane.setPadding(new Insets(10.0));
 
         gridPane.setOnMouseClicked(e->{
-            boardIdentifier.setCurrentBoard(board);
+            boardUserIdentifier.setCurrentBoard(board);
             mainCtrl.showBoardPage();
         });
+    }
+
+    public void createNewBoard(){
+        mainCtrl.showCreateBoardPage();
+    }
+
+    //TODO check if you have already joined
+    public void joinNewBoard(){
+        mainCtrl.showJoinBoard();
     }
 
     /**
