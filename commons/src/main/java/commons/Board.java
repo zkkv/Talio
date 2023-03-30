@@ -14,8 +14,9 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class Board {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private long key;
+    private long id;
 
+    private String title;
     @OneToMany(cascade=CascadeType.ALL)
     private List<CardList> cardLists;
 
@@ -23,8 +24,9 @@ public class Board {
 
     }
 
-    public Board(List<CardList> cardLists){
+    public Board(List<CardList> cardLists,String title){
         this.cardLists = cardLists;
+        this.title = title;
     }
 
     @Override
@@ -42,12 +44,20 @@ public class Board {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
 
-    public long getKey() {
-        return key;
+    public String getTitle() {
+        return title;
     }
 
-    public void setKey(long key) {
-        this.key = key;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public List<CardList> getCardLists() {
