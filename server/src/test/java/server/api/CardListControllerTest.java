@@ -1,5 +1,6 @@
 package server.api;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import server.services.BoardService;
 import server.services.CardListService;
 import server.services.CardService;
 
@@ -24,6 +26,8 @@ public class CardListControllerTest {
     @Mock
     private CardListService cardListService;
 
+    @Mock
+    private BoardService boardService;
     @Mock
     private CardService cardService;
 
@@ -108,9 +112,13 @@ public class CardListControllerTest {
         Card card = new Card();
         card.setId(1L);
 
+        Board board = new Board();
+        board.setId(2L);
+
         when(cardService.save(card)).thenReturn(card);
         when(cardListService.getCardList(1L)).thenReturn(cardList);
         when(cardListService.save(cardList)).thenReturn(cardList);
+        when(boardService.getBoard(2L)).thenReturn(board);
 
         ResponseEntity<Card> actualResponse = cardListController.addCard(card, 1L,2L);
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
@@ -131,6 +139,11 @@ public class CardListControllerTest {
         cards.add(new Card());
         cardList.setCards(cards);
 
+        Board board = new Board();
+        board.setId(2L);
+
+        when(boardService.getBoard(2L)).thenReturn(board);
+
         when(cardService.save(savedCard)).thenReturn(savedCard);
         when(cardListService.getCardList(1L)).thenReturn(cardList);
 
@@ -144,10 +157,15 @@ public class CardListControllerTest {
     public void testUpdateCardListTitle(){
         CardList cardListToRename = new CardList();
         cardListToRename.setTitle("Title 1");
+        Board board = new Board();
+        board.setId(2L);
+
+        when(boardService.getBoard(2L)).thenReturn(board);
         when(cardListService.getCardList(1L)).thenReturn(cardListToRename);
         when(cardListService.save(cardListToRename)).thenReturn(cardListToRename);
 
-        ResponseEntity<CardList> actualResponse = cardListController.updateTitle("New Title",1L,2L);
+        ResponseEntity<CardList> actualResponse = cardListController.updateTitle("New Title",
+                                                                                1L,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardListToRename.getTitle(),actualResponse.getBody().getTitle());
@@ -160,6 +178,10 @@ public class CardListControllerTest {
         cardToBeRemoved.setId(1L);
         CardList cardList = new CardList(cards,"List 1");
         cardList.setId(2L);
+        Board board = new Board();
+        board.setId(2L);
+
+        when(boardService.getBoard(2L)).thenReturn(board);
 
         when(cardListService.exists(2L)).thenReturn(true);
         when(cardService.exists(1L)).thenReturn(true);
@@ -169,7 +191,8 @@ public class CardListControllerTest {
 
         when(cardListService.save(cardList)).thenReturn(cardList);
 
-        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,1L,3L);
+        ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,
+                                                                1L,3L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardToBeRemoved,actualResponse.getBody());

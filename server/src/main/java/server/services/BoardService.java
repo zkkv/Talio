@@ -22,6 +22,10 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    public Board getBoardByKey(String key){
+        return boardRepository.findBoardByKey(key);
+    }
+
     public boolean exists(long boardId){
         return boardRepository.existsById(boardId);
     }

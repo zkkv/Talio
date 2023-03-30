@@ -53,6 +53,12 @@ public class MainCtrl {
     private BoardSettingsCtrl boardSettingsCtrl;
     private Scene boardSettings;
 
+    private UserPageCtrl userPageCtrl;
+    private Scene userPage;
+
+    private JoinBoardCtrl joinBoardCtrl;
+    private Scene joinBoard;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -60,7 +66,9 @@ public class MainCtrl {
                            Pair<AddTaskCtrl, Parent> addTask,
                            Pair<ListMenuCtrl, Parent> listMenu,
                            Pair<CreateBoardCtrl, Parent> createBoard,
-                           Pair<BoardSettingsCtrl, Parent> boardSettings) {
+                           Pair<BoardSettingsCtrl, Parent> boardSettings,
+                           Pair<UserPageCtrl,Parent> userPage,
+                           Pair<JoinBoardCtrl,Parent> joinBoard) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
@@ -92,6 +100,11 @@ public class MainCtrl {
         this.boardSettingsCtrl = boardSettings.getKey();
         this.boardSettings = new Scene(boardSettings.getValue());
 
+        this.userPageCtrl = userPage.getKey();
+        this.userPage = new Scene(userPage.getValue());
+
+        this.joinBoardCtrl = joinBoard.getKey();
+        this.joinBoard = new Scene(joinBoard.getValue());
 
 
         showClientConnectPage();
@@ -103,6 +116,16 @@ public class MainCtrl {
         primaryStage.setScene(clientConnect);
         setMinSize();
 
+    }
+
+    public void showUserPage(){
+        primaryStage.setTitle("Talio: User selection");
+        primaryStage.setScene(userPage);
+    }
+
+    public void showJoinBoard(){
+        primaryStage.setTitle("Talio: Join Board");
+        primaryStage.setScene(joinBoard);
     }
 
     public void showStartPage() {
@@ -135,6 +158,7 @@ public class MainCtrl {
 
     public void showBoardSettings() {
         primaryStage.setTitle("Talio: Board Settings");
+        boardSettingsCtrl.setBoardKey();
         primaryStage.setScene(boardSettings);
     }
 
