@@ -128,7 +128,8 @@ public class BoardOverviewCtrl implements Initializable {
         boardTitle.setText(boardUserIdentifier.getCurrentBoard().getTitle());
     }
 
-    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card, Label task) {
+    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card,
+                         Label task) {
         ContextMenu menu = new ContextMenu();
         MenuItem edit = new MenuItem("Edit card");
         MenuItem remove = new MenuItem("Remove card");
@@ -438,8 +439,8 @@ public class BoardOverviewCtrl implements Initializable {
         button.setContextMenu(cm);
     }
 
-
-    private void configureCardMenu(Button button, ContextMenu menu, MenuItem remove, MenuItem edit) {
+    private void configureCardMenu(Button button, ContextMenu menu, MenuItem remove,
+                                   MenuItem edit) {
         menu.getItems().add(edit);
         menu.getItems().add(remove);
         menu.setStyle("-fx-border-color: black");
