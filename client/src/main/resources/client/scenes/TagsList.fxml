@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="277.0" prefWidth="215.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagsListCtrl">
+    <children>
+        <VBox prefHeight="273.0" prefWidth="215.0">
+            <children>
+                <Label alignment="CENTER" prefHeight="33.0" prefWidth="215.0" text="Tags list">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+                <Line endX="114.626220703125" startX="-100.0">
+                    <rotationAxis>
+                        <Point3D />
+                    </rotationAxis>
+                </Line>
+            <ScrollPane prefHeight="240.0" prefWidth="215.0">
+               <content>
+                      <VBox prefHeight="235.0" prefWidth="210.0" />
+               </content>
+            </ScrollPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

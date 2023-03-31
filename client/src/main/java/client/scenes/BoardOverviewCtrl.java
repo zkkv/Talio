@@ -496,6 +496,12 @@ public class BoardOverviewCtrl implements Initializable {
         configureSettings();
     }
 
+    /**
+     * Uses the method from main ctrl to show the tag list when the button is clicked
+     */
+    public void showAllTagsList() {
+        mainCtrl.showAllTagsList();
+    }
 
     public void disconnect() {
         boardOverviewService.closeServerConnection();
