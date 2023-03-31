@@ -4,6 +4,7 @@ import client.services.BoardOverviewService;
 import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Board;
+import commons.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -41,6 +42,14 @@ public class BoardSettingsCtrl {
 
     public void removeBoard() {
         boardOverviewService.removeBoard(boardIdentifier.getCurrentBoard());
+        mainCtrl.showStartPage();
+    }
+
+    public void leaveBoard() {
+        User user = boardIdentifier.getCurrentUser();
+        user = boardOverviewService.removeBoardForUser(boardIdentifier.getCurrentBoard(),
+                user.getUserName());
+        boardIdentifier.setCurrentUser(user);
         mainCtrl.showStartPage();
     }
 

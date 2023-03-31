@@ -29,7 +29,7 @@
                 <Font size="20.0" />
             </font>
         </Button>
-        <Button layoutX="128.0" layoutY="184.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="150.0" text="Leave Board">
+        <Button layoutX="128.0" layoutY="184.0" mnemonicParsing="false" onAction="#leaveBoard" prefHeight="43.0" prefWidth="150.0" text="Leave Board">
             <font>
                 <Font size="20.0" />
             </font>
