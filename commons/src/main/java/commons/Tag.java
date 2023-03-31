@@ -53,4 +53,8 @@ public class Tag {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
