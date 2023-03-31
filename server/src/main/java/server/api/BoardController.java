@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Board;
 import commons.CardList;
+import commons.Tag;
 import commons.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import server.generators.SequenceGenerator;
 import server.services.BoardService;
 import server.services.CardListService;
+import server.services.TagService;
 import server.services.UserService;
 
 import java.util.ArrayList;
@@ -23,14 +25,18 @@ public class BoardController {
     private final CardListService cardListService;
 
     private final UserService userService;
+    private final TagService tagService;
 
-    public BoardController(BoardService boardService, CardListService cardListService,
+    public BoardController(BoardService boardService,
+                           CardListService cardListService,
                            UserService userService,
-                           SimpMessagingTemplate simpMessagingTemplate) {
+                           SimpMessagingTemplate simpMessagingTemplate,
+                           TagService tagService) {
         this.boardService = boardService;
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.cardListService = cardListService;
         this.userService = userService;
+        this.tagService = tagService;
     }
 
     @GetMapping(path = {"", "/"})
@@ -129,5 +135,25 @@ public class BoardController {
         boardService.delete(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/remove",board);
         return ResponseEntity.ok(board);
+    }
+
+    /**
+     * Adds tag to the board with specified {@code boardId}
+     *
+     * @param tag       Tag to be added
+     * @param boardId   boardId
+     * @return          ResponseEntity containing the added tag
+     * @author          Kirill Zhankov
+     */
+    @PostMapping("/{id}/add-tag")
+    public ResponseEntity<Tag> addTag(@RequestBody Tag tag, @PathVariable("id") long boardId) {
+        Tag saved = tagService.save(tag);
+        Board board = boardService.getBoard(boardId);
+
+        board.getTags().add(tag);
+        boardService.save(board);
+
+        simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
+        return ResponseEntity.ok(saved);
     }
 }
