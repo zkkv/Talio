@@ -66,6 +66,7 @@ public class Main extends Application {
                 INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, board,
                 clientConnect, startPage, addTask, listMenu, createBoard,
-                boardSettings, userPage, joinBoard, adminLogin, adminOverview, cardDetails, tagList);
+                boardSettings, userPage, joinBoard, adminLogin, adminOverview, cardDetails,
+                tagList);
     }
 }

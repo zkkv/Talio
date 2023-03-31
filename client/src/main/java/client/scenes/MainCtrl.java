@@ -88,7 +88,6 @@ public class MainCtrl {
                            Pair<CardDetailsCtrl, Parent> cardDetails,
                            Pair<TagsListCtrl,Parent> tagsList) {
         this.primaryStage = primaryStage;
-
         addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
