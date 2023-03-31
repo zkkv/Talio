@@ -65,6 +65,10 @@ public class MainCtrl {
     private AdminOverviewCtrl adminOverviewCtrl;
     private Scene adminOverview;
 
+    private CardDetailsCtrl cardDetailsCtrl;
+
+    private Scene cardDetails;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -76,7 +80,8 @@ public class MainCtrl {
                            Pair<UserPageCtrl,Parent> userPage,
                            Pair<JoinBoardCtrl,Parent> joinBoard,
                            Pair<AdminLoginCtrl,Parent> adminLogin,
-                           Pair<AdminOverviewCtrl,Parent> adminOverview) {
+                           Pair<AdminOverviewCtrl,Parent> adminOverview,
+                           Pair<CardDetailsCtrl, Parent> cardDetails) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
@@ -119,6 +124,9 @@ public class MainCtrl {
 
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminOverview = new Scene(adminOverview.getValue());
+
+        this.cardDetailsCtrl = cardDetails.getKey();
+        this.cardDetails = new Scene(cardDetails.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -188,6 +196,12 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+
+    public void showCardDetails(String title) {
+        primaryStage.setTitle("Talio: Card Details");
+        cardDetailsCtrl.setTitle(title);
+        primaryStage.setScene(cardDetails);
     }
 
     public void setMinSize(){
