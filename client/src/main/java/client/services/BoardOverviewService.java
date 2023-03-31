@@ -92,6 +92,9 @@ public class BoardOverviewService {
         return serverUtils.getAllBoards();
     }
 
+    public User removeBoardForUser(Board board,String userName){
+        return serverUtils.removeBoardForUser(userName,board);
+    }
     public CardList updateCardListTitle(long cardListId, String title,Board board) {
         return serverUtils.updateCardListTitle(cardListId, title,board);
     }
