@@ -30,6 +30,7 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage listMenuStage;
+    private Stage tagsListStage;
 
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
@@ -65,6 +66,9 @@ public class MainCtrl {
     private AdminOverviewCtrl adminOverviewCtrl;
     private Scene adminOverview;
 
+    private TagsListCtrl tagsListCtrl;
+    private Scene tagsList;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -76,14 +80,11 @@ public class MainCtrl {
                            Pair<UserPageCtrl,Parent> userPage,
                            Pair<JoinBoardCtrl,Parent> joinBoard,
                            Pair<AdminLoginCtrl,Parent> adminLogin,
-                           Pair<AdminOverviewCtrl,Parent> adminOverview) {
+                           Pair<AdminOverviewCtrl,Parent> adminOverview,
+                           Pair<TagsListCtrl,Parent> tagsList) {
         this.primaryStage = primaryStage;
 
-        /* Icon created by Freepik - Flaticon */
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+        addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -120,8 +121,25 @@ public class MainCtrl {
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminOverview = new Scene(adminOverview.getValue());
 
+        this.tagsListCtrl = tagsList.getKey();
+        this.tagsList = new Scene(tagsList.getValue());
+        this.tagsListStage = new Stage();
+        this.tagsListStage.setScene(this.tagsList);
+
         showClientConnectPage();
         primaryStage.show();
+    }
+
+    /**
+     * Adds the icons to the application
+     * @param primaryStage the stage from where we get the icons
+     */
+    private static void addIcons(Stage primaryStage) {
+        /* Icon created by Freepik - Flaticon */
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void showClientConnectPage() {
@@ -218,6 +236,19 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Admin Overview");
         primaryStage.setScene(adminOverview);
         adminOverviewCtrl.initBoardList();
+    }
+
+    /**
+     * Pops up a scene with all the tags in the current board
+     */
+    public void showAllTagsList() {
+        if(!tagsListStage.isShowing()){
+            tagsListStage.setTitle("Talio: Tag List");
+            tagsListStage.show();
+        }
+        else{
+            tagsListStage.hide();
+        }
     }
 
 }
