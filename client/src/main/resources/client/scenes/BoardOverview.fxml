@@ -21,11 +21,12 @@
          </content>
       </ScrollPane>
       <Label fx:id="hiddenLabel" layoutX="52.0" layoutY="18.0" opacity="0.0" text="Label" />
-      <Label fx:id="addConfirmationLabel"  text="List was added" textFill="#ff3232" visible="false" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
+      <Label fx:id="addConfirmationLabel" text="List was added" textFill="#ff3232" visible="false" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Label>
       <Button fx:id="settings" layoutX="524.0" layoutY="14.0" mnemonicParsing="false" text="Settings" />
+      <Button layoutX="533.0" layoutY="55.0" mnemonicParsing="false" onAction="#showAllTagsList" prefWidth="41.0" text="Tags" />
    </children>
 </AnchorPane>

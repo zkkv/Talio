@@ -58,11 +58,14 @@ public class Main extends Application {
         var adminOverview = FXML.load(AdminOverviewCtrl.class,
                 "client", "scenes", "AdminOverview.fxml");
         var cardDetails = FXML.load(CardDetailsCtrl.class, "client", "scenes", "CardDetails.fxml");
+        var tagList = FXML.load(TagsListCtrl.class,
+            "client", "scenes", "TagsList.fxml");
+
 
         var mainCtrl =
                 INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, board,
                 clientConnect, startPage, addTask, listMenu, createBoard,
-                boardSettings, userPage, joinBoard, adminLogin, adminOverview, cardDetails);
+                boardSettings, userPage, joinBoard, adminLogin, adminOverview, cardDetails, tagList);
     }
 }

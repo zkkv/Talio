@@ -37,5 +37,6 @@ public class MyModule implements Module {
         binder.bind(AdminLoginCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(CardDetailsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TagsListCtrl.class).in(Scopes.SINGLETON);
     }
 }
