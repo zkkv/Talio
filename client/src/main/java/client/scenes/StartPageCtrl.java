@@ -65,6 +65,12 @@ public class StartPageCtrl implements Initializable {
             boardList.getChildren().remove(gridPane);
         });
 
+        leaveBoard.setOnMouseClicked(event -> {
+            boardOverviewService.removeBoardForUser(board,
+                    boardUserIdentifier.getCurrentUser().getUserName());
+            boardList.getChildren().remove(gridPane);
+        });
+
 
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
