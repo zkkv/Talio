@@ -130,6 +130,10 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Adds the icons to the application
+     * @param primaryStage the stage from where we get the icons
+     */
     private static void addIcons(Stage primaryStage) {
         /* Icon created by Freepik - Flaticon */
         primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));

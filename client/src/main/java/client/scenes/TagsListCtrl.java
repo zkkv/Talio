@@ -9,7 +9,11 @@ public class TagsListCtrl {
 
     private final MainCtrl mainCtrl;
 
-
+    /**
+     * A constructor for the class
+     * @param boardOverviewService  the service it is going use
+     * @param mainCtrl the controller to which it is bounded
+     */
     @Inject
     public TagsListCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
