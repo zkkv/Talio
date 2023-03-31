@@ -84,11 +84,7 @@ public class MainCtrl {
                            Pair<TagsListCtrl,Parent> tagsList) {
         this.primaryStage = primaryStage;
 
-        /* Icon created by Freepik - Flaticon */
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+        addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -132,6 +128,14 @@ public class MainCtrl {
 
         showClientConnectPage();
         primaryStage.show();
+    }
+
+    private static void addIcons(Stage primaryStage) {
+        /* Icon created by Freepik - Flaticon */
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void showClientConnectPage() {
