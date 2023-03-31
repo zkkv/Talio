@@ -25,7 +25,7 @@ public class AdminLoginCtrl {
      */
     public void loginAsAdmin(){
         if(password.getText().equals(pass)){
-            //TODO go to admin overview
+            mainCtrl.showAdminOverview();
         }
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);

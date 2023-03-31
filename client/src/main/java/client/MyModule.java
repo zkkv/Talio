@@ -35,5 +35,7 @@ public class MyModule implements Module {
         binder.bind(AddTaskCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ListMenuCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLoginCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminOverviewCtrl.class).in(Scopes.SINGLETON);
+
     }
 }
