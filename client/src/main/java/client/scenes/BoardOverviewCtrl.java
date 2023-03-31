@@ -496,6 +496,9 @@ public class BoardOverviewCtrl implements Initializable {
         configureSettings();
     }
 
+    public void showAllTagsList() {
+        mainCtrl.showAllTagsList();
+    }
 
     public void disconnect() {
         boardOverviewService.closeServerConnection();
