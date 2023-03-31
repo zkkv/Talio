@@ -57,4 +57,13 @@ public class UserController {
         System.out.println("Admin password: "+pass);
         return ResponseEntity.ok(pass);
     }
+
+    @PutMapping("/{username}")
+    public ResponseEntity<User> removeBoardForUser(@PathVariable("username") String userName,
+                                                   @RequestBody Board board){
+        User user = userService.getUser(userName);
+        user.getJoinedBoards().remove(board);
+        user = userService.save(user);
+        return ResponseEntity.ok(user);
+    }
 }
