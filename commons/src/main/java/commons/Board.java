@@ -22,6 +22,9 @@ public class Board {
     @OneToMany(cascade=CascadeType.ALL)
     private List<CardList> cardLists;
 
+    @OneToMany(cascade=CascadeType.ALL)
+    private List<Tag> tags;
+
     public Board(){
 
     }
