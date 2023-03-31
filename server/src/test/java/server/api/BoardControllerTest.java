@@ -9,6 +9,7 @@ import java.util.List;
 
 import commons.Board;
 import commons.CardList;
+import commons.Tag;
 import commons.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardListService;
+import server.services.TagService;
 import server.services.UserService;
 
 class BoardControllerTest {
@@ -34,6 +36,9 @@ class BoardControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private TagService tagService;
 
     @InjectMocks
     private BoardController boardController;
@@ -200,5 +205,23 @@ class BoardControllerTest {
         ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L,2L);
 
         assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testAddTag() {
+        Tag tag = new Tag();
+
+        Board board = new Board();
+        board.setTags(List.of(tag));
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+        when(boardService.save(any(Board.class))).thenReturn(board);
+
+        when(tagService.save(any(Tag.class))).thenReturn(tag);
+
+        ResponseEntity<Tag> actualResponse = boardController.addTag(tag, 1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(tag, actualResponse.getBody());
     }
 }
