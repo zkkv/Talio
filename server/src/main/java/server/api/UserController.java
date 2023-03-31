@@ -44,11 +44,26 @@ public class UserController {
         return ResponseEntity.ok(userService.getUser(name));
     }
 
+    /**
+     * Returns a response string with an admin password
+     *
+     * @return      Response string with the admin password
+     * @author      Kirill Zhankov
+     */
     @GetMapping("/admin")
     public ResponseEntity<String> getPassword(){
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         String pass = sequenceGenerator.generate();
         System.out.println("Admin password: "+pass);
         return ResponseEntity.ok(pass);
+    }
+
+    @PutMapping("/{username}")
+    public ResponseEntity<User> removeBoardForUser(@PathVariable("username") String userName,
+                                                   @RequestBody Board board){
+        User user = userService.getUser(userName);
+        user.getJoinedBoards().remove(board);
+        user = userService.save(user);
+        return ResponseEntity.ok(user);
     }
 }

@@ -17,6 +17,12 @@ public class AdminLoginCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * Allows admin to proceed to the next screen if the
+     * password is correct or shows an alert otherwise.
+     *
+     * @author      Kirill Zhankov
+     */
     public void loginAsAdmin(){
         if(password.getText().equals(pass)){
             mainCtrl.showAdminOverview();
@@ -29,10 +35,21 @@ public class AdminLoginCtrl {
         }
     }
 
+    /**
+     * Returns admin to the board selection page.
+     *
+     * @author      Kirill Zhankov
+     */
     public void goBack(){
         mainCtrl.showStartPage();
     }
 
+    /**
+     * Sets admin password to pass.
+     *
+     * @param pass  string to set password to
+     * @author      Kirill Zhankov
+     */
     public void setPass(String pass) {
         this.pass = pass;
     }

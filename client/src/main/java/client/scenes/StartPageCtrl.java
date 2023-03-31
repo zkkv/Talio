@@ -65,6 +65,12 @@ public class StartPageCtrl implements Initializable {
             boardList.getChildren().remove(gridPane);
         });
 
+        leaveBoard.setOnMouseClicked(event -> {
+            boardOverviewService.removeBoardForUser(board,
+                    boardUserIdentifier.getCurrentUser().getUserName());
+            boardList.getChildren().remove(gridPane);
+        });
+
 
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
@@ -93,9 +99,13 @@ public class StartPageCtrl implements Initializable {
         mainCtrl.showJoinBoard();
     }
 
+    /**
+     * Gets admin password from boardOverviewService and passes it to mainCtrl
+     *
+     * @author      Kirill Zhankov
+     */
     public void loginAsAdmin(){
-        String pass = boardOverviewService.getAdminPassword();
-        mainCtrl.showAdminLogin(pass);
+        mainCtrl.showAdminLogin(boardOverviewService.getAdminPassword());
     }
 
     /**
