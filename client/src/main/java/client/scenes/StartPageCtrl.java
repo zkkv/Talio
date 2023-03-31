@@ -94,6 +94,15 @@ public class StartPageCtrl implements Initializable {
     }
 
     /**
+     * Gets admin password from boardOverviewService and passes it to mainCtrl
+     *
+     * @author      Kirill Zhankov
+     */
+    public void loginAsAdmin(){
+        mainCtrl.showAdminLogin(boardOverviewService.getAdminPassword());
+    }
+
+    /**
      * Called to initialize a controller after its root element has been
      * completely processed.
      *

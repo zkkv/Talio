@@ -264,4 +264,19 @@ public class ServerUtils {
         }
         throw new IllegalArgumentException();
     }
+
+
+    /**
+     * Returns a string with an admin password obtained by a GET request.
+     *
+     * @return      string with the admin password
+     * @author      Kirill Zhankov
+     */
+    public String getAdminPassword(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/users/admin") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<String>(){});
+    }
 }
