@@ -44,7 +44,6 @@ public class CardDetailsCtrl {
 
     public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
         saveDescriptionButton.setOnAction(event -> {
-            System.out.println(descriptionField.getText());
             if(descriptionField.getText().equals("")){
                 boardOverviewService.updateCardDescription(card.getId(), " ",
                         boardUserIdentifier.getCurrentBoard());
