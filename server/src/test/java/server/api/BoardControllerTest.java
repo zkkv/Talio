@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import commons.Board;
@@ -212,7 +213,7 @@ class BoardControllerTest {
         Tag tag = new Tag();
 
         Board board = new Board();
-        board.setTags(List.of(tag));
+        board.setTags(new ArrayList<>(Arrays.asList(tag)));
 
         when(boardService.getBoard(1L)).thenReturn(board);
         when(boardService.save(any(Board.class))).thenReturn(board);

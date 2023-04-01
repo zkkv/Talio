@@ -150,10 +150,7 @@ public class BoardController {
         Tag saved = tagService.save(tag);
         Board board = boardService.getBoard(boardId);
 
-        var tags = board.getTags();
-        if (tags != null) {
-            tags.add(saved);
-        }
+        board.getTags().add(saved);
         board = boardService.save(board);
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
         return ResponseEntity.ok(saved);
