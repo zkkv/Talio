@@ -74,6 +74,7 @@ public class MainCtrl {
     private TagsListCtrl tagsListCtrl;
     private Scene tagsList;
 
+    @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
