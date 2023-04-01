@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Card {
@@ -15,13 +17,15 @@ public class Card {
     private long id;
 
     private String title;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SubTask> subTasks;
 
     public Card(){
-
+        subTasks = new ArrayList<>();
     }
-
     public Card(String title){
         this.title = title;
+        subTasks = new ArrayList<>();
     }
 
     public boolean equals(Object obj) {
@@ -50,5 +54,13 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<SubTask> getTasks() {
+        return subTasks;
+    }
+
+    public void setTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
     }
 }
