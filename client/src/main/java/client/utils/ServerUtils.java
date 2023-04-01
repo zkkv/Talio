@@ -308,7 +308,7 @@ public class ServerUtils {
 
 
     /**
-     * Returns a list of all tags of a board with {@code boardId}
+     * Returns a list of all tags of a board with {@code boardId}.
      *
      * @param boardId   id of the board to get the tags from
      * @return          list of tags of the board

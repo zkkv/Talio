@@ -30,7 +30,7 @@ public class TagsListService {
 
 
     /**
-     * Returns a list of all tags of a board with {@code boardId} using ServerUtils
+     * Returns a list of all tags of a board with {@code boardId} using ServerUtils.
      *
      * @param boardId   id of the board to get the tags from
      * @return          list of tags of the board

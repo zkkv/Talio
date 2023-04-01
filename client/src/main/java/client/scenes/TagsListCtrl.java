@@ -27,7 +27,7 @@ public class TagsListCtrl {
     private VBox vbox;
 
     /**
-     * A constructor for the class
+     * A constructor for the class.
      *
      * @param tagsListService       the service it is going use
      * @param mainCtrl              the controller to which it is bounded
@@ -43,11 +43,24 @@ public class TagsListCtrl {
         this.boardUserIdentifier = boardUserIdentifier;
     }
 
+
+    /**
+     * Initial method for drawing all tags called from outside.
+     *
+     * @author Kirill Zhankov
+     */
     public void drawTags() {
         vbox.setAlignment(Pos.TOP_CENTER);
         addRetrievedTags(boardUserIdentifier.getCurrentBoard());
     }
 
+
+    /**
+     * Draws all tags retrieved from a server followed by a "+" button.
+     *
+     * @param currentBoard  board to get tags from
+     * @author              Kirill Zhankov
+     */
     private void addRetrievedTags(Board currentBoard) {
         vbox.getChildren().clear();
         var tags = tagsListService.getAllTags(currentBoard.getId());
@@ -57,6 +70,13 @@ public class TagsListCtrl {
         drawAddTagButton();
     }
 
+
+    /**
+     * Draws the given tag based on its values.
+     *
+     * @param tag   tag to draw
+     * @author      Kirill Zhankov
+     */
     private void drawTag(Tag tag) {
         Button tagButton = new Button();
         HBox tagBox = new HBox();
@@ -68,6 +88,14 @@ public class TagsListCtrl {
         vbox.getChildren().add(tagBox);
     }
 
+
+    /**
+     * Configures the tag with retrieved values and applies styles.
+     *
+     * @param tagButton button to configure
+     * @param tag       tag with values
+     * @author          Kirill Zhankov
+     */
     private void configureTagButton(Button tagButton, Tag tag) {
         tagButton.setOnAction(event -> {
             // TODO Open scene with editing
@@ -87,6 +115,12 @@ public class TagsListCtrl {
         tagButton.setText(title);
     }
 
+
+    /**
+     * Draws the "+" button.
+     *
+     * @author Kirill Zhankov
+     */
     private void drawAddTagButton(){
         Button addTagButton = new Button("+");
         HBox tagBox = new HBox();
@@ -102,6 +136,13 @@ public class TagsListCtrl {
         vbox.getChildren().add(tagBox);
     }
 
+
+    /**
+     * Configures the container for tag button and "+" button.
+     *
+     * @param tagBox    HBox to configure
+     * @author          Kirill Zhankov
+     */
     private void configureTagBox(HBox tagBox) {
         tagBox.setStyle("-fx-start-margin: 20; -fx-end-margin: 20");
         tagBox.setSpacing(3);
@@ -109,6 +150,13 @@ public class TagsListCtrl {
         tagBox.setFillHeight(true);
     }
 
+
+    /**
+     * Confugures the "+" button and applies styles.
+     *
+     * @param addTagButton  button to configure
+     * @author              Kirill Zhankov
+     */
     private void configureAddTagButton(Button addTagButton){
         addTagButton.setFocusTraversable(false);
         addTagButton.setAlignment(Pos.CENTER);
@@ -120,6 +168,12 @@ public class TagsListCtrl {
         addTagButton.setStyle("-fx-border-color: black;");
     }
 
+
+    /**
+     * Creates a tag, adds it to the database and then draws it.
+     *
+     * @author Kirill Zhankov
+     */
     private void createTag() {
         Random rng = new Random();
         int r = rng.nextInt(100, 256);
@@ -132,6 +186,13 @@ public class TagsListCtrl {
         drawTag(newTag);
     }
 
+
+    /**
+     * Configures the hint which appears when mouse hovers over the "+" button.
+     *
+     * @param addTagButton  button to configure the hint for
+     * @author              Kirill Zhankov
+     */
     private void configureAddTagHint(Button addTagButton){
         Tooltip tooltip = new Tooltip("Add a new tag");
         tooltip.setFont(Font.font("Verdana", 14));

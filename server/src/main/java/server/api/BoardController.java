@@ -160,7 +160,7 @@ public class BoardController {
     }
 
     /**
-     * Gets all tags of the board with {@code boardId} from its repository
+     * Gets all tags of the board with {@code boardId} from its repository.
      *
      * @param boardId   id of the board from which tags need to be retrieved
      * @return          ResponseEntity containing a list of all tags of the board
