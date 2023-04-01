@@ -155,7 +155,7 @@ public class BoardController {
             tags.add(saved);
             board.setTags(tags);
         }
-        boardService.save(board);
+        board = boardService.save(board);
 
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
         return ResponseEntity.ok(saved);
