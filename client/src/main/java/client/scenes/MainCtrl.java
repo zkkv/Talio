@@ -67,6 +67,10 @@ public class MainCtrl {
     private AdminOverviewCtrl adminOverviewCtrl;
     private Scene adminOverview;
 
+    private CardDetailsCtrl cardDetailsCtrl;
+
+    private Scene cardDetails;
+
     private TagsListCtrl tagsListCtrl;
     private Scene tagsList;
 
@@ -82,9 +86,9 @@ public class MainCtrl {
                            Pair<JoinBoardCtrl,Parent> joinBoard,
                            Pair<AdminLoginCtrl,Parent> adminLogin,
                            Pair<AdminOverviewCtrl,Parent> adminOverview,
+                           Pair<CardDetailsCtrl, Parent> cardDetails,
                            Pair<TagsListCtrl,Parent> tagsList) {
         this.primaryStage = primaryStage;
-
         addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
@@ -121,6 +125,9 @@ public class MainCtrl {
 
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminOverview = new Scene(adminOverview.getValue());
+
+        this.cardDetailsCtrl = cardDetails.getKey();
+        this.cardDetails = new Scene(cardDetails.getValue());
 
         this.tagsListCtrl = tagsList.getKey();
         this.tagsList = new Scene(tagsList.getValue());
@@ -209,6 +216,12 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+
+    public void showCardDetails(String title) {
+        primaryStage.setTitle("Talio: Card Details");
+        cardDetailsCtrl.setTitle(title);
+        primaryStage.setScene(cardDetails);
     }
 
     public void setMinSize(){
