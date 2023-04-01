@@ -62,7 +62,8 @@ public class BoardOverviewCtrl implements Initializable {
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
                              ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
-                             BoardUserIdentifier boardUserIdentifier, CardDetailsCtrl cardDetailsCtrl) {
+                             BoardUserIdentifier boardUserIdentifier,
+                             CardDetailsCtrl cardDetailsCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;

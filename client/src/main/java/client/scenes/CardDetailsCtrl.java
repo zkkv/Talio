@@ -30,7 +30,9 @@ public class CardDetailsCtrl {
     private Button saveDescriptionButton;
 
     @Inject
-    public CardDetailsCtrl(BoardOverviewService boardOverviewService, BoardUserIdentifier boardUserIdentifier, MainCtrl mainCtrl) {
+    public CardDetailsCtrl(BoardOverviewService boardOverviewService,
+                           BoardUserIdentifier boardUserIdentifier,
+                           MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.boardUserIdentifier = boardUserIdentifier;
         this.mainCtrl = mainCtrl;

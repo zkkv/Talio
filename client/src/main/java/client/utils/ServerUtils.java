@@ -204,7 +204,8 @@ public class ServerUtils {
 
     public Card updateCardDescription(long cardId, String description, Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-description/"+cardId+"/board/"+board.getId()) //
+                .target(server).path("api/card/update-description/"
+                        +cardId+"/board/"+board.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(description,APPLICATION_JSON), Card.class);
