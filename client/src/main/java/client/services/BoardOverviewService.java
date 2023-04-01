@@ -103,6 +103,10 @@ public class BoardOverviewService {
         return serverUtils.updateCardTitle(cardId, title,board);
     }
 
+    public Card updateCardDescription(long cardId, String description, Board board) {
+        return serverUtils.updateCardDescription(cardId, description, board);
+    }
+
     public void setServerAddress(String ip) {
         serverUtils.setServer(ip);
     }

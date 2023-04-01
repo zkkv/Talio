@@ -50,4 +50,16 @@ public class CardController {
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);
     }
+
+    @PutMapping("/update-description/{id}/board/{boardId}")
+    public ResponseEntity<Card> updateDescription(@RequestBody String description,
+                                                  @PathVariable("id") long id,
+                                                  @PathVariable("boardId") long boardId) {
+        Card card = cardService.getCard(id);
+        card.setDescription(description);
+        card = cardService.save(card);
+        Board board = boardService.getBoard((boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId, board);
+        return ResponseEntity.ok(card);
+    }
 }
