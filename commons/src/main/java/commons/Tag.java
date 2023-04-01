@@ -30,8 +30,7 @@ public class Tag {
         // for object mapper
     }
 
-    public Tag(long id, String title, int red, int green, int blue, List<Card> cards) {
-        this.id = id;
+    public Tag(String title, int red, int green, int blue, List<Card> cards) {
         this.title = title;
         this.red = red;
         this.green = green;
