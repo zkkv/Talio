@@ -34,5 +34,6 @@ public class MyModule implements Module {
         binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddTaskCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ListMenuCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CardDetailsCtrl.class).in(Scopes.SINGLETON);
     }
 }

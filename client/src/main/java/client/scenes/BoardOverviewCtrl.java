@@ -37,6 +37,8 @@ public class BoardOverviewCtrl implements Initializable {
 
     private final AddTaskCtrl addTaskCtrl;
 
+    private final CardDetailsCtrl cardDetailsCtrl;
+
     @FXML
     private HBox panel;
 
@@ -57,12 +59,14 @@ public class BoardOverviewCtrl implements Initializable {
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
                              ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
-                             BoardUserIdentifier boardUserIdentifier) {
+                             BoardUserIdentifier boardUserIdentifier,
+                             CardDetailsCtrl cardDetailsCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
         this.addTaskCtrl = addTaskCtrl;
+        this.cardDetailsCtrl = cardDetailsCtrl;
     }
 
     public void createList(Button addList) {
@@ -305,6 +309,7 @@ public class BoardOverviewCtrl implements Initializable {
         if (button != null) {
             vbox.getChildren().remove(button);
         }
+        cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         vbox.getChildren().add(card);
     }
 
@@ -322,16 +327,19 @@ public class BoardOverviewCtrl implements Initializable {
 
         cardMenu(vbox, card, menu, cardListId, cardEntity);
         task.setOnMouseClicked(event -> {
-            mainCtrl.showAddTask(task);
-            addTaskCtrl.configureEditButton(cardEntity);
+            if(event.getClickCount() == 2) {
+                cardDetailsCtrl.setCard(cardEntity);
+                mainCtrl.showCardDetails();
+            }
         });
 
         card.setOnDragDetected(event -> {
             Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            configureDragboardAndClipboard(vbox, card, task, event, db, content);
+            configureDragboardAndClipboard(vbox, card,
+                    task, event, db, content);
             boardOverviewService.removeCard(cardEntity,cardListId,
-                boardUserIdentifier.getCurrentBoard());
+                    boardUserIdentifier.getCurrentBoard());
         });
         return card;
     }

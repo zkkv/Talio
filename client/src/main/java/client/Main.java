@@ -46,8 +46,10 @@ public class Main extends Application {
             "client", "scenes", "StartPage.fxml");
         var addTask = FXML.load(AddTaskCtrl.class, "client", "scenes", "AddTask.fxml");
         var listMenu = FXML.load(ListMenuCtrl.class, "client", "scenes", "ListMenu.fxml");
+
         var createBoard = FXML.load(CreateBoardCtrl.class,
             "client", "scenes", "CreateBoard.fxml");
+
         var boardSettings = FXML.load(BoardSettingsCtrl.class,
             "client", "scenes", "BoardSettings.fxml");
         var joinBoard = FXML.load(JoinBoardCtrl.class,
@@ -55,10 +57,13 @@ public class Main extends Application {
         var userPage = FXML.load(UserPageCtrl.class,
             "client", "scenes", "UserPage.fxml");
 
+        var cardDetails = FXML.load(CardDetailsCtrl.class, "client", "scenes", "CardDetails.fxml");
+
+
         var mainCtrl =
             INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, board,
-            clientConnect, startPage, addTask, listMenu, createBoard,
-            boardSettings, userPage, joinBoard);
+                clientConnect, startPage, addTask, listMenu, createBoard,
+                boardSettings, userPage, joinBoard,cardDetails);
     }
 }
