@@ -56,4 +56,16 @@ public class Tag {
     public void setId(long id) {
         this.id = id;
     }
+
+    public int getRed() {
+        return red;
+    }
+
+    public int getGreen() {
+        return green;
+    }
+
+    public int getBlue() {
+        return blue;
+    }
 }
