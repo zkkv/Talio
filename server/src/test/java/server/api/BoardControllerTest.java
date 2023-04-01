@@ -225,4 +225,33 @@ class BoardControllerTest {
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(tag, actualResponse.getBody());
     }
+
+    @Test
+    public void testGetAllTagsIsNull() {
+        Board board = new Board();
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+
+        ResponseEntity<List<Tag>> actualResponse = boardController.getAllTags(1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetAllTagsEquals() {
+        Tag tag1 = new Tag("tag1", 1, 2, 3, null);
+        Tag tag2 = new Tag("tag2", 4, 5, 6, null);
+
+        List<Tag> expectedTags = new ArrayList<>(Arrays.asList(tag1, tag2));
+        Board board = new Board();
+        board.setTags(expectedTags);
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+
+        ResponseEntity<List<Tag>> actualResponse = boardController.getAllTags(1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(expectedTags, actualResponse.getBody());
+    }
 }

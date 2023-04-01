@@ -57,6 +57,10 @@ public class Tag {
         this.id = id;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public int getRed() {
         return red;
     }
