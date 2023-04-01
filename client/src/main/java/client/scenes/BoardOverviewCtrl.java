@@ -9,10 +9,13 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -327,15 +330,17 @@ public class BoardOverviewCtrl implements Initializable {
     private HBox makeNewCard(VBox vbox, String title, long cardListId, Card cardEntity) {
         HBox card = new HBox();
 
+        VBox icons = configureIcon(cardEntity);
         Label task = new Label(title);
         Button menu = new Button(":");
-        configureNewCard(cardEntity, card, task, menu);
+        configureNewCard(cardEntity, card, task, menu, icons);
 
         cardMenu(vbox, card, menu, cardListId, cardEntity, task);
         task.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2) {
                 mainCtrl.showCardDetails(title);
                 cardDetailsCtrl.setCard(cardEntity);
+                cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
             }
         });
 
@@ -349,6 +354,24 @@ public class BoardOverviewCtrl implements Initializable {
         return card;
     }
 
+    public VBox configureIcon(Card card) {
+        Image icon = new Image("img/descriptionIcon.png");
+        ImageView descriptionIcon = new ImageView(icon);
+        descriptionIcon.setFitWidth(15);
+        descriptionIcon.setFitHeight(15);
+        descriptionIcon.setPreserveRatio(true);
+
+        if(!card.hasDescription()) {
+            descriptionIcon.setVisible(false);
+        }
+
+        VBox vbox = new VBox(descriptionIcon);
+        vbox.setStyle("-fx-background-color: #DAD2BF;");
+        VBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
+
+        return vbox;
+    }
+
     private void configureDragboardAndClipboard(VBox vbox, HBox card, Label task,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
@@ -360,22 +383,29 @@ public class BoardOverviewCtrl implements Initializable {
         vbox.getChildren().remove(card);
     }
 
-    private void configureNewCard(Card cardEntity, HBox card, Label task, Button menu) {
-        card.getChildren().add(task);
+    private void configureNewCard(Card cardEntity, HBox card, Label task, Button menu, VBox icons) {
+        HBox iconsAndTask = new HBox(icons, task);
+        iconsAndTask.setPrefHeight(46);
+        iconsAndTask.setPrefWidth(120);
+        iconsAndTask.setMinHeight(46);
+        iconsAndTask.setMinWidth(120);
+        iconsAndTask.setStyle("-fx-border-color: black;");
+
+        card.getChildren().add(iconsAndTask);
         card.getChildren().add(menu);
         card.setAlignment(Pos.CENTER);
 
         menu.setPrefHeight(46);
         menu.setPrefWidth(20);
-        menu.setStyle("-fx-border-color: black" );
+        menu.setStyle("-fx-border-color: black; -fx-background-color: #DAD2BF;");
         menu.setMnemonicParsing(false);
 
         task.setAlignment(Pos.CENTER);
-        task.setPrefHeight(46);
-        task.setPrefWidth(120);
-        task.setMinHeight(46);
-        task.setMinWidth(120);
-        task.setStyle("-fx-border-color: black;" +"-fx-background-color: #DAD2BF;");
+        task.setPrefHeight(42);
+        task.setPrefWidth(100);
+        task.setMinHeight(42);
+        task.setMinWidth(100);
+        task.setStyle("-fx-background-color: #DAD2BF;");
         task.setId(String.valueOf(cardEntity.getId()));
     }
 

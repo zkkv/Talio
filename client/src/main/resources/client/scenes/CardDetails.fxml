@@ -28,24 +28,24 @@
                             <VBox.margin>
                                 <Insets left="5.0" />
                             </VBox.margin></Label>
-                        <TextArea prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
+                        <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
                             <VBox.margin>
                                 <Insets left="5.0" right="7.0" />
                             </VBox.margin>
                             <rotationAxis>
                                 <Point3D />
                             </rotationAxis></TextArea>
-                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save">
+                        <Button fx:id="saveDescriptionButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save">
                             <VBox.margin>
                                 <Insets left="5.0" />
                             </VBox.margin></Button>
                     </children>
                 </VBox>
                 <Separator prefWidth="200.0" />
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="600.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="582.0">
                     <children>
                         <Button layoutX="210.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
-                        <ScrollPane hbarPolicy="NEVER" layoutY="29.0" prefHeight="114.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="323.0" AnchorPane.topAnchor="29.0">
+                        <ScrollPane layoutY="29.0" prefHeight="117.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="315.0" AnchorPane.topAnchor="29.0">
                             <content>
                                 <VBox id="subtasks" fx:id="subtasks" minHeight="250.0" minWidth="272.0" spacing="2.0">
                                     <padding>
@@ -61,7 +61,6 @@
                         </Label>
                     </children>
                 </AnchorPane>
-                <Separator prefWidth="200.0" />
             </children>
             <padding>
                 <Insets bottom="5.0" top="5.0" />

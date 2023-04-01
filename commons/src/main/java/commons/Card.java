@@ -16,6 +16,9 @@ public class Card {
     private long id;
 
     private String title;
+
+    private String description;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<SubTask> subTasks;
 
@@ -24,10 +27,12 @@ public class Card {
 
     public Card(){
         subTasks = new ArrayList<>();
+        this.description = "";
     }
     public Card(String title){
         this.title = title;
         subTasks = new ArrayList<>();
+        this.description = "";
     }
 
     public boolean equals(Object obj) {
@@ -56,6 +61,18 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean hasDescription() {
+        return !description.equals("");
     }
 
     public List<SubTask> getTasks() {
