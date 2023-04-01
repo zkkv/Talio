@@ -2,7 +2,6 @@ package server.api;
 
 import commons.Board;
 import commons.Card;
-import commons.CardList;
 import commons.SubTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -96,7 +95,8 @@ public class SubTaskControllerTest {
         when(subTaskService.save(titleSubtask)).thenReturn(titleSubtask);
         when(boardService.getBoard(2L)).thenReturn(board);
 
-        ResponseEntity<SubTask> actualResponse = subTaskController.updateTitleSubTask("New Title",1L);
+        ResponseEntity<SubTask> actualResponse =
+                subTaskController.updateTitleSubTask("New Title",1L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(titleSubtask.getName(),actualResponse.getBody().getName());
     }
@@ -122,7 +122,6 @@ public class SubTaskControllerTest {
 
     @Test
     public void testDeleteCard(){
-        List<Card> cards = new ArrayList<>();
         SubTask subTaskToBeRemoved = new SubTask();
         subTaskToBeRemoved.setId(1L);
         Card card = new Card("Card");

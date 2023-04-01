@@ -96,6 +96,9 @@ public class BoardOverviewService {
         return serverUtils.getAllBoards();
     }
 
+    public User removeBoardForUser(Board board,String userName){
+        return serverUtils.removeBoardForUser(userName,board);
+    }
     public CardList updateCardListTitle(long cardListId, String title,Board board) {
         return serverUtils.updateCardListTitle(cardListId, title,board);
     }
@@ -126,5 +129,15 @@ public class BoardOverviewService {
     }
     public <T> void registerForUpdates(String dest, Class<T> type, Consumer<T> consumer){
         serverUtils.registerForMessages(dest,type,consumer);
+    }
+
+    /**
+     * Returns string with an admin password by calling a method in {@link ServerUtils}.
+     *
+     * @return      string with an admin password
+     * @author      Kirill Zhankov
+     */
+    public String getAdminPassword(){
+        return serverUtils.getAdminPassword();
     }
 }

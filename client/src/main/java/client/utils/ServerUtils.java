@@ -156,6 +156,14 @@ public class ServerUtils {
                 .get(new GenericType<Board>() {
                 });
     }
+    public User removeBoardForUser(String userName,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/users/"+userName) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(board, APPLICATION_JSON), User.class);
+    }
+
 
     public Response removeCardListFromBoard(CardList cardList, Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -275,6 +283,19 @@ public class ServerUtils {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Returns a string with an admin password obtained by a GET request.
+     *
+     * @return      string with the admin password
+     * @author      Kirill Zhankov
+     */
+    public String getAdminPassword(){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/users/admin") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<String>(){});
+    }
     public SubTask addSubTaskToCard(SubTask subTask, long cardId) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/card/" + cardId + "/tasks")
@@ -307,5 +328,4 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
-
 }

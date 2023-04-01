@@ -39,31 +39,34 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         var board = FXML.load(BoardOverviewCtrl.class,
-            "client", "scenes", "BoardOverview.fxml");
+                "client", "scenes", "BoardOverview.fxml");
         var clientConnect =
-            FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
+                FXML.load(ClientConnectCtrl.class, "client", "scenes", "ClientConnect.fxml");
         var startPage = FXML.load(StartPageCtrl.class,
-            "client", "scenes", "StartPage.fxml");
+                "client", "scenes", "StartPage.fxml");
         var addTask = FXML.load(AddTaskCtrl.class, "client", "scenes", "AddTask.fxml");
         var listMenu = FXML.load(ListMenuCtrl.class, "client", "scenes", "ListMenu.fxml");
-
         var createBoard = FXML.load(CreateBoardCtrl.class,
-            "client", "scenes", "CreateBoard.fxml");
-
+                "client", "scenes", "CreateBoard.fxml");
         var boardSettings = FXML.load(BoardSettingsCtrl.class,
-            "client", "scenes", "BoardSettings.fxml");
+                "client", "scenes", "BoardSettings.fxml");
         var joinBoard = FXML.load(JoinBoardCtrl.class,
-            "client", "scenes", "JoinBoard.fxml");
+                "client", "scenes", "JoinBoard.fxml");
         var userPage = FXML.load(UserPageCtrl.class,
-            "client", "scenes", "UserPage.fxml");
-
+                "client", "scenes", "UserPage.fxml");
+        var adminLogin = FXML.load(AdminLoginCtrl.class, "client", "scenes", "AdminLogin.fxml");
+        var adminOverview = FXML.load(AdminOverviewCtrl.class,
+                "client", "scenes", "AdminOverview.fxml");
         var cardDetails = FXML.load(CardDetailsCtrl.class, "client", "scenes", "CardDetails.fxml");
+        var tagList = FXML.load(TagsListCtrl.class,
+                "client", "scenes", "TagsList.fxml");
 
 
         var mainCtrl =
-            INJECTOR.getInstance(MainCtrl.class);
+                INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, board,
                 clientConnect, startPage, addTask, listMenu, createBoard,
-                boardSettings, userPage, joinBoard,cardDetails);
+                boardSettings, userPage, joinBoard, adminLogin, adminOverview, cardDetails,
+                tagList);
     }
 }

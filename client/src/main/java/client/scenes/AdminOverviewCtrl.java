@@ -1,30 +1,29 @@
 package client.scenes;
 
-
 import client.services.BoardOverviewService;
 import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Board;
-import commons.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class StartPageCtrl implements Initializable {
-
+public class AdminOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
     private final MainCtrl mainCtrl;
 
-    private BoardUserIdentifier boardUserIdentifier;
+    private BoardUserIdentifier boardIdentifier;
 
     @FXML
     private VBox boardList;
@@ -33,17 +32,16 @@ public class StartPageCtrl implements Initializable {
     private ScrollPane scrollPane;
 
     @Inject
-    public StartPageCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
-                         BoardUserIdentifier boardUserIdentifier) {
+    public AdminOverviewCtrl(BoardOverviewService boardOverviewService,
+                             MainCtrl mainCtrl, BoardUserIdentifier boardIdentifier) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
-        this.boardUserIdentifier = boardUserIdentifier;
+        this.boardIdentifier = boardIdentifier;
     }
 
     public void initBoardList(){
         boardList.getChildren().clear();
-        User user = boardUserIdentifier.getCurrentUser();
-        List<Board> boards = boardOverviewService.getUserBoards(user.getUserName());
+        List<Board> boards = boardOverviewService.getAllBoards();
         for(Board board:boards){
             GridPane boardTab = new GridPane();
             configureBoardTab(boardTab,board);
@@ -54,9 +52,7 @@ public class StartPageCtrl implements Initializable {
     public void configureBoardTab(GridPane gridPane,Board board){
         Label boardTitle = new Label();
         Button removeBoard = new Button();
-        Button leaveBoard = new Button();
         removeBoard.setText("X");
-        leaveBoard.setText("Bye");
         boardTitle.setText(board.getTitle());
         boardTitle.setFont(new Font(20.0));
 
@@ -65,47 +61,23 @@ public class StartPageCtrl implements Initializable {
             boardList.getChildren().remove(gridPane);
         });
 
-        leaveBoard.setOnMouseClicked(event -> {
-            boardOverviewService.removeBoardForUser(board,
-                    boardUserIdentifier.getCurrentUser().getUserName());
-            boardList.getChildren().remove(gridPane);
-        });
-
-
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
-        ColumnConstraints col3 = new ColumnConstraints();
-        col1.setPercentWidth(60);
+        col1.setPercentWidth(80);
         col2.setPercentWidth(20);
-        col3.setPercentWidth(20);
-        gridPane.getColumnConstraints().addAll(col1, col2, col3);
+        gridPane.getColumnConstraints().addAll(col1, col2);
         gridPane.add(boardTitle,0,0);
-        gridPane.add(leaveBoard,1,0);
-        gridPane.add(removeBoard,2,0);
+        gridPane.add(removeBoard,1,0);
         gridPane.setPadding(new Insets(10.0));
 
         gridPane.setOnMouseClicked(e->{
-            boardUserIdentifier.setCurrentBoard(board);
+            boardIdentifier.setCurrentBoard(board);
             mainCtrl.showBoardPage();
         });
     }
 
-    public void createNewBoard(){
-        mainCtrl.showCreateBoardPage();
-    }
-
-    //TODO check if you have already joined
-    public void joinNewBoard(){
-        mainCtrl.showJoinBoard();
-    }
-
-    /**
-     * Gets admin password from boardOverviewService and passes it to mainCtrl
-     *
-     * @author      Kirill Zhankov
-     */
-    public void loginAsAdmin(){
-        mainCtrl.showAdminLogin(boardOverviewService.getAdminPassword());
+    public void goBack(){
+        mainCtrl.showStartPage();
     }
 
     /**

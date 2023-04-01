@@ -30,8 +30,7 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage listMenuStage;
-
-    private Stage cardDetailsStage;
+    private Stage tagsListStage;
 
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
@@ -61,9 +60,18 @@ public class MainCtrl {
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoard;
 
+    private AdminLoginCtrl adminLoginCtrl;
+    private Scene adminLogin;
+
+    private AdminOverviewCtrl adminOverviewCtrl;
+    private Scene adminOverview;
+
     private CardDetailsCtrl cardDetailsCtrl;
 
     private Scene cardDetails;
+
+    private TagsListCtrl tagsListCtrl;
+    private Scene tagsList;
 
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
@@ -73,16 +81,14 @@ public class MainCtrl {
                            Pair<ListMenuCtrl, Parent> listMenu,
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
-                           Pair<UserPageCtrl, Parent> userPage,
-                           Pair<JoinBoardCtrl, Parent> joinBoard,
-                           Pair<CardDetailsCtrl, Parent> cardDetails) {
+                           Pair<UserPageCtrl,Parent> userPage,
+                           Pair<JoinBoardCtrl,Parent> joinBoard,
+                           Pair<AdminLoginCtrl,Parent> adminLogin,
+                           Pair<AdminOverviewCtrl,Parent> adminOverview,
+                           Pair<CardDetailsCtrl, Parent> cardDetails,
+                           Pair<TagsListCtrl,Parent> tagsList) {
         this.primaryStage = primaryStage;
-
-        /* Icon created by Freepik - Flaticon */
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+        addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -113,13 +119,34 @@ public class MainCtrl {
         this.joinBoardCtrl = joinBoard.getKey();
         this.joinBoard = new Scene(joinBoard.getValue());
 
+        this.adminLoginCtrl = adminLogin.getKey();
+        this.adminLogin = new Scene(adminLogin.getValue());
+
+        this.adminOverviewCtrl = adminOverview.getKey();
+        this.adminOverview = new Scene(adminOverview.getValue());
+
         this.cardDetailsCtrl = cardDetails.getKey();
         this.cardDetails = new Scene(cardDetails.getValue());
-        this.cardDetailsStage = new Stage();
-        this.cardDetailsStage.setScene(this.cardDetails);
+
+        this.tagsListCtrl = tagsList.getKey();
+        this.tagsList = new Scene(tagsList.getValue());
+        this.tagsListStage = new Stage();
+        this.tagsListStage.setScene(this.tagsList);
 
         showClientConnectPage();
         primaryStage.show();
+    }
+
+    /**
+     * Adds the icons to the application
+     * @param primaryStage the stage from where we get the icons
+     */
+    private static void addIcons(Stage primaryStage) {
+        /* Icon created by Freepik - Flaticon */
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void showClientConnectPage() {
@@ -129,12 +156,12 @@ public class MainCtrl {
 
     }
 
-    public void showUserPage() {
+    public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
     }
 
-    public void showJoinBoard() {
+    public void showJoinBoard(){
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
     }
@@ -156,7 +183,7 @@ public class MainCtrl {
         primaryStage.setScene(board);
     }
 
-    public void subscribeForUpdates(Board board) {
+    public void subscribeForUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
@@ -173,37 +200,68 @@ public class MainCtrl {
         primaryStage.setScene(boardSettings);
     }
 
-    public void changeName(Label label, String title) {
+    public void changeName(Label label, String title){
         label.setText(title);
     }
 
-    public void showListMenu(Button button, CardList cardList, BorderPane borderPane) {
+    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
         listMenuCtrl.setCardListBorderPane(cardList, borderPane);
-        if (!listMenuStage.isShowing()) {
+        if(!listMenuStage.isShowing()){
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
         }
-        else {
+        else{
             listMenuStage.hide();
         }
     }
 
-    public void showCardDetails() {
-        cardDetailsStage.setTitle("Talio: Card Details");
-        cardDetailsStage.show();
+    public void showCardDetails(String title) {
+        primaryStage.setTitle("Talio: Card Details");
+        cardDetailsCtrl.setTitle(title);
+        primaryStage.setScene(cardDetails);
     }
 
-    public void setMinSize() {
+    public void setMinSize(){
         primaryStage.setMinHeight(550);
         primaryStage.setMinWidth(800);
     }
-
-    public void setMinSizeForCardDetails() {
+    public void setMinSizeForCardDetails(){
         primaryStage.setMinHeight(170);
         primaryStage.setMinWidth(297);
     }
-
-    public void closeMenu() {
+    public void closeMenu (){
         listMenuStage.hide();
     }
+
+    /**
+     * Sets the scene to adminLogin and passes the admin password to adminLoginCtrl
+     *
+     * @param pass  String with the admin password
+     * @author      Kirill Zhankov
+     */
+    public void showAdminLogin(String pass){
+        primaryStage.setTitle("Talio: Admin Login");
+        primaryStage.setScene(adminLogin);
+        adminLoginCtrl.setPass(pass);
+    }
+
+    public void showAdminOverview(){
+        primaryStage.setTitle("Talio: Admin Overview");
+        primaryStage.setScene(adminOverview);
+        adminOverviewCtrl.initBoardList();
+    }
+
+    /**
+     * Pops up a scene with all the tags in the current board
+     */
+    public void showAllTagsList() {
+        if(!tagsListStage.isShowing()){
+            tagsListStage.setTitle("Talio: Tag List");
+            tagsListStage.show();
+        }
+        else{
+            tagsListStage.hide();
+        }
+    }
+
 }

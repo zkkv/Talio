@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.services.BoardOverviewService;
-import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.SubTask;
@@ -14,21 +13,29 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class CardDetailsCtrl {
+
     private final BoardOverviewService boardOverviewService;
+
     private final MainCtrl mainCtrl;
+
+    @FXML
+    private Label title;
+
     @FXML
     private VBox subtasks;
-    private Card card;
 
-    private final BoardUserIdentifier boardUserIdentifier;
+    private Card card;
 
 
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
-                           MainCtrl mainCtrl, BoardUserIdentifier boardUserIdentifier) {
+                           MainCtrl mainCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
-        this.boardUserIdentifier = boardUserIdentifier;
+    }
+
+    public void setTitle(String title) {
+        this.title.setText(title);
     }
 
 
@@ -116,6 +123,4 @@ public class CardDetailsCtrl {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
     }
-
-
 }
