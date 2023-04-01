@@ -128,14 +128,21 @@ public class BoardOverviewCtrl implements Initializable {
         boardTitle.setText(boardUserIdentifier.getCurrentBoard().getTitle());
     }
 
-    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card) {
+    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card,
+                         Label task) {
         ContextMenu menu = new ContextMenu();
+        MenuItem edit = new MenuItem("Edit card");
         MenuItem remove = new MenuItem("Remove card");
-        configureCardMenu(button, menu, remove);
+        configureCardMenu(button, menu, remove, edit);
 
         remove.setOnAction(event -> {
             vbox.getChildren().remove(hbox);
             boardOverviewService.removeCard(card,cardListId, boardUserIdentifier.getCurrentBoard());
+        });
+
+        edit.setOnAction(event -> {
+            mainCtrl.showAddTask(task);
+            addTaskCtrl.configureEditButton(card);
         });
 
         button.setOnMouseClicked(event -> {
@@ -320,10 +327,11 @@ public class BoardOverviewCtrl implements Initializable {
         Button menu = new Button(":");
         configureNewCard(cardEntity, card, task, menu);
 
-        cardMenu(vbox, card, menu, cardListId, cardEntity);
+        cardMenu(vbox, card, menu, cardListId, cardEntity, task);
         task.setOnMouseClicked(event -> {
-            mainCtrl.showAddTask(task);
-            addTaskCtrl.configureEditButton(cardEntity);
+            if(event.getClickCount() == 2) {
+                mainCtrl.showCardDetails(title);
+            }
         });
 
         card.setOnDragDetected(event -> {
@@ -431,8 +439,9 @@ public class BoardOverviewCtrl implements Initializable {
         button.setContextMenu(cm);
     }
 
-
-    private void configureCardMenu(Button button, ContextMenu menu, MenuItem remove) {
+    private void configureCardMenu(Button button, ContextMenu menu, MenuItem remove,
+                                   MenuItem edit) {
+        menu.getItems().add(edit);
         menu.getItems().add(remove);
         menu.setStyle("-fx-border-color: black");
         button.setContextMenu(menu);
