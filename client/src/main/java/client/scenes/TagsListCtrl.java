@@ -17,7 +17,6 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Random;
 
-// TODO Retrieve old tags
 public class TagsListCtrl {
 
     private final TagsListService tagsListService;
@@ -51,7 +50,7 @@ public class TagsListCtrl {
 
     private void addRetrievedTags(Board currentBoard) {
         vbox.getChildren().clear();
-        var tags = currentBoard.getTags();
+        var tags = tagsListService.getAllTags(currentBoard.getId());
         for (Tag tag : tags) {
             drawTag(tag);
         }
@@ -70,6 +69,10 @@ public class TagsListCtrl {
     }
 
     private void configureTagButton(Button tagButton, Tag tag) {
+        tagButton.setOnAction(event -> {
+            // TODO Open scene with editing
+        });
+
         tagButton.setFocusTraversable(false);
         tagButton.setAlignment(Pos.CENTER);
         tagButton.setMnemonicParsing(false);
@@ -126,7 +129,6 @@ public class TagsListCtrl {
         Tag newTag = tagsListService.addTagToBoard(
                 new Tag("Tag", r, g, b, new ArrayList<>()),
                 boardUserIdentifier.getCurrentBoard().getId());
-        System.out.println(newTag.toString());
         drawTag(newTag);
     }
 

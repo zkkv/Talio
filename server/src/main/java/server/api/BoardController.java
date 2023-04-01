@@ -155,8 +155,20 @@ public class BoardController {
             tags.add(saved);
         }
         board = boardService.save(board);
-        //tag.setBoard(board);
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
         return ResponseEntity.ok(saved);
+    }
+
+    /**
+     * Gets all tags of the board with {@code boardId} from its repository
+     *
+     * @param boardId   id of the board from which tags need to be retrieved
+     * @return          ResponseEntity containing a list of all tags of the board
+     * @author          Kirill Zhankov
+     */
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<Tag>> getAllTags(@PathVariable("id") long boardId) {
+        Board board = boardService.getBoard(boardId);
+        return ResponseEntity.ok(board.getTags());
     }
 }

@@ -305,4 +305,20 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
+
+
+    /**
+     * Returns a list of all tags of a board with {@code boardId}
+     *
+     * @param boardId   id of the board to get the tags from
+     * @return          list of tags of the board
+     * @author          Kirill Zhankov
+     */
+    public List<Tag> getAllTags(long boardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + boardId + "/tags")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Tag>>() {});
+    }
 }

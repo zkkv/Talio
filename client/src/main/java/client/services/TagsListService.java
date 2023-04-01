@@ -4,6 +4,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Tag;
 
+import java.util.List;
+
 public class TagsListService {
 
     private final ServerUtils serverUtils;
@@ -24,5 +26,17 @@ public class TagsListService {
      */
     public Tag addTagToBoard(Tag tag, long boardId) {
         return serverUtils.addTagToBoard(tag, boardId);
+    }
+
+
+    /**
+     * Returns a list of all tags of a board with {@code boardId} using ServerUtils
+     *
+     * @param boardId   id of the board to get the tags from
+     * @return          list of tags of the board
+     * @author          Kirill Zhankov
+     */
+    public List<Tag> getAllTags(long boardId) {
+        return serverUtils.getAllTags(boardId);
     }
 }
