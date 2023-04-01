@@ -280,11 +280,29 @@ public class ServerUtils {
      * @return      string with the admin password
      * @author      Kirill Zhankov
      */
-    public String getAdminPassword(){
+    public String getAdminPassword() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/users/admin") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<String>(){});
+    }
+
+
+    /**
+     * Adds the provided {@code tag} to the tag list of the
+     * board with provided {@code boardId} using POST request.
+     *
+     * @param tag       Tag to be added
+     * @param boardId   id of the board to tag list of which tag should be add
+     * @return          Added tag
+     * @author          Kirill Zhankov
+     */
+    public Tag addTagToBoard(Tag tag, long boardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + boardId + "/add-tag")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
 }

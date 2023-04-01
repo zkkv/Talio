@@ -138,7 +138,7 @@ public class BoardController {
     }
 
     /**
-     * Adds tag to the board with specified {@code boardId}
+     * Adds tag to the board with specified {@code boardId}.
      *
      * @param tag       Tag to be added
      * @param boardId   boardId

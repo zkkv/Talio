@@ -14,7 +14,7 @@ public class TagService {
     }
 
     /**
-     * Saves {@code tag}  to {@link TagRepository}
+     * Saves {@code tag}  to {@link TagRepository}.
      *
      * @param tag   Tag to be saved
      * @return      Saved tag
