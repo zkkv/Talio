@@ -31,6 +31,8 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage listMenuStage;
 
+    private Stage cardDetailsStage;
+
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
 
@@ -59,6 +61,10 @@ public class MainCtrl {
     private JoinBoardCtrl joinBoardCtrl;
     private Scene joinBoard;
 
+    private CardDetailsCtrl cardDetailsCtrl;
+
+    private Scene cardDetails;
+
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -67,8 +73,9 @@ public class MainCtrl {
                            Pair<ListMenuCtrl, Parent> listMenu,
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
-                           Pair<UserPageCtrl,Parent> userPage,
-                           Pair<JoinBoardCtrl,Parent> joinBoard) {
+                           Pair<UserPageCtrl, Parent> userPage,
+                           Pair<JoinBoardCtrl, Parent> joinBoard,
+                           Pair<CardDetailsCtrl, Parent> cardDetails) {
         this.primaryStage = primaryStage;
 
         /* Icon created by Freepik - Flaticon */
@@ -106,6 +113,10 @@ public class MainCtrl {
         this.joinBoardCtrl = joinBoard.getKey();
         this.joinBoard = new Scene(joinBoard.getValue());
 
+        this.cardDetailsCtrl = cardDetails.getKey();
+        this.cardDetails = new Scene(cardDetails.getValue());
+        this.cardDetailsStage = new Stage();
+        this.cardDetailsStage.setScene(this.cardDetails);
 
         showClientConnectPage();
         primaryStage.show();
@@ -118,12 +129,12 @@ public class MainCtrl {
 
     }
 
-    public void showUserPage(){
+    public void showUserPage() {
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
     }
 
-    public void showJoinBoard(){
+    public void showJoinBoard() {
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
     }
@@ -145,7 +156,7 @@ public class MainCtrl {
         primaryStage.setScene(board);
     }
 
-    public void subscribeForUpdates(Board board){
+    public void subscribeForUpdates(Board board) {
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
@@ -162,30 +173,37 @@ public class MainCtrl {
         primaryStage.setScene(boardSettings);
     }
 
-    public void changeName(Label label, String title){
+    public void changeName(Label label, String title) {
         label.setText(title);
     }
 
-    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
+    public void showListMenu(Button button, CardList cardList, BorderPane borderPane) {
         listMenuCtrl.setCardListBorderPane(cardList, borderPane);
-        if(!listMenuStage.isShowing()){
+        if (!listMenuStage.isShowing()) {
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
         }
-        else{
+        else {
             listMenuStage.hide();
         }
     }
 
-    public void setMinSize(){
+    public void showCardDetails() {
+        cardDetailsStage.setTitle("Talio: Card Details");
+        cardDetailsStage.show();
+    }
+
+    public void setMinSize() {
         primaryStage.setMinHeight(550);
         primaryStage.setMinWidth(800);
     }
-    public void setMinSizeForCardDetails(){
+
+    public void setMinSizeForCardDetails() {
         primaryStage.setMinHeight(170);
         primaryStage.setMinWidth(297);
     }
-    public void closeMenu (){
+
+    public void closeMenu() {
         listMenuStage.hide();
     }
 }
