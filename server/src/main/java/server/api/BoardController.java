@@ -151,12 +151,11 @@ public class BoardController {
         Board board = boardService.getBoard(boardId);
 
         var tags = board.getTags();
-        if (tag == null) {
+        if (tags != null) {
             tags.add(saved);
-            board.setTags(tags);
         }
         board = boardService.save(board);
-
+        //tag.setBoard(board);
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
         return ResponseEntity.ok(saved);
     }

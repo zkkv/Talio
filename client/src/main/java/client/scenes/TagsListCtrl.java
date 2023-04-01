@@ -66,7 +66,9 @@ public class TagsListCtrl {
         configureTagBox(tagBox);
 
         tagBox.getChildren().add(tagButton);
-        vbox.getChildren().remove(vbox.getChildren().size() - 1);
+        if (!vbox.getChildren().isEmpty()) {
+            vbox.getChildren().remove(vbox.getChildren().size() - 1);
+        }
         vbox.getChildren().add(tagBox);
     }
 
