@@ -30,6 +30,16 @@ public class Tag {
         // for object mapper
     }
 
+    /**
+     * Tag constructor
+     *
+     * @param title text displayed for the tag
+     * @param red   red color component
+     * @param green green color component
+     * @param blue  blue color component
+     * @param cards list of cards having this tag
+     * @author      Kirill Zhankov
+     */
     public Tag(String title, int red, int green, int blue, List<Card> cards) {
         this.title = title;
         this.red = red;
