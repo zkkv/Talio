@@ -34,6 +34,9 @@ public class CardDetailsCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    public void closeCardDetails(){
+        mainCtrl.showBoardPage();
+    }
     public void setTitle(String title) {
         this.title.setText(title);
     }
