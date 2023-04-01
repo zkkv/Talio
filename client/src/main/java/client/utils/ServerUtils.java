@@ -291,10 +291,10 @@ public class ServerUtils {
 
     /**
      * Adds the provided {@code tag} to the tag list of the
-     * board with provided {@code boardId} using POST request.
+     * board with provided {@code boardId} using POST request and returns the tag.
      *
      * @param tag       Tag to be added
-     * @param boardId   id of the board to tag list of which tag should be add
+     * @param boardId   id of the board to tag list of which tag should be added
      * @return          Added tag
      * @author          Kirill Zhankov
      */
