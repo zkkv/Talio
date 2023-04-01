@@ -68,4 +68,8 @@ public class Tag {
     public int getBlue() {
         return blue;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }
