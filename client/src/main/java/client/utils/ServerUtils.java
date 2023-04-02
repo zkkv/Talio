@@ -55,7 +55,7 @@ public class ServerUtils {
 
     // This executor service allows for the client to wait for poll response using another thread
     // and not block the rest of the application.
-    private final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    private final ExecutorService EXEC = Executors.newCachedThreadPool();
     // See BoardController.
     private Map<Object, Consumer<Tag>> listeners = new HashMap<>();
 
@@ -334,10 +334,17 @@ public class ServerUtils {
     }
 
 
+    /**
+     * Long-polls the server on a dedicated thread for any tag updates on board with {@code boardId}.
+     * In case of a 200 OK, executes the consumer function.
+     * In case of 204 CONTENT resends the request.
+     *
+     * @param boardId   id of the board for which updates should be tracked
+     * @param consumer  consumer function which is executed once 200 OK response is received
+     * @see             client.scenes.TagsListCtrl#registerForTagUpdates(Board)
+     * @author          Kirill Zhankov
+     */
     public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
-
-        // TODO listeners map similar to server one
-
         System.out.println("ServerUtils Entry");
 
         // See EXEC description
@@ -353,14 +360,14 @@ public class ServerUtils {
                 var key = new Object();
                 listeners.put(key, consumer);
 
-                // If NO CONTENT, just poll again and wait...
+                // If 204 NO CONTENT, just poll again and wait...
                 if (res.getStatus() == 204) {
                     System.out.println("204");
                     continue;
                 }
 
                 // ...otherwise, tag has been returned, and we can draw it.
-                // See TagListCtrl.initialize() to better understand.
+                // See TagListCtrl.registerForTagUpdates() to better understand.
                 Tag tag = res.readEntity(Tag.class);
                 System.out.println("Got " + tag.toString());
                 listeners.remove(key);
@@ -374,6 +381,12 @@ public class ServerUtils {
     }
 
 
+    /**
+     * Stops the polling.
+     *
+     * @author  Kirill Zhankov
+     * @see     client.Main
+     */
     public void stopPolling() {
         System.out.println("Stopped polling");
         EXEC.shutdownNow();

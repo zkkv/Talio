@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class TagsListCtrl {
 
@@ -208,6 +209,15 @@ public class TagsListCtrl {
         addTagButton.setTooltip(tooltip);
     }
 
+
+    /**
+     * Registers for tag updates on the board {@code currentBoard} and draws the tag
+     * once there are any.
+     *
+     * @param currentBoard  board to register updates on
+     * @see                 client.utils.ServerUtils#registerForTagUpdates(long, Consumer)
+     * @author              Kirill Zhankov
+     */
     public void registerForTagUpdates(Board currentBoard) {
         // The lambda expression draws the tag once there is a response from the server.
         // See ServerUtils.registerForTagUpdates() to better understand.
@@ -226,6 +236,12 @@ public class TagsListCtrl {
                 });
     }
 
+
+    /**
+     * Stops the polling.
+     *
+     * @author Kirill Zhankov
+     */
     public void stopPolling() {
         tagsListService.stopPolling();
     }

@@ -2,6 +2,7 @@ package client.services;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Tag;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class TagsListService {
     public TagsListService(ServerUtils serverUtils) {
         this.serverUtils = serverUtils;
     }
+
 
     /**
      * Adds the provided {@code tag} to the tag list of the
@@ -42,10 +44,25 @@ public class TagsListService {
         return serverUtils.getAllTags(boardId);
     }
 
+
+    /**
+     * Registers for tag updates of a board with {@code boardId} and executes the {@code consumer}
+     * once there are any.
+     *
+     * @param boardId   id of the board for which updates should be tracked
+     * @param consumer  consumer function which is executed once there is an update
+     * @author          Kirill Zhankov
+     */
     public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
         serverUtils.registerForTagUpdates(boardId, consumer);
     }
 
+
+    /**
+     * Stops the polling.
+     *
+     * @author Kirill Zhankov
+     */
     public void stopPolling() {
         serverUtils.stopPolling();
     }

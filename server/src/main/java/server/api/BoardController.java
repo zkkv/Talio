@@ -147,7 +147,8 @@ public class BoardController {
     }
 
     /**
-     * Adds tag to the board with specified {@code boardId}.
+     * Adds tag to the board with specified {@code boardId}. Notifies all listeners subscribed
+     * for the updates about the added tag.
      *
      * @param tag       Tag to be added
      * @param boardId   boardId
@@ -184,6 +185,15 @@ public class BoardController {
     }
 
 
+    /**
+     * Returns response with the added tag or, in case of a timeout, 204 NO CONTENT.
+     * Populates listeners with responses which are set to 200 OK once {@link #addTag(Tag, long)}
+     * is called.
+     *
+     * @param boardId   board to get updates from
+     * @return          200 OK response with the tag or 204 NO CONTENT in case of a timeout
+     * @author          Kirill Zhankov
+     */
     @GetMapping("/{id}/tags/updates")
     public DeferredResult<ResponseEntity<Tag>> getTagUpdates(@PathVariable("id") long boardId) {
         System.out.println("getTagUpdates start");
