@@ -89,7 +89,7 @@ public class CardDetailsCtrl {
         subTask.getChildren().add(delete);
         editSubTask(task, subTask, rename, text, delete, name);
         subtasks.getChildren().add(subTask);
-        }
+    }
 
     public void checkboxSetUp(SubTask subTask, CheckBox checkBox, boolean checked) {
         checkBox.selectedProperty().set(checked);
