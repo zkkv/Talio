@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="277.0" prefWidth="215.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagsListCtrl">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagsListCtrl">
     <children>
-        <VBox prefHeight="273.0" prefWidth="215.0">
+        <VBox layoutX="43.0" layoutY="20.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="250.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="42.0">
             <children>
-                <Label alignment="CENTER" prefHeight="33.0" prefWidth="215.0" text="Tags list">
+                <Label alignment="CENTER" maxWidth="-Infinity" prefHeight="33.0" prefWidth="311.0" text="Tags list" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="80">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-                <Line endX="114.626220703125" startX="-100.0">
-                    <rotationAxis>
-                        <Point3D />
-                    </rotationAxis>
-                </Line>
-            <ScrollPane prefHeight="240.0" prefWidth="215.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="350.0" prefWidth="250.0" vbarPolicy="ALWAYS">
                <content>
-                      <VBox prefHeight="235.0" prefWidth="210.0" />
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                            <VBox fx:id="vbox" alignment="TOP_CENTER" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
                </content>
             </ScrollPane>
             </children>

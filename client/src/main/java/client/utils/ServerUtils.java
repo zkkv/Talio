@@ -21,13 +21,18 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import com.google.inject.Singleton;
 import commons.*;
 import jakarta.ws.rs.core.Response;
+import javafx.application.Platform;
 import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -47,6 +52,11 @@ public class ServerUtils {
 
     private StompSession session;
 
+    // This executor service allows for the client to wait for poll response using another thread
+    // and not block the rest of the application.
+    private final ExecutorService EXEC = Executors.newCachedThreadPool();
+    // See BoardController.
+    private Map<Object, Consumer<Tag>> listeners = new HashMap<>();
 
     public void setServer(String ip) {
         this.server ="http://"+ ip;
@@ -246,7 +256,7 @@ public class ServerUtils {
     }
 
     public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
-        System.out.println("Inside registerForMessages    ");
+        //System.out.println("Inside registerForMessages    ");
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -269,7 +279,7 @@ public class ServerUtils {
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
-            System.out.println("Inside try connect");
+            //System.out.println("Inside try connect");
             return stomp.connect(url, new StompSessionHandlerAdapter() {
             }).get();
 
@@ -289,13 +299,103 @@ public class ServerUtils {
      * @return      string with the admin password
      * @author      Kirill Zhankov
      */
-    public String getAdminPassword(){
+    public String getAdminPassword() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/users/admin") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<String>(){});
     }
+
+
+    /**
+     * Adds the provided {@code tag} to the tag list of the
+     * board with provided {@code boardId} using POST request and returns the tag.
+     *
+     * @param tag       Tag to be added
+     * @param boardId   id of the board to tag list of which tag should be added
+     * @return          Added tag
+     * @author          Kirill Zhankov
+     */
+    public Tag addTagToBoard(Tag tag, long boardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + boardId + "/add-tag")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
+
+
+    /**
+     * Returns a list of all tags of a board with {@code boardId}.
+     *
+     * @param boardId   id of the board to get the tags from
+     * @return          list of tags of the board
+     * @author          Kirill Zhankov
+     */
+    public List<Tag> getAllTags(long boardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(server).path("api/boards/" + boardId + "/tags")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<Tag>>() {});
+    }
+
+
+    /**
+     * Long-polls the server on a dedicated thread for any tag updates on
+     * board with {@code boardId}.
+     * In case of a 200 OK, executes the consumer function.
+     * In case of 204 CONTENT resends the request.
+     *
+     * @param boardId   id of the board for which updates should be tracked
+     * @param consumer  consumer function which is executed once 200 OK response is received
+     * @see             client.scenes.TagsListCtrl#registerForTagUpdates(Board)
+     * @author          Kirill Zhankov
+     */
+    public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
+
+        // See EXEC description
+        EXEC.submit(() -> {
+            while (!Thread.interrupted()) {
+                Response res = ClientBuilder.newClient(new ClientConfig())
+                        .target(server).path("api/boards/" + boardId + "/tags/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+
+                var key = new Object();
+                listeners.put(key, consumer);
+
+                // If 204 NO CONTENT, just poll again and wait...
+                if (res.getStatus() == 204) {
+                    continue;
+                }
+
+                // ...otherwise, tag has been returned, and we can draw it.
+                // See TagListCtrl.registerForTagUpdates() to better understand.
+                Tag tag = res.readEntity(Tag.class);
+                listeners.remove(key);
+
+                Platform.runLater(() -> {
+                    consumer.accept(tag);
+                });
+            }
+        });
+    }
+
+
+    /**
+     * Stops the polling.
+     *
+     * @author  Kirill Zhankov
+     * @see     client.Main
+     */
+    public void stopPolling() {
+        EXEC.shutdownNow();
+    }
+
+
     public SubTask addSubTaskToCard(SubTask subTask, long cardId) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/card/" + cardId + "/tasks")
@@ -303,6 +403,8 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(subTask, APPLICATION_JSON), SubTask.class);
     }
+
+
     public SubTask updateTitleSubTask(long taskId, String title) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/subTask/update-titleTask/" + taskId) //
@@ -311,6 +413,7 @@ public class ServerUtils {
                 .put(Entity.entity(title, APPLICATION_JSON), SubTask.class);
     }
 
+
     public SubTask updateIsChecked(long taskId, boolean checked) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(server).path("api/subTask/update-checkbox-Task/" + taskId) //
@@ -318,6 +421,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(checked, APPLICATION_JSON), SubTask.class);
     }
+
 
     public Response removeSubTask(SubTask subTask, long cardId) {
         return ClientBuilder.newClient(new ClientConfig()) //

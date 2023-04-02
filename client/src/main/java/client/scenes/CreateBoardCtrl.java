@@ -28,7 +28,7 @@ public class CreateBoardCtrl {
     public void createBoard(){
         User user = boardUserIdentifier.getCurrentUser();
         Board board = boardOverviewService.createBoard(boardTitle.getText(),user.getUserName());
-        mainCtrl.subscribeForUpdates(board);
+        mainCtrl.subscribeForAllUpdates(board);
         mainCtrl.showStartPage();
     }
 }

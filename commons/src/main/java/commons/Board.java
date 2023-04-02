@@ -80,4 +80,12 @@ public class Board {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 }
