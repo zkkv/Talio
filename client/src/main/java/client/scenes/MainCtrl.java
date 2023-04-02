@@ -187,7 +187,7 @@ public class MainCtrl {
         primaryStage.setScene(board);
     }
 
-    public void subscribeForUpdates(Board board){
+    public void subscribeForAllUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
         tagsListCtrl.registerForTagUpdates(board);
     }

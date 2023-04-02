@@ -33,7 +33,7 @@ public class JoinBoardCtrl {
         boardIdentifier.setCurrentUser(user);
         Board board = boardOverviewService.getBoardByKey(boardKey.getText());
         boardIdentifier.setCurrentBoard(board);
-        mainCtrl.subscribeForUpdates(board);
+        mainCtrl.subscribeForAllUpdates(board);
         mainCtrl.showBoardPage();
     }
 }
