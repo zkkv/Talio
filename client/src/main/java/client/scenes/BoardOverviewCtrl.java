@@ -280,7 +280,7 @@ public class BoardOverviewCtrl implements Initializable {
                 success = true;
             }
             event.setDropCompleted(success);
-            //event.consume();
+            event.consume();
         });
     }
 
