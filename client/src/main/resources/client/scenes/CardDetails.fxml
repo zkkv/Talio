@@ -27,14 +27,14 @@
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin></Label>
-                  <TextArea prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
+                  <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
                      <VBox.margin>
                         <Insets left="5.0" right="7.0" />
                      </VBox.margin>
                      <rotationAxis>
                         <Point3D />
                      </rotationAxis></TextArea>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save">
+                  <Button fx:id="saveDescriptionButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save">
                      <VBox.margin>
                         <Insets left="5.0" />
                      </VBox.margin></Button>

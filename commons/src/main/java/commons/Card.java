@@ -17,6 +17,8 @@ public class Card {
 
     private String title;
 
+    private String description;
+
     @ManyToMany
     private List<Tag> tags;
 
@@ -26,6 +28,7 @@ public class Card {
 
     public Card(String title){
         this.title = title;
+        this.description = "";
     }
 
     public boolean equals(Object obj) {
@@ -54,5 +57,17 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean hasDescription() {
+        return !description.equals("");
     }
 }
