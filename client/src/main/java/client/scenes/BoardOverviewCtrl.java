@@ -341,6 +341,7 @@ public class BoardOverviewCtrl implements Initializable {
                 mainCtrl.showCardDetails(title);
                 cardDetailsCtrl.setCard(cardEntity);
                 cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
+                cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
             }
         });
 
