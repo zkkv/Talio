@@ -14,14 +14,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class TagsListCtrl {
 
     private final TagsListService tagsListService;
     private final MainCtrl mainCtrl;
     private final BoardUserIdentifier boardUserIdentifier;
+
+    private Set<Tag> drawnTags;
 
     @FXML
     private VBox vbox;
@@ -41,6 +42,7 @@ public class TagsListCtrl {
         this.tagsListService = tagsListService;
         this.mainCtrl = mainCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
+        drawnTags = new HashSet<>();
     }
 
 
@@ -52,7 +54,6 @@ public class TagsListCtrl {
     public void drawTags() {
         vbox.setAlignment(Pos.TOP_CENTER);
         addRetrievedTags(boardUserIdentifier.getCurrentBoard());
-        //registerForTagUpdates(boardUserIdentifier.getCurrentBoard());
     }
 
 
@@ -68,6 +69,7 @@ public class TagsListCtrl {
         var tags = tagsListService.getAllTags(currentBoard.getId());
         for (Tag tag : tags) {
             drawTag(tag);
+            drawnTags.add(tag);
         }
         drawAddTagButton();
     }
@@ -187,6 +189,7 @@ public class TagsListCtrl {
                 new Tag("Tag", r, g, b, new ArrayList<>()),
                 boardUserIdentifier.getCurrentBoard().getId());
         drawTag(newTag);
+        drawnTags.add(newTag);
     }
 
 
@@ -214,7 +217,11 @@ public class TagsListCtrl {
                 tag -> {
                     System.out.println("Consumer start");
                     System.out.println(tag.toString());
-                    addRetrievedTags(currentBoard);
+                    if (!drawnTags.contains(tag)) {
+                        vbox.getChildren().remove(vbox.getChildren().size() - 1);
+                        drawTag(tag);
+                        drawAddTagButton();
+                    }
                     System.out.println("Consumer end");
                 });
     }
