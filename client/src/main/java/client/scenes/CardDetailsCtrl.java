@@ -5,8 +5,10 @@ import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.SubTask;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CardDetailsCtrl {
@@ -40,6 +43,12 @@ public class CardDetailsCtrl {
 
     @FXML
     private Button saveDescriptionButton;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label percent;
 
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
@@ -67,27 +76,40 @@ public class CardDetailsCtrl {
         SubTask subTask = new SubTask();
         subTask = boardOverviewService.addSubTask(subTask, card.getId());
         subTaskSetUp(subTask, "SubTask", false);
+
+        updateProgressBar();
     }
 
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
         subTask.setAlignment(Pos.CENTER_LEFT);
+
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
+
         Label name = new Label(taskName);
         name.setPrefWidth(150);
+
         TextField text = new TextField();
         text.setPrefWidth(150);
+
         subTask.getChildren().add(checkBox);
+
         Button delete = new Button("x");
         delete.setOnAction(event -> {
             deleteSubTask(task, subTask);
         });
+
         Button rename = new Button("rename");
+
         subTask.getChildren().add(name);
+
         editSubTaskMessage(name);
+
         subTask.getChildren().add(delete);
+
         editSubTask(task, subTask, rename, text, delete, name);
+
         subtasks.getChildren().add(subTask);
     }
 
@@ -95,9 +117,12 @@ public class CardDetailsCtrl {
         checkBox.selectedProperty().set(checked);
         checkBox.setPrefHeight(36);
         checkBox.setPrefWidth(36);
+
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             subTask.setChecked(!checked);
             boardOverviewService.updateCheckboxTask(subTask.getId(), !checked);
+
+            updateProgressBar();
         });
     }
 
@@ -164,5 +189,25 @@ public class CardDetailsCtrl {
         descriptionField.setText(card.getDescription());
     }
 
+    public void updateProgressBar() {
+        int numberOfChecked = 0;
+
+        for(Node node : subtasks.getChildren()) {
+            if(node instanceof HBox) {
+                HBox subTask = (HBox) node;
+                CheckBox checkBox = (CheckBox) subTask.getChildren().get(0);
+                if(checkBox.isSelected()) {
+                    numberOfChecked++;
+                }
+            }
+        }
+
+        int numberOfSubTasks = subtasks.getChildren().size();
+        double progress = (double) numberOfChecked / numberOfSubTasks;
+        progressBar.setProgress(progress);
+
+        String progressText = String.format("%.1f", progress * 100);
+        percent.setText(progressText + "%");
+    }
 
 }

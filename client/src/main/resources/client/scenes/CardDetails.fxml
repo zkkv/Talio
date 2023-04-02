@@ -4,10 +4,12 @@
 <?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -61,6 +63,16 @@
                         </Label>
                     </children>
                 </AnchorPane>
+            <HBox prefHeight="17.0" prefWidth="600.0">
+               <children>
+                  <ProgressBar fx:id="progressBar" prefHeight="17.0" prefWidth="286.0" progress="0.0" />
+                  <Label fx:id="percent" text="0.0%">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
             </children>
             <padding>
                 <Insets bottom="5.0" top="5.0" />
