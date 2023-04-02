@@ -94,6 +94,7 @@ public class CardDetailsCtrl {
         subTask.getChildren().add(delete);
         editSubTask(task, subTask, rename, text, delete, name);
         subtasks.getChildren().add(subTask);
+        rearrange(subTask,task);
     }
 
     public void checkboxSetUp(SubTask subTask, CheckBox checkBox, boolean checked) {
@@ -217,10 +218,13 @@ public class CardDetailsCtrl {
                 //if it is not dropped on an element from the list
                 if (dropIndex < 0) {
                     vbox.getChildren().add(vbox.getChildren().size(), hbox);
-                    this.card.getTasks().add(vbox.getChildren().size(), subTask);
+                    this.card.getTasks().add(vbox.getChildren().size()-1, subTask);
 
-                } else vbox.getChildren().add(dropIndex, hbox);
-                this.card.getTasks().add(dropIndex, subTask);
+                } else {
+                    vbox.getChildren().add(dropIndex, hbox);
+                    this.card.getTasks().add(dropIndex, subTask);
+                }
+
             }
             success = true;
             event.setDropCompleted(success);
