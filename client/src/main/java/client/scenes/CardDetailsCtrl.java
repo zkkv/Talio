@@ -189,7 +189,8 @@ public class CardDetailsCtrl {
     }
 
     /**
-     * Updates the progress bar when a subtask is added/removed and when a checkbox is checked/unchecked.
+     * Updates the progress bar when a subtask is added/removed and when a checkbox is
+     * checked/unchecked.
      *
      * @author Diana Sutac
      */
