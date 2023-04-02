@@ -109,4 +109,22 @@ public class CardListController {
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);
     }
+
+    @DeleteMapping("/remove-card-list/{listId}/remove-card-from-list/{cardId}/board/{boardId}")
+    public ResponseEntity<Card> removeCardFromList(@PathVariable(name = "listId") long listId,
+                                           @PathVariable(name = "cardId") long cardId,
+                                           @PathVariable("boardId") long boardId) {
+        if(listId < 0 || !cardListService.exists(listId)||
+            cardId < 0 || !cardService.exists(cardId)){
+            return ResponseEntity.notFound().build();
+        }
+        CardList list = cardListService.getCardList(listId);
+        Card card = cardService.getCard(cardId);
+        list.getCards().remove(card);
+        cardListService.save(list);
+        //cardService.delete(cardId);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
+        return ResponseEntity.ok(card);
+    }
 }

@@ -348,8 +348,8 @@ public class BoardOverviewCtrl implements Initializable {
         card.setOnDragDetected(event -> {
             Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            configureDragboardAndClipboard(vbox, card, task, event, db, content);
-            boardOverviewService.removeCard(cardEntity,cardListId,
+            configureDragboardAndClipboard(vbox, card, cardEntity, event, db, content);
+            boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
         });
         return card;
@@ -395,10 +395,10 @@ public class BoardOverviewCtrl implements Initializable {
         return vbox;
     }
 
-    private void configureDragboardAndClipboard(VBox vbox, HBox card, Label task,
+    private void configureDragboardAndClipboard(VBox vbox, HBox card, Card cardEntity,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
-        content.putString(task.getText());
+        content.putString(Long.toString(cardEntity.getId()));
         db.setContent(content);
         db.setDragView(card.snapshot(null, null));
         event.consume();

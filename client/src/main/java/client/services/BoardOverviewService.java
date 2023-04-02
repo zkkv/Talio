@@ -68,6 +68,10 @@ public class BoardOverviewService {
         serverUtils.removeCardFromList(card, cardListId,board);
     }
 
+    public void removeCardWhenDragged(Card card, long cardListId,Board board) {
+        serverUtils.removeCardFromListWhenDragged(card, cardListId,board);
+    }
+
     public void removeCardList(CardList cardList,Board board) {
         serverUtils.removeCardListFromBoard(cardList,board);
     }
