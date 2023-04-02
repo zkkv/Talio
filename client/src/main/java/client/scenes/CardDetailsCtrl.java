@@ -196,8 +196,6 @@ public class CardDetailsCtrl {
         vbox.getChildren().remove(hbox);
         this.card.getTasks().remove(subTask);
         configureCardListVBoxOnDragDropped(subTask, hbox, vbox);
-        //boardOverviewService.updateCardSubTasks( card.getId(),card.getTasks(), boardUserIdentifier.getCurrentBoard());
-
     }
 
     private void configureCardListVBoxOnDragDropped(SubTask subTask, HBox hbox, VBox vbox) {
@@ -231,7 +229,9 @@ public class CardDetailsCtrl {
             event.consume();
         });
     }
-
+    public void saveSubTaskOrder(){
+        boardOverviewService.updateCardSubTasks( this.card.getId(),this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
+    }
 
 
 }
