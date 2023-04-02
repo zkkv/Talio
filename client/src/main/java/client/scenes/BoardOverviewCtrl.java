@@ -280,7 +280,7 @@ public class BoardOverviewCtrl implements Initializable {
                 success = true;
             }
             event.setDropCompleted(success);
-            event.consume();
+            //event.consume();
         });
     }
 
@@ -354,6 +354,14 @@ public class BoardOverviewCtrl implements Initializable {
             configureDragboardAndClipboard(vbox, card, cardEntity, event, db, content);
             boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
+        });
+
+        card.setOnDragDone(event -> {
+            if (!event.getGestureSource().getClass().equals(HBox.class)) {
+                boardOverviewService.removeCard(cardEntity,cardListId,
+                    boardUserIdentifier.getCurrentBoard());
+                event.consume();
+            }
         });
 
 
