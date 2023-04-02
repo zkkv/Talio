@@ -365,9 +365,20 @@ public class BoardOverviewCtrl implements Initializable {
             descriptionIcon.setVisible(false);
         }
 
-        VBox vbox = new VBox(descriptionIcon);
+        Label progressOfSubTasks = new Label();
+        if(cardDetailsCtrl.getProgress() < 1) {
+            progressOfSubTasks.setText(cardDetailsCtrl.getProgress() + "%");
+        }
+        else {
+            progressOfSubTasks.setText("Done");
+        }
+        progressOfSubTasks.setAlignment(Pos.CENTER);
+        progressOfSubTasks.setMinWidth(30);
+
+        VBox vbox = new VBox(progressOfSubTasks, descriptionIcon);
         vbox.setStyle("-fx-background-color: #DAD2BF;");
         VBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
+        vbox.setSpacing(3);
 
         return vbox;
     }

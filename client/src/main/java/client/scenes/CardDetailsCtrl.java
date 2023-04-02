@@ -48,7 +48,7 @@ public class CardDetailsCtrl {
     private ProgressBar progressBar;
 
     @FXML
-    private Label percent;
+    private ProgressIndicator progressIndicator;
 
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
@@ -166,6 +166,8 @@ public class CardDetailsCtrl {
     public void deleteSubTask(SubTask task, HBox subTask) {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
+
+        updateProgressBar();
     }
     public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
         saveDescriptionButton.setOnAction(event -> {
@@ -205,9 +207,13 @@ public class CardDetailsCtrl {
         int numberOfSubTasks = subtasks.getChildren().size();
         double progress = (double) numberOfChecked / numberOfSubTasks;
         progressBar.setProgress(progress);
+        progressIndicator.setProgress(progress);
+    }
 
-        String progressText = String.format("%.1f", progress * 100);
-        percent.setText(progressText + "%");
+    public int getProgress() {
+        double progress = progressBar.getProgress() * 100;
+        int progressText = (int) progress;
+        return progressText;
     }
 
 }
