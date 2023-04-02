@@ -147,7 +147,7 @@ public class CardListControllerTest {
         when(cardService.save(savedCard)).thenReturn(savedCard);
         when(cardListService.getCardList(1L)).thenReturn(cardList);
 
-        ResponseEntity<Card> actualResponse = cardListController.addCardAtIndex(savedCard,1L,1,2L);
+        ResponseEntity<Card> actualResponse = cardListController.addCardAtIndex(savedCard,1L, 1L,1,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardList.getCards().get(1),savedCard);

@@ -66,18 +66,19 @@ public class CardListController {
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("/{id}/cards/{index}/board/{boardId}")
+    @PostMapping("/{id}/cards/{cardId}/{index}/board/{boardId}")
     public ResponseEntity<Card> addCardAtIndex(@RequestBody Card card,
+                                               @PathVariable("cardId") long cardId,
                                                @PathVariable("id") long id,
                                                @PathVariable("index") int index,
                                                @PathVariable("boardId") long boardId) {
-        var saved = cardService.save(card);
+        Card oldCard = cardService.getCard(cardId);
         CardList cardList = cardListService.getCardList(id);
-        cardList.getCards().add(index, saved);
+        cardList.getCards().add(index, oldCard);
         cardListService.save(cardList);
         Board board = boardService.getBoard(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(oldCard);
     }
 
     @PutMapping("/update-title/{id}/board/{boardId}")
@@ -122,7 +123,6 @@ public class CardListController {
         Card card = cardService.getCard(cardId);
         list.getCards().remove(card);
         cardListService.save(list);
-        //cardService.delete(cardId);
         Board board = boardService.getBoard(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
         return ResponseEntity.ok(card);

@@ -189,11 +189,13 @@ public class BoardOverviewCtrl implements Initializable {
 
     public HBox getNewDroppedCardWithIndex(long cardListId, VBox vbox,
                                            Dragboard db, int dropIndex) {
-        String title = db.getString();
-        Card newCard = new Card(title);
-        newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
+        //String title = db.getString();
+        //String title = "jar";
+        long cardId = Long.parseLong((db.getString()));
+        Card newCard = new Card();
+        newCard = boardOverviewService.addCardAtIndex(newCard, cardId,cardListId,dropIndex,
                 boardUserIdentifier.getCurrentBoard());
-        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
+        HBox card = drawCardAfterDrop(vbox, "", cardListId, newCard);
         return card;
     }
 
@@ -258,13 +260,13 @@ public class BoardOverviewCtrl implements Initializable {
                     }
                 }
                 if (dropIndex == -1) { //if it is dropped under all the cards
-                    HBox card = getNewDroppedCard(cardListId, vbox, db);
+                    HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, (vbox.getChildren().size() - 1));
 
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
                 else {
                     if(dropIndex== vbox.getChildren().size()-1){ //card is dropped on the "+" button
-                        HBox card = getNewDroppedCard(cardListId, vbox, db);
+                        HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
 
                         vbox.getChildren().add(dropIndex, card);
                     }
@@ -352,6 +354,8 @@ public class BoardOverviewCtrl implements Initializable {
             boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
         });
+
+
         return card;
     }
 

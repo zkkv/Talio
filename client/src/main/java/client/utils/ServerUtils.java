@@ -229,10 +229,10 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
-    public Card addCardToCardListWithIndex(Card card, long cardListID, int index,Board board) {
+    public Card addCardToCardListWithIndex(Card card, long cardId, long cardListID, int index,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/card-lists/" + cardListID +
-                        "/cards/"+index+"/board/"+board.getId())
+                        "/cards/"+cardId+"/"+index+"/board/"+board.getId())
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
