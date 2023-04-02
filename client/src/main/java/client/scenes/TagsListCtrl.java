@@ -55,6 +55,7 @@ public class TagsListCtrl {
     public void drawTags() {
         vbox.setAlignment(Pos.TOP_CENTER);
         addRetrievedTags(boardUserIdentifier.getCurrentBoard());
+        registerForTagUpdates(boardUserIdentifier.getCurrentBoard());
     }
 
 
