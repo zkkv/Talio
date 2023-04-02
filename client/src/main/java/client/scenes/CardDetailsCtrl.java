@@ -5,7 +5,6 @@ import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.SubTask;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,8 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CardDetailsCtrl {
@@ -185,7 +182,7 @@ public class CardDetailsCtrl {
 
             HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
             VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
-            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(0);
+            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
             descriptionIcon.setVisible(card.hasDescription());
         });
         descriptionField.setText(card.getDescription());

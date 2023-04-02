@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.SubTask;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,10 +25,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public class BoardOverviewCtrl implements Initializable {
@@ -342,6 +340,8 @@ public class BoardOverviewCtrl implements Initializable {
                 cardDetailsCtrl.setCard(cardEntity);
                 cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
                 cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+
+                cardDetailsCtrl.updateProgressBar();
             }
         });
 
@@ -366,12 +366,23 @@ public class BoardOverviewCtrl implements Initializable {
             descriptionIcon.setVisible(false);
         }
 
-        Label progressOfSubTasks = new Label();
-        if(cardDetailsCtrl.getProgress() < 1) {
-            progressOfSubTasks.setText(cardDetailsCtrl.getProgress() + "%");
+        List<SubTask> listSubTask = card.getTasks();
+        int numberOfTasks = listSubTask.size();
+        int numberOfChecked = 0;
+        for(SubTask subTask: listSubTask) {
+            if(subTask.isChecked()) {
+                numberOfChecked++;
+            }
         }
-        else {
-            progressOfSubTasks.setText("Done");
+        Label progressOfSubTasks = new Label();
+        if(numberOfTasks != 0) {
+            if (numberOfChecked / numberOfTasks < 1) {
+                progressOfSubTasks.setText(
+                    (int) ((double) numberOfChecked / numberOfTasks * 100) + "%");
+            }
+            else {
+                progressOfSubTasks.setText("Done");
+            }
         }
         progressOfSubTasks.setAlignment(Pos.CENTER);
         progressOfSubTasks.setMinWidth(30);
