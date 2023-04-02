@@ -14,23 +14,24 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public Card getCard(long cardId){
+    public Card getCard(long cardId) {
         return cardRepository.findById(cardId).get();
     }
 
-    public List<Card> getAllCards(){
+    public List<Card> getAllCards() {
         return cardRepository.findAll();
     }
 
-    public boolean exists(long cardId){
+    public boolean exists(long cardId) {
         return cardRepository.existsById(cardId);
     }
 
-    public void delete(long cardId){
+    public void delete(long cardId) {
         cardRepository.deleteById(cardId);
     }
 
-    public Card save(Card card){
+    public Card save(Card card) {
         return cardRepository.save(card);
     }
+
 }

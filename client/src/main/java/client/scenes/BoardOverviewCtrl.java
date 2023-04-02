@@ -5,14 +5,18 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.SubTask;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -21,10 +25,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public class BoardOverviewCtrl implements Initializable {
@@ -36,6 +37,8 @@ public class BoardOverviewCtrl implements Initializable {
     private final ListMenuCtrl listMenuCtrl;
 
     private final AddTaskCtrl addTaskCtrl;
+
+    private final CardDetailsCtrl cardDetailsCtrl;
 
     @FXML
     private HBox panel;
@@ -57,18 +60,20 @@ public class BoardOverviewCtrl implements Initializable {
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
                              ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
-                             BoardUserIdentifier boardUserIdentifier) {
+                             BoardUserIdentifier boardUserIdentifier,
+                             CardDetailsCtrl cardDetailsCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
         this.addTaskCtrl = addTaskCtrl;
+        this.cardDetailsCtrl = cardDetailsCtrl;
     }
 
     public void createList(Button addList) {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = boardOverviewService.addCardList(newCardList,
-            boardUserIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
         Timer timer = new Timer();
@@ -105,7 +110,7 @@ public class BoardOverviewCtrl implements Initializable {
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCard(newCard, cardListId,
-            boardUserIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
         drawCard(vbox, button, title, cardListId, newCard);
     }
 
@@ -177,7 +182,7 @@ public class BoardOverviewCtrl implements Initializable {
         String title = db.getString();
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCard(newCard,cardListId,
-            boardUserIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -187,7 +192,7 @@ public class BoardOverviewCtrl implements Initializable {
         String title = db.getString();
         Card newCard = new Card(title);
         newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
-            boardUserIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
         HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
         return card;
     }
@@ -323,14 +328,20 @@ public class BoardOverviewCtrl implements Initializable {
     private HBox makeNewCard(VBox vbox, String title, long cardListId, Card cardEntity) {
         HBox card = new HBox();
 
+        VBox icons = configureIcon(cardEntity);
         Label task = new Label(title);
         Button menu = new Button(":");
-        configureNewCard(cardEntity, card, task, menu);
+        configureNewCard(cardEntity, card, task, menu, icons);
 
         cardMenu(vbox, card, menu, cardListId, cardEntity, task);
         task.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2) {
                 mainCtrl.showCardDetails(title);
+                cardDetailsCtrl.setCard(cardEntity);
+                cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
+                cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+
+                cardDetailsCtrl.updateProgressBar();
             }
         });
 
@@ -339,9 +350,49 @@ public class BoardOverviewCtrl implements Initializable {
             ClipboardContent content = new ClipboardContent();
             configureDragboardAndClipboard(vbox, card, task, event, db, content);
             boardOverviewService.removeCard(cardEntity,cardListId,
-                boardUserIdentifier.getCurrentBoard());
+                    boardUserIdentifier.getCurrentBoard());
         });
         return card;
+    }
+
+    public VBox configureIcon(Card card) {
+        Image icon = new Image("img/descriptionIcon.png");
+        ImageView descriptionIcon = new ImageView(icon);
+        descriptionIcon.setFitWidth(15);
+        descriptionIcon.setFitHeight(15);
+        descriptionIcon.setPreserveRatio(true);
+
+        if(!card.hasDescription()) {
+            descriptionIcon.setVisible(false);
+        }
+
+        List<SubTask> listSubTask = card.getTasks();
+        int numberOfTasks = listSubTask.size();
+        int numberOfChecked = 0;
+        for(SubTask subTask: listSubTask) {
+            if(subTask.isChecked()) {
+                numberOfChecked++;
+            }
+        }
+        Label progressOfSubTasks = new Label();
+        if(numberOfTasks != 0) {
+            int progress = (int) Math.round((double) numberOfChecked / numberOfTasks * 100);
+            if (progress < 100) {
+                progressOfSubTasks.setText(progress + "%");
+            }
+            else {
+                progressOfSubTasks.setText("Done");
+            }
+        }
+        progressOfSubTasks.setAlignment(Pos.CENTER);
+        progressOfSubTasks.setMinWidth(30);
+
+        VBox vbox = new VBox(progressOfSubTasks, descriptionIcon);
+        vbox.setStyle("-fx-background-color: #DAD2BF;");
+        VBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
+        vbox.setSpacing(3);
+
+        return vbox;
     }
 
     private void configureDragboardAndClipboard(VBox vbox, HBox card, Label task,
@@ -355,22 +406,29 @@ public class BoardOverviewCtrl implements Initializable {
         vbox.getChildren().remove(card);
     }
 
-    private void configureNewCard(Card cardEntity, HBox card, Label task, Button menu) {
-        card.getChildren().add(task);
+    private void configureNewCard(Card cardEntity, HBox card, Label task, Button menu, VBox icons) {
+        HBox iconsAndTask = new HBox(icons, task);
+        iconsAndTask.setPrefHeight(46);
+        iconsAndTask.setPrefWidth(120);
+        iconsAndTask.setMinHeight(46);
+        iconsAndTask.setMinWidth(120);
+        iconsAndTask.setStyle("-fx-border-color: black;");
+
+        card.getChildren().add(iconsAndTask);
         card.getChildren().add(menu);
         card.setAlignment(Pos.CENTER);
 
         menu.setPrefHeight(46);
         menu.setPrefWidth(20);
-        menu.setStyle("-fx-border-color: black" );
+        menu.setStyle("-fx-border-color: black; -fx-background-color: #DAD2BF;");
         menu.setMnemonicParsing(false);
 
         task.setAlignment(Pos.CENTER);
-        task.setPrefHeight(46);
-        task.setPrefWidth(120);
-        task.setMinHeight(46);
-        task.setMinWidth(120);
-        task.setStyle("-fx-border-color: black;" +"-fx-background-color: #DAD2BF;");
+        task.setPrefHeight(42);
+        task.setPrefWidth(100);
+        task.setMinHeight(42);
+        task.setMinWidth(100);
+        task.setStyle("-fx-background-color: #DAD2BF;");
         task.setId(String.valueOf(cardEntity.getId()));
     }
 
@@ -422,7 +480,7 @@ public class BoardOverviewCtrl implements Initializable {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     long cardListId = Long.parseLong(label.getId());
                     boardOverviewService.updateCardListTitle(cardListId,label.getText(),
-                        boardUserIdentifier.getCurrentBoard());
+                            boardUserIdentifier.getCurrentBoard());
                 }
             }
         });

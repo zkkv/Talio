@@ -6,6 +6,7 @@ import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.User;
+import commons.SubTask;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +30,9 @@ public class BoardOverviewService {
 
     public List<CardList> getCardLists(Board board) {
         return serverUtils.getAllCardLists(board);
+    }
+    public SubTask addSubTask(SubTask subTask, long cardId){
+        return serverUtils.addSubTaskToCard(subTask,cardId);
     }
 
     public Board updateBoardTitle(Board board,String title){
@@ -103,8 +107,21 @@ public class BoardOverviewService {
         return serverUtils.updateCardTitle(cardId, title,board);
     }
 
+    public Card updateCardDescription(long cardId, String description, Board board) {
+        return serverUtils.updateCardDescription(cardId, description, board);
+    }
+
     public void setServerAddress(String ip) {
         serverUtils.setServer(ip);
+    }
+    public SubTask updateTitleSubTask(long taskId, String title){
+        return serverUtils.updateTitleSubTask(taskId,title);
+    }
+    public SubTask updateCheckboxTask(long taskId, boolean isChecked){
+        return serverUtils.updateIsChecked(taskId,isChecked);
+    }
+    public void removeSubTask(SubTask subTask, long cardId) {
+        serverUtils.removeSubTask(subTask,cardId);
     }
 
     public void testServerConnection() throws IOException {

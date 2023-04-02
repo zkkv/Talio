@@ -4,8 +4,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,15 +17,22 @@ public class Card {
 
     private String title;
 
+    private String description;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SubTask> subTasks;
+
     @ManyToMany
     private List<Tag> tags;
 
     public Card(){
-
+        subTasks = new ArrayList<>();
+        this.description = "";
     }
-
     public Card(String title){
         this.title = title;
+        subTasks = new ArrayList<>();
+        this.description = "";
     }
 
     public boolean equals(Object obj) {
@@ -54,5 +61,25 @@ public class Card {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean hasDescription() {
+        return !description.equals("");
+    }
+
+    public List<SubTask> getTasks() {
+        return subTasks;
+    }
+
+    public void setTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
     }
 }
