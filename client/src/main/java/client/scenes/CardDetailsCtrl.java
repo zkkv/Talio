@@ -188,6 +188,11 @@ public class CardDetailsCtrl {
         descriptionField.setText(card.getDescription());
     }
 
+    /**
+     * Updates the progress bar when a subtask is added/removed and when a checkbox is checked/unchecked.
+     *
+     * @author Diana Sutac
+     */
     public void updateProgressBar() {
         int numberOfChecked = 0;
 
@@ -205,12 +210,6 @@ public class CardDetailsCtrl {
         double progress = (double) numberOfChecked / numberOfSubTasks;
         progressBar.setProgress(progress);
         progressIndicator.setProgress(progress);
-    }
-
-    public int getProgress() {
-        double progress = progressBar.getProgress() * 100;
-        int progressText = (int) progress;
-        return progressText;
     }
 
 }

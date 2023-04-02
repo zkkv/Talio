@@ -376,9 +376,9 @@ public class BoardOverviewCtrl implements Initializable {
         }
         Label progressOfSubTasks = new Label();
         if(numberOfTasks != 0) {
-            if (numberOfChecked / numberOfTasks < 1) {
-                progressOfSubTasks.setText(
-                    (int) ((double) numberOfChecked / numberOfTasks * 100) + "%");
+            int progress = (int) Math.round((double) numberOfChecked / numberOfTasks * 100);
+            if (progress < 100) {
+                progressOfSubTasks.setText(progress + "%");
             }
             else {
                 progressOfSubTasks.setText("Done");
