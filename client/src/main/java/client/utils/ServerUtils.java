@@ -37,7 +37,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -248,7 +247,7 @@ public class ServerUtils {
     }
 
     public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
-        System.out.println("Inside registerForMessages    ");
+        //System.out.println("Inside registerForMessages    ");
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
@@ -271,7 +270,7 @@ public class ServerUtils {
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
         try {
-            System.out.println("Inside try connect");
+            //System.out.println("Inside try connect");
             return stomp.connect(url, new StompSessionHandlerAdapter() {
             }).get();
 
@@ -335,7 +334,8 @@ public class ServerUtils {
 
 
     /**
-     * Long-polls the server on a dedicated thread for any tag updates on board with {@code boardId}.
+     * Long-polls the server on a dedicated thread for any tag updates on
+     * board with {@code boardId}.
      * In case of a 200 OK, executes the consumer function.
      * In case of 204 CONTENT resends the request.
      *
@@ -345,12 +345,10 @@ public class ServerUtils {
      * @author          Kirill Zhankov
      */
     public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
-        System.out.println("ServerUtils Entry");
 
         // See EXEC description
         EXEC.submit(() -> {
             while (!Thread.interrupted()) {
-                System.out.println("While iteration");
                 Response res = ClientBuilder.newClient(new ClientConfig())
                         .target(server).path("api/boards/" + boardId + "/tags/updates")
                         .request(APPLICATION_JSON)
@@ -362,14 +360,12 @@ public class ServerUtils {
 
                 // If 204 NO CONTENT, just poll again and wait...
                 if (res.getStatus() == 204) {
-                    System.out.println("204");
                     continue;
                 }
 
                 // ...otherwise, tag has been returned, and we can draw it.
                 // See TagListCtrl.registerForTagUpdates() to better understand.
                 Tag tag = res.readEntity(Tag.class);
-                System.out.println("Got " + tag.toString());
                 listeners.remove(key);
 
                 Platform.runLater(() -> {
@@ -377,7 +373,6 @@ public class ServerUtils {
                 });
             }
         });
-        System.out.println("ServerUtils End");
     }
 
 
@@ -388,7 +383,6 @@ public class ServerUtils {
      * @see     client.Main
      */
     public void stopPolling() {
-        System.out.println("Stopped polling");
         EXEC.shutdownNow();
     }
 }

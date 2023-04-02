@@ -2,7 +2,6 @@ package client.services;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Board;
 import commons.Tag;
 
 import java.util.List;

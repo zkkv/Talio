@@ -65,7 +65,6 @@ public class TagsListCtrl {
      * @author              Kirill Zhankov
      */
     private void addRetrievedTags(Board currentBoard) {
-        System.out.println("addRetrievedTags");
         vbox.getChildren().clear();
         var tags = tagsListService.getAllTags(currentBoard.getId());
         for (Tag tag : tags) {
@@ -83,7 +82,6 @@ public class TagsListCtrl {
      * @author      Kirill Zhankov
      */
     private void drawTag(Tag tag) {
-        System.out.println("drawTag " + tag.toString());
         Button tagButton = new Button();
         HBox tagBox = new HBox();
 
@@ -221,18 +219,14 @@ public class TagsListCtrl {
     public void registerForTagUpdates(Board currentBoard) {
         // The lambda expression draws the tag once there is a response from the server.
         // See ServerUtils.registerForTagUpdates() to better understand.
-        System.out.println("Registering for updates on board " + currentBoard.toString());
         tagsListService.registerForTagUpdates(
                 currentBoard.getId(),
                 tag -> {
-                    System.out.println("Consumer start");
-                    System.out.println(tag.toString());
                     if (!drawnTags.contains(tag)) {
                         vbox.getChildren().remove(vbox.getChildren().size() - 1);
                         drawTag(tag);
                         drawAddTagButton();
                     }
-                    System.out.println("Consumer end");
                 });
     }
 

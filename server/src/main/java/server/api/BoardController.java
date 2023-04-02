@@ -157,7 +157,6 @@ public class BoardController {
      */
     @PostMapping("/{id}/add-tag")
     public ResponseEntity<Tag> addTag(@RequestBody Tag tag, @PathVariable("id") long boardId) {
-        System.out.println("addTag() start");
         Tag saved = tagService.save(tag);
         Board board = boardService.getBoard(boardId);
 
@@ -167,7 +166,6 @@ public class BoardController {
         board.getTags().add(saved);
         board = boardService.save(board);
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
-        System.out.println("addTag() end");
         return ResponseEntity.ok(saved);
     }
 
@@ -196,7 +194,6 @@ public class BoardController {
      */
     @GetMapping("/{id}/tags/updates")
     public DeferredResult<ResponseEntity<Tag>> getTagUpdates(@PathVariable("id") long boardId) {
-        System.out.println("getTagUpdates start");
         long timeout = 5000L;
         // No content (204) response will be sent back in case of a timeout.
         var timeoutResult = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -211,7 +208,6 @@ public class BoardController {
 
         // Once we've got the response, we can remove the listener from the map.
         res.onCompletion(() -> listeners.remove(key));
-        System.out.println("getTagUpdates end");
         return res;
     }
 }
