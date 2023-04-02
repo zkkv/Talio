@@ -316,6 +316,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     private void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
         HBox card = makeNewCard(vbox, title, cardListId, cardEntity);
+        cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         if (button != null) {
             vbox.getChildren().remove(button);
         }
