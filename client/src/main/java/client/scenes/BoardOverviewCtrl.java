@@ -260,7 +260,8 @@ public class BoardOverviewCtrl implements Initializable {
                     }
                 }
                 if (dropIndex == -1) { //if it is dropped under all the cards
-                    HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, (vbox.getChildren().size() - 1));
+                    HBox card = getNewDroppedCardWithIndex(cardListId,
+                        vbox, db, (vbox.getChildren().size() - 1));
 
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
