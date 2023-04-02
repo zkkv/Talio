@@ -59,7 +59,7 @@ public class Main extends Application {
                 "client", "scenes", "AdminOverview.fxml");
         var cardDetails = FXML.load(CardDetailsCtrl.class, "client", "scenes", "CardDetails.fxml");
         var tagList = FXML.load(TagsListCtrl.class,
-            "client", "scenes", "TagsList.fxml");
+                "client", "scenes", "TagsList.fxml");
 
 
         var mainCtrl =
