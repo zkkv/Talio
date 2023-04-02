@@ -144,4 +144,8 @@ public class BoardOverviewService {
     public String getAdminPassword(){
         return serverUtils.getAdminPassword();
     }
+
+    public Card updateCardSubTasks(long cardId, List<SubTask> subtasks,Board board) {
+        return serverUtils.updateCardSubTasks(cardId, subtasks,board);
+    }
 }

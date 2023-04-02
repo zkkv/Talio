@@ -327,4 +327,12 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete();
     }
+
+    public Card updateCardSubTasks(long cardId,List<SubTask> subtasks,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(server).path("api/card/update-subTasks/"+cardId+"/board/"+board.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(subtasks,APPLICATION_JSON), Card.class);
+    }
 }

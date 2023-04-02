@@ -7,7 +7,12 @@ import commons.Card;
 import commons.SubTask;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -164,6 +169,66 @@ public class CardDetailsCtrl {
         });
         descriptionField.setText(card.getDescription());
     }
+
+    public void rearrange(HBox hbox, SubTask subTask) {
+        subtasks.setOnDragOver(event -> {
+            if (event.getGestureSource() != subTask && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        hbox.setOnDragDetected(event -> {
+            Dragboard db = hbox.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            configureDragboardAndClipboard(subtasks, hbox, subTask, event, db, content);
+
+        });
+    }
+
+    private void configureDragboardAndClipboard(VBox vbox, HBox hbox, SubTask subTask,
+                                                MouseEvent event, Dragboard db,
+                                                ClipboardContent content) {
+        content.putString(subTask.getName());
+        db.setContent(content);
+        db.setDragView(hbox.snapshot(null, null));
+        event.consume();
+
+        vbox.getChildren().remove(hbox);
+        this.card.getTasks().remove(subTask);
+        configureCardListVBoxOnDragDropped(subTask, hbox, vbox);
+        //boardOverviewService.updateCardSubTasks( card.getId(),card.getTasks(), boardUserIdentifier.getCurrentBoard());
+
+    }
+
+    private void configureCardListVBoxOnDragDropped(SubTask subTask, HBox hbox, VBox vbox) {
+        subtasks.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                int dropIndex = -1;
+                //find the right place in the subtask list
+                for (int i = 0; i < vbox.getChildren().size(); i++) {
+                    Node child = vbox.getChildren().get(i);
+                    if (event.getY() <= child.getBoundsInParent().getMinY() +
+                            child.getBoundsInParent().getHeight() / 2) {
+                        dropIndex = i;
+                        break;
+                    }
+                }
+                //if it is not dropped on an element from the list
+                if (dropIndex < 0) {
+                    vbox.getChildren().add(vbox.getChildren().size(), hbox);
+                    this.card.getTasks().add(vbox.getChildren().size(), subTask);
+
+                } else vbox.getChildren().add(dropIndex, hbox);
+                this.card.getTasks().add(dropIndex, subTask);
+            }
+            success = true;
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
 
 
 }
