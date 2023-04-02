@@ -21,17 +21,23 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import com.google.inject.Singleton;
 import commons.*;
 import jakarta.ws.rs.core.Response;
+import javafx.application.Platform;
 import org.glassfish.jersey.client.ClientConfig;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -47,6 +53,11 @@ public class ServerUtils {
 
     private StompSession session;
 
+    // This executor service allows for the client to wait for poll response using another thread
+    // and not block the rest of the application.
+    private final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    // See BoardController.
+    private Map<Object, Consumer<Tag>> listeners = new HashMap<>();
 
     public void setServer(String ip) {
         this.server ="http://"+ ip;
@@ -320,5 +331,51 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<Tag>>() {});
+    }
+
+
+    public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
+
+        // TODO listeners map similar to server one
+
+        System.out.println("ServerUtils Entry");
+
+        // See EXEC description
+        EXEC.submit(() -> {
+            while (!Thread.interrupted()) {
+                System.out.println("While iteration");
+                Response res = ClientBuilder.newClient(new ClientConfig())
+                        .target(server).path("api/boards/" + boardId + "/tags/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+
+                var key = new Object();
+                listeners.put(key, consumer);
+
+                // If NO CONTENT, just poll again and wait...
+                if (res.getStatus() == 204) {
+                    System.out.println("204");
+                    continue;
+                }
+
+                // ...otherwise, tag has been returned, and we can draw it.
+                // See TagListCtrl.initialize() to better understand.
+                Tag tag = res.readEntity(Tag.class);
+                System.out.println("Got " + tag.toString());
+                listeners.remove(key);
+
+                Platform.runLater(() -> {
+                    consumer.accept(tag);
+                });
+            }
+        });
+        System.out.println("ServerUtils End");
+    }
+
+
+    public void stopPolling() {
+        System.out.println("Stopped polling");
+        EXEC.shutdownNow();
     }
 }

@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import commons.Tag;
 
 import java.util.List;
+import java.util.function.Consumer;
+
 
 public class TagsListService {
 
@@ -38,5 +40,13 @@ public class TagsListService {
      */
     public List<Tag> getAllTags(long boardId) {
         return serverUtils.getAllTags(boardId);
+    }
+
+    public void registerForTagUpdates(long boardId, Consumer<Tag> consumer) {
+        serverUtils.registerForTagUpdates(boardId, consumer);
+    }
+
+    public void stopPolling() {
+        serverUtils.stopPolling();
     }
 }

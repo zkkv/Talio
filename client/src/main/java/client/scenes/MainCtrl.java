@@ -189,6 +189,7 @@ public class MainCtrl {
 
     public void subscribeForUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
+        tagsListCtrl.registerForTagUpdates(board);
     }
 
     public void showAddTask(Label label) {
