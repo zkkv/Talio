@@ -335,6 +335,14 @@ public class ServerUtils {
     }
 
 
+    /**
+     * A method to change the name of the tag
+     *
+     * @param tagId the id of the tag which name is updated
+     * @param title the new name
+     * @param board the baord in which the tag is switched
+     * @return
+     */
     public Tag updateTagName(long tagId,String title,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/tag/update-name/"+
@@ -344,6 +352,13 @@ public class ServerUtils {
             .put(Entity.entity(title,APPLICATION_JSON), Tag.class);
     }
 
+    /**
+     * A method to remove a tag
+     *
+     * @param tagId the id of the tag which is removed
+     * @param board the board from which the tag is removed
+     * @return
+     */
     public Response removeTag(long tagId,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(server).path("api/tag/remove/"+

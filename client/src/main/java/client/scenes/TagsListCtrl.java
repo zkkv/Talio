@@ -36,6 +36,7 @@ public class TagsListCtrl {
      * @param tagsListService       the service it is going use
      * @param mainCtrl              the controller to which it is bounded
      * @param boardUserIdentifier   the identifier object used to get current board
+     * @param tagDetailsCtrl        the controller which is bounded to it
      * @author                      Vinchentzo Bunardzhiev
      */
     @Inject
@@ -100,6 +101,12 @@ public class TagsListCtrl {
         vbox.getChildren().add(tagBox);
     }
 
+    /**
+     *
+     * @param tagBox    the hbox to which the new button is added
+     * @param removeTag the button which is added to the tag
+     * @param tag   the tag that is deleted upon pressing the button
+     */
     private void configureRemoveTagButton(HBox tagBox, Button removeTag, Tag tag) {
         removeTag.setOnAction(event -> {
             vbox.getChildren().remove(tagBox);

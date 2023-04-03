@@ -23,6 +23,14 @@ public class TagController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    /**
+     * A method to change the name of the tag
+     *
+     * @param id the id of the tag which name is updated
+     * @param title the new name
+     * @param boardId the baord in which the tag is switched
+     * @return
+     */
     @PutMapping("/update-name/{id}/board/{boardId}")
     public ResponseEntity<Tag> updateTitle(@RequestBody String title,
                                                 @PathVariable("id") long id,
@@ -35,6 +43,13 @@ public class TagController {
         return ResponseEntity.ok(tag);
     }
 
+    /**
+     * A method to remove a tag
+     *
+     * @param tagId the id of the tag which is removed
+     * @param boardId the board from which the tag is removed
+     * @return
+     */
     @DeleteMapping("/remove/{tagId}/board/{boardId}")
     public ResponseEntity<Tag> removeTag(@PathVariable("boardId") long boardId,
                                          @PathVariable("tagId") long tagId){

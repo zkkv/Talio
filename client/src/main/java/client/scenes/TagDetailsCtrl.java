@@ -36,6 +36,11 @@ public class TagDetailsCtrl {
         this.boardUserIdentifier = boardUserIdentifier;
     }
 
+    /**
+     * A method for changing the name of the tag when the button is pressed
+     * @param tag the tag whose name should be changed
+     * @param tagButton the button whose text should be changed
+     */
     public void changeTagName(Tag tag, Button tagButton){
         nameTextField.setText(tag.getTitle());
         nameChangeButton.setOnAction(event -> {
@@ -46,6 +51,10 @@ public class TagDetailsCtrl {
         });
     }
 
+    /**
+     * A method to set the text inside the text field
+     * @param name the name to which the text field would be set
+     */
     public void setName(String name) {
         this.nameTextField.setText(name);
     }

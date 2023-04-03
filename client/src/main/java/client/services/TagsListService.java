@@ -67,10 +67,24 @@ public class TagsListService {
         serverUtils.stopPolling();
     }
 
+    /**
+     * A method to change the name of the tag
+     *
+     * @param tagId the id of the tag which name is updated
+     * @param title the new name
+     * @param board the baord in which the tag is switched
+     * @return
+     */
     public Tag updateTagName(long tagId, String title, Board board) {
         return serverUtils.updateTagName(tagId, title,board);
     }
 
+    /**
+     * A method to remove a tag
+     *
+     * @param tagId the id of the tag which is removed
+     * @param board the board from which the tag is removed
+     */
     public void removeTagFromBoard(long tagId,Board board){
         serverUtils.removeTag(tagId,board);
     }
