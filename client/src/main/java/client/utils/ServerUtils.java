@@ -336,6 +336,39 @@ public class ServerUtils {
 
 
     /**
+     * A method to change the name of the tag
+     *
+     * @param tagId the id of the tag which name is updated
+     * @param title the new name
+     * @param board the baord in which the tag is switched
+     * @return the tag with the new name
+     */
+    public Tag updateTagName(long tagId,String title,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/tag/update-name/"+
+                tagId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title,APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * A method to remove a tag
+     *
+     * @param tagId the id of the tag which is removed
+     * @param board the board from which the tag is removed
+     * @return the response containing if the tag has been deleted successfully
+     */
+    public Response removeTag(long tagId,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/tag/remove/"+
+                tagId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
+    }
+
+    /**
      * Returns a list of all tags of a board with {@code boardId}.
      *
      * @param boardId   id of the board to get the tags from

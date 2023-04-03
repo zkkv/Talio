@@ -78,6 +78,9 @@ public class Main extends Application {
         var tagsList = FXML.load(
 				TagsListCtrl.class,
             "client", "scenes", "TagsList.fxml");
+	var tagDetails = FXML.load(
+			TagDetailsCtrl.class,
+			"client", "scenes", "TagDetails.fxml");
 
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
@@ -96,7 +99,8 @@ public class Main extends Application {
 				adminLogin,
 				adminOverview,
 				cardDetails,
-                tagsList);
+                tagsList,
+				tagDetails);
 
         primaryStage.setOnCloseRequest(event -> tagsList.getKey().stopPolling());
     }
