@@ -40,6 +40,8 @@ public class CardDetailsCtrl {
 
     private Card card;
 
+    private boolean rearranged = false;
+
     @FXML
     private TextArea descriptionField;
 
@@ -56,6 +58,9 @@ public class CardDetailsCtrl {
     }
 
     public void closeCardDetails(){
+        if(rearranged){
+            boardOverviewService.updateCardSubTasks( this.card.getId(),this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
+        }
         mainCtrl.showBoardPage();
     }
     public void setTitle(String title) {
@@ -71,6 +76,7 @@ public class CardDetailsCtrl {
     public void addSubTask() {
         SubTask subTask = new SubTask();
         subTask = boardOverviewService.addSubTask(subTask, card.getId());
+        this.card.getTasks().add(subTask);
         subTaskSetUp(subTask, "SubTask", false);
     }
 
@@ -80,6 +86,8 @@ public class CardDetailsCtrl {
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
         Label name = new Label(taskName);
+//        task.setName(taskName);
+//        task.setChecked(checked);
         name.setPrefWidth(150);
         TextField text = new TextField();
         text.setPrefWidth(150);
@@ -215,10 +223,11 @@ public class CardDetailsCtrl {
                 }
                 //if it is not dropped on an element from the list
                 if (dropIndex < 0) {
+                    rearranged = true;
                     vbox.getChildren().add(vbox.getChildren().size(), hbox);
                     this.card.getTasks().add(vbox.getChildren().size()-1, subTask);
-
                 } else {
+                    rearranged = true;
                     vbox.getChildren().add(dropIndex, hbox);
                     this.card.getTasks().add(dropIndex, subTask);
                 }
@@ -228,9 +237,6 @@ public class CardDetailsCtrl {
             event.setDropCompleted(success);
             event.consume();
         });
-    }
-    public void saveSubTaskOrder(){
-        boardOverviewService.updateCardSubTasks( this.card.getId(),this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
     }
 
 
