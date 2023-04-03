@@ -279,6 +279,9 @@ public class MainCtrl {
         tagsListCtrl.drawTags();
     }
 
+    /**
+     * A method which shows the scene for editing the tag
+     */
     public void showTagDetails() {
         tagDetailsStage.setTitle("Talio: Tag Details");
         tagDetailsStage.setResizable(false);

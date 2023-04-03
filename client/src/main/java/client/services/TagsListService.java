@@ -73,7 +73,7 @@ public class TagsListService {
      * @param tagId the id of the tag which name is updated
      * @param title the new name
      * @param board the baord in which the tag is switched
-     * @return
+     * @return the tag with the updated name
      */
     public Tag updateTagName(long tagId, String title, Board board) {
         return serverUtils.updateTagName(tagId, title,board);

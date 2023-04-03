@@ -29,7 +29,7 @@ public class TagController {
      * @param id the id of the tag which name is updated
      * @param title the new name
      * @param boardId the baord in which the tag is switched
-     * @return
+     * @return a response with the updated tag
      */
     @PutMapping("/update-name/{id}/board/{boardId}")
     public ResponseEntity<Tag> updateTitle(@RequestBody String title,
@@ -48,7 +48,7 @@ public class TagController {
      *
      * @param tagId the id of the tag which is removed
      * @param boardId the board from which the tag is removed
-     * @return
+     * @return a response with the removed tag
      */
     @DeleteMapping("/remove/{tagId}/board/{boardId}")
     public ResponseEntity<Tag> removeTag(@PathVariable("boardId") long boardId,

@@ -27,7 +27,7 @@ public class TagService {
     /**
      * A method to get the tag by its id
      * @param tagId the id of the tag to be returned
-     * @return
+     * @return the tag found by its id
      */
     public Tag getTag(long tagId){
         return tagRepository.findById(tagId).get();

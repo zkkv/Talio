@@ -341,7 +341,7 @@ public class ServerUtils {
      * @param tagId the id of the tag which name is updated
      * @param title the new name
      * @param board the baord in which the tag is switched
-     * @return
+     * @return the tag with the new name
      */
     public Tag updateTagName(long tagId,String title,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
@@ -357,7 +357,7 @@ public class ServerUtils {
      *
      * @param tagId the id of the tag which is removed
      * @param board the board from which the tag is removed
-     * @return
+     * @return the response containing if the tag has been deleted successfully
      */
     public Response removeTag(long tagId,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
