@@ -189,8 +189,6 @@ public class BoardOverviewCtrl implements Initializable {
 
     public HBox getNewDroppedCardWithIndex(long cardListId, VBox vbox,
                                            Dragboard db, int dropIndex) {
-        //String title = db.getString();
-        //String title = "jar";
         long cardId = Long.parseLong((db.getString()));
         Card newCard = new Card();
         newCard = boardOverviewService.addCardAtIndex(newCard, cardId,cardListId,dropIndex,
