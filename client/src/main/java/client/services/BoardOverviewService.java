@@ -68,12 +68,16 @@ public class BoardOverviewService {
         serverUtils.removeCardFromList(card, cardListId,board);
     }
 
+    public void removeCardWhenDragged(Card card, long cardListId,Board board) {
+        serverUtils.removeCardFromListWhenDragged(card, cardListId,board);
+    }
+
     public void removeCardList(CardList cardList,Board board) {
         serverUtils.removeCardListFromBoard(cardList,board);
     }
 
-    public Card addCardAtIndex(Card card, long cardListId, int index,Board board) {
-        return serverUtils.addCardToCardListWithIndex(card, cardListId, index,board);
+    public Card addCardAtIndex(Card card, long cardId, long cardListId, int index,Board board) {
+        return serverUtils.addCardToCardListWithIndex(card, cardId, cardListId, index,board);
     }
 
     public List<Card> getCards(long cardListId) {

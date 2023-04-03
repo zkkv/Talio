@@ -189,11 +189,11 @@ public class BoardOverviewCtrl implements Initializable {
 
     public HBox getNewDroppedCardWithIndex(long cardListId, VBox vbox,
                                            Dragboard db, int dropIndex) {
-        String title = db.getString();
-        Card newCard = new Card(title);
-        newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
+        long cardId = Long.parseLong((db.getString()));
+        Card newCard = new Card();
+        newCard = boardOverviewService.addCardAtIndex(newCard, cardId,cardListId,dropIndex,
                 boardUserIdentifier.getCurrentBoard());
-        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
+        HBox card = drawCardAfterDrop(vbox, "", cardListId, newCard);
         return card;
     }
 
@@ -258,13 +258,14 @@ public class BoardOverviewCtrl implements Initializable {
                     }
                 }
                 if (dropIndex == -1) { //if it is dropped under all the cards
-                    HBox card = getNewDroppedCard(cardListId, vbox, db);
+                    HBox card = getNewDroppedCardWithIndex(cardListId,
+                        vbox, db, (vbox.getChildren().size() - 1));
 
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
                 else {
                     if(dropIndex== vbox.getChildren().size()-1){ //card is dropped on the "+" button
-                        HBox card = getNewDroppedCard(cardListId, vbox, db);
+                        HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
 
                         vbox.getChildren().add(dropIndex, card);
                     }
@@ -348,10 +349,20 @@ public class BoardOverviewCtrl implements Initializable {
         card.setOnDragDetected(event -> {
             Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            configureDragboardAndClipboard(vbox, card, task, event, db, content);
-            boardOverviewService.removeCard(cardEntity,cardListId,
+            configureDragboardAndClipboard(vbox, card, cardEntity, event, db, content);
+            boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
         });
+
+        card.setOnDragDone(event -> {
+            if (!event.getGestureSource().getClass().equals(HBox.class)) {
+                boardOverviewService.removeCard(cardEntity,cardListId,
+                    boardUserIdentifier.getCurrentBoard());
+                event.consume();
+            }
+        });
+
+
         return card;
     }
 
@@ -395,10 +406,10 @@ public class BoardOverviewCtrl implements Initializable {
         return vbox;
     }
 
-    private void configureDragboardAndClipboard(VBox vbox, HBox card, Label task,
+    private void configureDragboardAndClipboard(VBox vbox, HBox card, Card cardEntity,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
-        content.putString(task.getText());
+        content.putString(Long.toString(cardEntity.getId()));
         db.setContent(content);
         db.setDragView(card.snapshot(null, null));
         event.consume();

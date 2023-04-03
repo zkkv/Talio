@@ -229,10 +229,11 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
-    public Card addCardToCardListWithIndex(Card card, long cardListID, int index,Board board) {
+    public Card addCardToCardListWithIndex(Card card, long cardId,
+                                           long cardListID, int index,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(server).path("api/card-lists/" + cardListID +
-                        "/cards/"+index+"/board/"+board.getId())
+                        "/cards/"+cardId+"/"+index+"/board/"+board.getId())
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -255,8 +256,16 @@ public class ServerUtils {
                 .delete();
     }
 
+    public Response removeCardFromListWhenDragged(Card card,long cardListId,Board board) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/card-lists/remove-card-list/" + cardListId
+                + "/remove-card-from-list/" + card.getId()+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
+    }
+
     public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
-        //System.out.println("Inside registerForMessages    ");
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
