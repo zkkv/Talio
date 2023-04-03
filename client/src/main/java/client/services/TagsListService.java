@@ -2,6 +2,7 @@ package client.services;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Tag;
 
 import java.util.List;
@@ -64,5 +65,13 @@ public class TagsListService {
      */
     public void stopPolling() {
         serverUtils.stopPolling();
+    }
+
+    public Tag updateTagName(long tagId, String title, Board board) {
+        return serverUtils.updateTagName(tagId, title,board);
+    }
+
+    public void removeTagFromBoard(long tagId,Board board){
+        serverUtils.removeTag(tagId,board);
     }
 }

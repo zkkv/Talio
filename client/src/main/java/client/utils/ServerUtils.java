@@ -336,6 +336,24 @@ public class ServerUtils {
     }
 
 
+    public Tag updateTagName(long tagId,String title,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/tag/update-name/"+
+                tagId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title,APPLICATION_JSON), Tag.class);
+    }
+
+    public Response removeTag(long tagId,Board board){
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(server).path("api/tag/remove/"+
+                tagId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
+    }
+
     /**
      * Returns a list of all tags of a board with {@code boardId}.
      *

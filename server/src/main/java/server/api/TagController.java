@@ -35,4 +35,19 @@ public class TagController {
         return ResponseEntity.ok(tag);
     }
 
+    @DeleteMapping("/remove/{tagId}/board/{boardId}")
+    public ResponseEntity<Tag> removeTag(@PathVariable("boardId") long boardId,
+                                         @PathVariable("tagId") long tagId){
+        Tag tag = tagService.getTag(tagId);
+        Board board = boardService.getBoard(boardId);
+
+        board.getTags().remove(tag);
+
+        board = boardService.save(board);
+        tagService.removeTag(tagId);
+
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/tag",board);
+        return ResponseEntity.ok(tag);
+    }
+
 }
