@@ -527,9 +527,17 @@ public class BoardOverviewCtrl implements Initializable {
         });
         boardOverviewService.registerForUpdates("/topic/board/remove", Board.class, b -> {
             Platform.runLater(() -> {
+                boardUserIdentifier.setCurrentBoard(b);
                 mainCtrl.showStartPage();
             });
         });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/tag",
+            Board.class, b -> {
+                Platform.runLater(() -> {
+                    boardUserIdentifier.setCurrentBoard(b);
+                    mainCtrl.showAllTagsList();
+                });
+            });
     }
 
     public void configureSettings() {
