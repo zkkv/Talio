@@ -62,6 +62,11 @@ public class CardDetailsCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * The functionality of the button for closing the scene
+     *
+     * @author Sofia Dimieva
+     */
     public void closeCardDetails(){
         if(rearranged){
             boardOverviewService.updateCardSubTasks( this.card.getId(),
@@ -73,21 +78,27 @@ public class CardDetailsCtrl {
         this.title.setText(title);
     }
 
-
     public void setCard(Card card) {
         this.card = card;
     }
-
 
     public void addSubTask() {
         SubTask subTask = new SubTask();
         subTask = boardOverviewService.addSubTask(subTask, card.getId());
         this.card.getTasks().add(subTask);
         subTaskSetUp(subTask, "SubTask", false);
-
         updateProgressBar();
     }
 
+    /**
+     * The method creates the subtask in the
+     * front-end and adds  functionality to some of its buttons
+     *
+     * @author Sofia Dimieva
+     * @param task the task object
+     * @param taskName
+     * @param checked
+     */
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
         subTask.setAlignment(Pos.CENTER_LEFT);
@@ -122,6 +133,15 @@ public class CardDetailsCtrl {
         rearrange(subTask,task);
     }
 
+    /**
+     * The method sets up the checkbox and adds a lister which changes the value
+     * in the object whenever the checkbox is ticked or unticked
+     *
+     * @author Sofia Dimieva
+     * @param subTask
+     * @param checkBox
+     * @param checked
+     */
     public void checkboxSetUp(SubTask subTask, CheckBox checkBox, boolean checked) {
         checkBox.selectedProperty().set(checked);
         checkBox.setPrefHeight(36);
@@ -135,6 +155,15 @@ public class CardDetailsCtrl {
         });
     }
 
+    /**
+     * The method lets the user rename the subtask
+     * @param task
+     * @param subTask
+     * @param rename
+     * @param text
+     * @param delete
+     * @param name
+     */
     public void editSubTask(SubTask task, HBox subTask, Button rename,
                             TextField text, Button delete, Label name) {
         rename.setOnAction(event -> {
@@ -156,6 +185,12 @@ public class CardDetailsCtrl {
         });
     }
 
+    /**
+     * Shows a message when the subtask is hovered
+     *
+     * @author Sofia Dimieva
+     * @param label
+     */
     private void editSubTaskMessage(Label label) {
         Tooltip tooltip = new Tooltip("Click to edit");
         tooltip.setFont(Font.font("Verdana", 14));
@@ -165,6 +200,13 @@ public class CardDetailsCtrl {
         label.setTooltip(tooltip);
     }
 
+    /**
+     * When the scene is opened the method retrieves
+     * all subtasks from the database
+     *
+     * @author Sofia Dimieva
+     * @param card
+     */
     public void addRetrievedSubTasks(Card card) {
         this.card = card;
         subtasks.getChildren().clear();
@@ -172,6 +214,13 @@ public class CardDetailsCtrl {
             subTaskSetUp(subTask, subTask.getName(), subTask.isChecked());
     }
 
+    /**
+     * A method for deleting a subtask
+     *
+     * @author Sofia Dimieva
+     * @param task
+     * @param subTask
+     */
     public void deleteSubTask(SubTask task, HBox subTask) {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
@@ -200,9 +249,17 @@ public class CardDetailsCtrl {
         descriptionField.setText(card.getDescription());
     }
 
-    public void rearrange(HBox hbox, SubTask subTask) {
+    /**
+     * The method sets an event for on drag detected
+     * in the VBox containing all the subtasks
+     *
+     * @author Sofia Dimieva
+     * @param hbox
+     * @param subTaskObject
+     */
+    public void rearrange(HBox hbox, SubTask subTaskObject) {
         subtasks.setOnDragOver(event -> {
-            if (event.getGestureSource() != subTask && event.getDragboard().hasString()) {
+            if (event.getGestureSource() != subTaskObject && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
@@ -210,11 +267,24 @@ public class CardDetailsCtrl {
         hbox.setOnDragDetected(event -> {
             Dragboard db = hbox.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            configureDragboardAndClipboard(subtasks, hbox, subTask, event, db, content);
+            configureDragboardAndClipboard(subtasks, hbox, subTaskObject, event, db, content);
 
         });
     }
 
+    /**
+     * The method removes the selected subtasks and
+     * lets the user see a snapshot of it while
+     * choosing where to drop it
+     *
+     * @author Sofia Dimieva
+     * @param vbox
+     * @param hbox
+     * @param subTask
+     * @param event
+     * @param db
+     * @param content
+     */
     private void configureDragboardAndClipboard(VBox vbox, HBox hbox, SubTask subTask,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
@@ -228,6 +298,15 @@ public class CardDetailsCtrl {
         configureCardListVBoxOnDragDropped(subTask, hbox, vbox);
     }
 
+    /**
+     *The method checks where is the tasks
+     * dropped and adds it on the correct index
+     *
+     * @author Sofia Dimieva
+     * @param subTask
+     * @param hbox
+     * @param vbox
+     */
     private void configureCardListVBoxOnDragDropped(SubTask subTask, HBox hbox, VBox vbox) {
         subtasks.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
