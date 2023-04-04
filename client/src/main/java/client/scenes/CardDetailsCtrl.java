@@ -86,8 +86,6 @@ public class CardDetailsCtrl {
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
         Label name = new Label(taskName);
-//        task.setName(taskName);
-//        task.setChecked(checked);
         name.setPrefWidth(150);
         TextField text = new TextField();
         text.setPrefWidth(150);
@@ -155,6 +153,7 @@ public class CardDetailsCtrl {
     public void deleteSubTask(SubTask task, HBox subTask) {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
+        this.card.getTasks().remove(task);
     }
     public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
         saveDescriptionButton.setOnAction(event -> {
