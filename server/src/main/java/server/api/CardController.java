@@ -92,4 +92,15 @@ public class CardController {
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId, board);
         return ResponseEntity.ok(card);
     }
+    @PutMapping("/update-subTasks/{id}/board/{boardId}")
+    public ResponseEntity<Card> updateSubTasks(@RequestBody List<SubTask> subtasks,
+                                               @PathVariable("id") long id,
+                                               @PathVariable("boardId") long boardId){
+        Card card = cardService.getCard(id);
+        card.setTasks(subtasks);
+        card = cardService.save(card);
+        Board board = boardService.getBoard(boardId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
+        return ResponseEntity.ok(card);
+    }
 }

@@ -274,6 +274,7 @@ public class MainCtrl {
         tagsListStage.setMinWidth(300);
         tagsListStage.setMinHeight(450);
         tagsListStage.setResizable(false);
+        tagDetailsStage.setOnCloseRequest(e -> tagsListCtrl.stopPolling());
         tagsListStage.show();
         addIcons(tagsListStage);
         tagsListCtrl.drawTags();

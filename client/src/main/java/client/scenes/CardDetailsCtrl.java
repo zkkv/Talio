@@ -9,6 +9,10 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -35,6 +39,8 @@ public class CardDetailsCtrl {
 
     private Card card;
 
+    private boolean rearranged = false;
+
     @FXML
     private TextArea descriptionField;
 
@@ -56,27 +62,43 @@ public class CardDetailsCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * The functionality of the button for closing the scene
+     *
+     * @author Sofia Dimieva
+     */
     public void closeCardDetails(){
+        if(rearranged){
+            boardOverviewService.updateCardSubTasks( this.card.getId(),
+                    this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
+        }
         mainCtrl.showBoardPage();
     }
     public void setTitle(String title) {
         this.title.setText(title);
     }
 
-
     public void setCard(Card card) {
         this.card = card;
     }
 
-
     public void addSubTask() {
         SubTask subTask = new SubTask();
         subTask = boardOverviewService.addSubTask(subTask, card.getId());
+        this.card.getTasks().add(subTask);
         subTaskSetUp(subTask, "SubTask", false);
-
         updateProgressBar();
     }
 
+    /**
+     * The method creates the subtask in the
+     * front-end and adds  functionality to some of its buttons
+     *
+     * @author Sofia Dimieva
+     * @param task the task object
+     * @param taskName
+     * @param checked
+     */
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
         subTask.setAlignment(Pos.CENTER_LEFT);
@@ -108,8 +130,18 @@ public class CardDetailsCtrl {
         editSubTask(task, subTask, rename, text, delete, name);
 
         subtasks.getChildren().add(subTask);
+        rearrange(subTask,task);
     }
 
+    /**
+     * The method sets up the checkbox and adds a lister which changes the value
+     * in the object whenever the checkbox is ticked or unticked
+     *
+     * @author Sofia Dimieva
+     * @param subTask
+     * @param checkBox
+     * @param checked
+     */
     public void checkboxSetUp(SubTask subTask, CheckBox checkBox, boolean checked) {
         checkBox.selectedProperty().set(checked);
         checkBox.setPrefHeight(36);
@@ -123,6 +155,15 @@ public class CardDetailsCtrl {
         });
     }
 
+    /**
+     * The method lets the user rename the subtask
+     * @param task
+     * @param subTask
+     * @param rename
+     * @param text
+     * @param delete
+     * @param name
+     */
     public void editSubTask(SubTask task, HBox subTask, Button rename,
                             TextField text, Button delete, Label name) {
         rename.setOnAction(event -> {
@@ -144,6 +185,12 @@ public class CardDetailsCtrl {
         });
     }
 
+    /**
+     * Shows a message when the subtask is hovered
+     *
+     * @author Sofia Dimieva
+     * @param label
+     */
     private void editSubTaskMessage(Label label) {
         Tooltip tooltip = new Tooltip("Click to edit");
         tooltip.setFont(Font.font("Verdana", 14));
@@ -153,6 +200,13 @@ public class CardDetailsCtrl {
         label.setTooltip(tooltip);
     }
 
+    /**
+     * When the scene is opened the method retrieves
+     * all subtasks from the database
+     *
+     * @author Sofia Dimieva
+     * @param card
+     */
     public void addRetrievedSubTasks(Card card) {
         this.card = card;
         subtasks.getChildren().clear();
@@ -160,10 +214,17 @@ public class CardDetailsCtrl {
             subTaskSetUp(subTask, subTask.getName(), subTask.isChecked());
     }
 
+    /**
+     * A method for deleting a subtask
+     *
+     * @author Sofia Dimieva
+     * @param task
+     * @param subTask
+     */
     public void deleteSubTask(SubTask task, HBox subTask) {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
-
+        this.card.getTasks().remove(task);
         updateProgressBar();
     }
     public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
@@ -186,6 +247,98 @@ public class CardDetailsCtrl {
             descriptionIcon.setVisible(card.hasDescription());
         });
         descriptionField.setText(card.getDescription());
+    }
+
+    /**
+     * The method sets an event for on drag detected
+     * in the VBox containing all the subtasks
+     *
+     * @author Sofia Dimieva
+     * @param hbox
+     * @param subTaskObject
+     */
+    public void rearrange(HBox hbox, SubTask subTaskObject) {
+        subtasks.setOnDragOver(event -> {
+            if (event.getGestureSource() != subTaskObject && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        hbox.setOnDragDetected(event -> {
+            Dragboard db = hbox.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            configureDragboardAndClipboard(subtasks, hbox, subTaskObject, event, db, content);
+
+        });
+    }
+
+    /**
+     * The method removes the selected subtasks and
+     * lets the user see a snapshot of it while
+     * choosing where to drop it
+     *
+     * @author Sofia Dimieva
+     * @param vbox
+     * @param hbox
+     * @param subTask
+     * @param event
+     * @param db
+     * @param content
+     */
+    private void configureDragboardAndClipboard(VBox vbox, HBox hbox, SubTask subTask,
+                                                MouseEvent event, Dragboard db,
+                                                ClipboardContent content) {
+        content.putString(subTask.getName());
+        db.setContent(content);
+        db.setDragView(hbox.snapshot(null, null));
+        event.consume();
+
+        vbox.getChildren().remove(hbox);
+        this.card.getTasks().remove(subTask);
+        configureCardListVBoxOnDragDropped(subTask, hbox, vbox);
+    }
+
+    /**
+     *The method checks where is the tasks
+     * dropped and adds it on the correct index
+     *
+     * @author Sofia Dimieva
+     * @param subTask
+     * @param hbox
+     * @param vbox
+     */
+    private void configureCardListVBoxOnDragDropped(SubTask subTask, HBox hbox, VBox vbox) {
+        subtasks.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                int dropIndex = -1;
+                //find the right place in the subtask list
+                for (int i = 0; i < vbox.getChildren().size(); i++) {
+                    Node child = vbox.getChildren().get(i);
+                    if (event.getY() <= child.getBoundsInParent().getMinY() +
+                            child.getBoundsInParent().getHeight() / 2) {
+                        dropIndex = i;
+                        break;
+                    }
+                }
+                //if it is not dropped on an element from the list
+                if (dropIndex < 0) {
+                    rearranged = true;
+                    vbox.getChildren().add(vbox.getChildren().size(), hbox);
+                    this.card.getTasks().add(vbox.getChildren().size()-1, subTask);
+                }
+                else {
+                    rearranged = true;
+                    vbox.getChildren().add(dropIndex, hbox);
+                    this.card.getTasks().add(dropIndex, subTask);
+                }
+
+            }
+            success = true;
+            event.setDropCompleted(success);
+            event.consume();
+        });
     }
 
     /**
