@@ -5,10 +5,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import commons.Board;
 import commons.CardList;
+import commons.Tag;
 import commons.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardListService;
+import server.services.TagService;
 import server.services.UserService;
 
 class BoardControllerTest {
@@ -34,6 +37,9 @@ class BoardControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private TagService tagService;
 
     @InjectMocks
     private BoardController boardController;
@@ -200,5 +206,52 @@ class BoardControllerTest {
         ResponseEntity<CardList> actualResponse = boardController.removeCardList(1L,2L);
 
         assertEquals(HttpStatus.NOT_FOUND, actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testAddTag() {
+        Tag tag = new Tag();
+
+        Board board = new Board();
+        board.setTags(new ArrayList<>(Arrays.asList(tag)));
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+        when(boardService.save(any(Board.class))).thenReturn(board);
+
+        when(tagService.save(any(Tag.class))).thenReturn(tag);
+
+        ResponseEntity<Tag> actualResponse = boardController.addTag(tag, 1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(tag, actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetAllTagsIsNull() {
+        Board board = new Board();
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+
+        ResponseEntity<List<Tag>> actualResponse = boardController.getAllTags(1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertNull(actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetAllTagsEquals() {
+        Tag tag1 = new Tag("tag1", 1, 2, 3, null);
+        Tag tag2 = new Tag("tag2", 4, 5, 6, null);
+
+        List<Tag> expectedTags = new ArrayList<>(Arrays.asList(tag1, tag2));
+        Board board = new Board();
+        board.setTags(expectedTags);
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+
+        ResponseEntity<List<Tag>> actualResponse = boardController.getAllTags(1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(expectedTags, actualResponse.getBody());
     }
 }

@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.SubTask;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,10 +25,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public class BoardOverviewCtrl implements Initializable {
@@ -191,11 +189,11 @@ public class BoardOverviewCtrl implements Initializable {
 
     public HBox getNewDroppedCardWithIndex(long cardListId, VBox vbox,
                                            Dragboard db, int dropIndex) {
-        String title = db.getString();
-        Card newCard = new Card(title);
-        newCard = boardOverviewService.addCardAtIndex(newCard,cardListId,dropIndex,
+        long cardId = Long.parseLong((db.getString()));
+        Card newCard = new Card();
+        newCard = boardOverviewService.addCardAtIndex(newCard, cardId,cardListId,dropIndex,
                 boardUserIdentifier.getCurrentBoard());
-        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
+        HBox card = drawCardAfterDrop(vbox, "", cardListId, newCard);
         return card;
     }
 
@@ -260,13 +258,14 @@ public class BoardOverviewCtrl implements Initializable {
                     }
                 }
                 if (dropIndex == -1) { //if it is dropped under all the cards
-                    HBox card = getNewDroppedCard(cardListId, vbox, db);
+                    HBox card = getNewDroppedCardWithIndex(cardListId,
+                        vbox, db, (vbox.getChildren().size() - 1));
 
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
                 else {
                     if(dropIndex== vbox.getChildren().size()-1){ //card is dropped on the "+" button
-                        HBox card = getNewDroppedCard(cardListId, vbox, db);
+                        HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
 
                         vbox.getChildren().add(dropIndex, card);
                     }
@@ -342,16 +341,28 @@ public class BoardOverviewCtrl implements Initializable {
                 cardDetailsCtrl.setCard(cardEntity);
                 cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
                 cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+
+                cardDetailsCtrl.updateProgressBar();
             }
         });
 
         card.setOnDragDetected(event -> {
             Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            configureDragboardAndClipboard(vbox, card, task, event, db, content);
-            boardOverviewService.removeCard(cardEntity,cardListId,
+            configureDragboardAndClipboard(vbox, card, cardEntity, event, db, content);
+            boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
         });
+
+        card.setOnDragDone(event -> {
+            if (!event.getGestureSource().getClass().equals(HBox.class)) {
+                boardOverviewService.removeCard(cardEntity,cardListId,
+                    boardUserIdentifier.getCurrentBoard());
+                event.consume();
+            }
+        });
+
+
         return card;
     }
 
@@ -366,17 +377,39 @@ public class BoardOverviewCtrl implements Initializable {
             descriptionIcon.setVisible(false);
         }
 
-        VBox vbox = new VBox(descriptionIcon);
+        List<SubTask> listSubTask = card.getTasks();
+        int numberOfTasks = listSubTask.size();
+        int numberOfChecked = 0;
+        for(SubTask subTask: listSubTask) {
+            if(subTask.isChecked()) {
+                numberOfChecked++;
+            }
+        }
+        Label progressOfSubTasks = new Label();
+        if(numberOfTasks != 0) {
+            int progress = (int) Math.round((double) numberOfChecked / numberOfTasks * 100);
+            if (progress < 100) {
+                progressOfSubTasks.setText(progress + "%");
+            }
+            else {
+                progressOfSubTasks.setText("Done");
+            }
+        }
+        progressOfSubTasks.setAlignment(Pos.CENTER);
+        progressOfSubTasks.setMinWidth(30);
+
+        VBox vbox = new VBox(progressOfSubTasks, descriptionIcon);
         vbox.setStyle("-fx-background-color: #DAD2BF;");
         VBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
+        vbox.setSpacing(3);
 
         return vbox;
     }
 
-    private void configureDragboardAndClipboard(VBox vbox, HBox card, Label task,
+    private void configureDragboardAndClipboard(VBox vbox, HBox card, Card cardEntity,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
-        content.putString(task.getText());
+        content.putString(Long.toString(cardEntity.getId()));
         db.setContent(content);
         db.setDragView(card.snapshot(null, null));
         event.consume();
@@ -492,9 +525,17 @@ public class BoardOverviewCtrl implements Initializable {
         });
         boardOverviewService.registerForUpdates("/topic/board/remove", Board.class, b -> {
             Platform.runLater(() -> {
+                boardUserIdentifier.setCurrentBoard(b);
                 mainCtrl.showStartPage();
             });
         });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/tag",
+            Board.class, b -> {
+                Platform.runLater(() -> {
+                    boardUserIdentifier.setCurrentBoard(b);
+                    mainCtrl.showAllTagsList();
+                });
+            });
     }
 
     public void configureSettings() {

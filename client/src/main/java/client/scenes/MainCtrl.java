@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -31,6 +32,7 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage listMenuStage;
     private Stage tagsListStage;
+    private Stage tagDetailsStage;
 
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
@@ -73,6 +75,10 @@ public class MainCtrl {
     private TagsListCtrl tagsListCtrl;
     private Scene tagsList;
 
+    private TagDetailsCtrl tagDetailsCtrl;
+    private Scene tagDetails;
+
+    @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
@@ -86,7 +92,8 @@ public class MainCtrl {
                            Pair<AdminLoginCtrl,Parent> adminLogin,
                            Pair<AdminOverviewCtrl,Parent> adminOverview,
                            Pair<CardDetailsCtrl, Parent> cardDetails,
-                           Pair<TagsListCtrl,Parent> tagsList) {
+                           Pair<TagsListCtrl,Parent> tagsList,
+                           Pair<TagDetailsCtrl, Parent> tagDetails) {
         this.primaryStage = primaryStage;
         addIcons(primaryStage);
 
@@ -132,6 +139,13 @@ public class MainCtrl {
         this.tagsList = new Scene(tagsList.getValue());
         this.tagsListStage = new Stage();
         this.tagsListStage.setScene(this.tagsList);
+        tagsListStage.initModality(Modality.APPLICATION_MODAL);
+
+        this.tagDetailsCtrl = tagDetails.getKey();
+        this.tagDetails = new Scene(tagDetails.getValue());
+        this.tagDetailsStage = new Stage();
+        this.tagDetailsStage.setScene(this.tagDetails);
+        tagDetailsStage.initModality(Modality.APPLICATION_MODAL);
 
         showClientConnectPage();
         primaryStage.show();
@@ -139,14 +153,15 @@ public class MainCtrl {
 
     /**
      * Adds the icons to the application
-     * @param primaryStage the stage from where we get the icons
+     *
+     * @param stage the stage for which the icons need to be set
      */
-    private static void addIcons(Stage primaryStage) {
+    private static void addIcons(Stage stage) {
         /* Icon created by Freepik - Flaticon */
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
-        primaryStage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void showClientConnectPage() {
@@ -183,7 +198,7 @@ public class MainCtrl {
         primaryStage.setScene(board);
     }
 
-    public void subscribeForUpdates(Board board){
+    public void subscribeForAllUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
@@ -255,13 +270,23 @@ public class MainCtrl {
      * Pops up a scene with all the tags in the current board
      */
     public void showAllTagsList() {
-        if(!tagsListStage.isShowing()){
-            tagsListStage.setTitle("Talio: Tag List");
-            tagsListStage.show();
-        }
-        else{
-            tagsListStage.hide();
-        }
+        tagsListStage.setTitle("Talio: Tag List");
+        tagsListStage.setMinWidth(300);
+        tagsListStage.setMinHeight(450);
+        tagsListStage.setResizable(false);
+        tagsListStage.show();
+        addIcons(tagsListStage);
+        tagsListCtrl.drawTags();
+    }
+
+    /**
+     * A method which shows the scene for editing the tag
+     */
+    public void showTagDetails() {
+        tagDetailsStage.setTitle("Talio: Tag Details");
+        tagDetailsStage.setResizable(false);
+        tagDetailsStage.show();
+        addIcons(tagDetailsStage);
     }
 
 }

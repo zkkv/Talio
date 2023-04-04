@@ -23,7 +23,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
 
-
 public class CardDetailsCtrl {
 
     private final BoardOverviewService boardOverviewService;
@@ -47,6 +46,12 @@ public class CardDetailsCtrl {
 
     @FXML
     private Button saveDescriptionButton;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
 
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
@@ -78,27 +83,40 @@ public class CardDetailsCtrl {
         subTask = boardOverviewService.addSubTask(subTask, card.getId());
         this.card.getTasks().add(subTask);
         subTaskSetUp(subTask, "SubTask", false);
+
+        updateProgressBar();
     }
 
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
         subTask.setAlignment(Pos.CENTER_LEFT);
+
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
+
         Label name = new Label(taskName);
         name.setPrefWidth(150);
+
         TextField text = new TextField();
         text.setPrefWidth(150);
+
         subTask.getChildren().add(checkBox);
+
         Button delete = new Button("x");
         delete.setOnAction(event -> {
             deleteSubTask(task, subTask);
         });
+
         Button rename = new Button("rename");
+
         subTask.getChildren().add(name);
+
         editSubTaskMessage(name);
+
         subTask.getChildren().add(delete);
+
         editSubTask(task, subTask, rename, text, delete, name);
+
         subtasks.getChildren().add(subTask);
         rearrange(subTask,task);
     }
@@ -107,9 +125,12 @@ public class CardDetailsCtrl {
         checkBox.selectedProperty().set(checked);
         checkBox.setPrefHeight(36);
         checkBox.setPrefWidth(36);
+
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             subTask.setChecked(!checked);
             boardOverviewService.updateCheckboxTask(subTask.getId(), !checked);
+
+            updateProgressBar();
         });
     }
 
@@ -154,6 +175,7 @@ public class CardDetailsCtrl {
         subtasks.getChildren().remove(subTask);
         boardOverviewService.removeSubTask(task, card.getId());
         this.card.getTasks().remove(task);
+        updateProgressBar();
     }
     public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
         saveDescriptionButton.setOnAction(event -> {
@@ -171,7 +193,7 @@ public class CardDetailsCtrl {
 
             HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
             VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
-            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(0);
+            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
             descriptionIcon.setVisible(card.hasDescription());
         });
         descriptionField.setText(card.getDescription());
@@ -238,5 +260,29 @@ public class CardDetailsCtrl {
         });
     }
 
+    /**
+     * Updates the progress bar when a subtask is added/removed and when a checkbox is
+     * checked/unchecked.
+     *
+     * @author Diana Sutac
+     */
+    public void updateProgressBar() {
+        int numberOfChecked = 0;
+
+        for(Node node : subtasks.getChildren()) {
+            if(node instanceof HBox) {
+                HBox subTask = (HBox) node;
+                CheckBox checkBox = (CheckBox) subTask.getChildren().get(0);
+                if(checkBox.isSelected()) {
+                    numberOfChecked++;
+                }
+            }
+        }
+
+        int numberOfSubTasks = subtasks.getChildren().size();
+        double progress = (double) numberOfChecked / numberOfSubTasks;
+        progressBar.setProgress(progress);
+        progressIndicator.setProgress(progress);
+    }
 
 }

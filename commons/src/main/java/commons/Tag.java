@@ -30,8 +30,17 @@ public class Tag {
         // for object mapper
     }
 
-    public Tag(long id, String title, int red, int green, int blue, List<Card> cards) {
-        this.id = id;
+    /**
+     * Tag constructor
+     *
+     * @param title text displayed for the tag
+     * @param red   red color component
+     * @param green green color component
+     * @param blue  blue color component
+     * @param cards list of cards having this tag
+     * @author      Kirill Zhankov
+     */
+    public Tag(String title, int red, int green, int blue, List<Card> cards) {
         this.title = title;
         this.red = red;
         this.green = green;
@@ -52,5 +61,33 @@ public class Tag {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getRed() {
+        return red;
+    }
+
+    public int getGreen() {
+        return green;
+    }
+
+    public int getBlue() {
+        return blue;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title=title;
     }
 }
