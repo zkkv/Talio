@@ -50,9 +50,10 @@
 * 16:00 - 16:05
 
 	__Demo showcase__
-	
-	* One person shows what the team has achieved on their computer
-	* If TA has any feedback, the team should take it into account
+	disconnect button inside a start page
+  it's better to do the epics we have as well as possible than to make as many epics as possible
+      * One person shows what the team has achieved on their computer
+      * If TA has any feedback, the team should take it into account
 	
 * 16:05 - 16:12
 
@@ -92,8 +93,12 @@
 * 16:23 - 16:30
 
 	__Questions__
-	
-	* Time for any additional questions
+	Oral examination : it's examined on things that you don't know , code that you haven't written. 
+  * You should know you code base for example : " it's in class X in method Y "
+  * The product pitch is not supposed to be like an ad , it should be formal.
+  * Make sure the video is at most 10 minutes! (you can fail otherwise)
+  *  
+      * Time for any additional questions
 	
 * 16:30 - 16:30
 
