@@ -64,7 +64,8 @@ public class CardDetailsCtrl {
 
     public void closeCardDetails(){
         if(rearranged){
-            boardOverviewService.updateCardSubTasks( this.card.getId(),this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
+            boardOverviewService.updateCardSubTasks( this.card.getId(),
+                    this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
         }
         mainCtrl.showBoardPage();
     }
@@ -247,7 +248,8 @@ public class CardDetailsCtrl {
                     rearranged = true;
                     vbox.getChildren().add(vbox.getChildren().size(), hbox);
                     this.card.getTasks().add(vbox.getChildren().size()-1, subTask);
-                } else {
+                }
+                else {
                     rearranged = true;
                     vbox.getChildren().add(dropIndex, hbox);
                     this.card.getTasks().add(dropIndex, subTask);
