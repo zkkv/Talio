@@ -48,9 +48,6 @@ public class Main extends Application {
         var startPage = FXML.load(
 				StartPageCtrl.class,
                 "client", "scenes", "StartPage.fxml");
-        var addTask = FXML.load(
-				AddTaskCtrl.class,
-				"client", "scenes", "AddTask.fxml");
         var listMenu = FXML.load(
 				ListMenuCtrl.class,
 				"client", "scenes", "ListMenu.fxml");
@@ -93,7 +90,6 @@ public class Main extends Application {
                 board,
                 clientConnect,
 				startPage,
-				addTask,
 				listMenu,
 				createBoard,
                 boardSettings,

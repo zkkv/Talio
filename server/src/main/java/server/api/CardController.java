@@ -97,7 +97,7 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("/{id}/add-tag/{boardId}")
+    @PostMapping("/{id}/add-tag")
     public ResponseEntity<Tag> addTag(@RequestBody Tag tag, @PathVariable("id") long cardId) {
 
         tag = tagService.save(tag);
@@ -113,15 +113,11 @@ public class CardController {
                                          @PathVariable("id") long cardId){
         Tag tag = tagService.getTag(tagId);
         tag = tagService.save(tag);
-        //Board board = boardService.getBoard(boardId);
         Card card = cardService.getCard(cardId);
 
         card.getTags().remove(tag);
 
         card = cardService.save(card);
-        //tagService.removeTag(tagId);
-
-        //simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/tag",board);
         return ResponseEntity.ok(tag);
     }
 

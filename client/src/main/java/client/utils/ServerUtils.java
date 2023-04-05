@@ -404,7 +404,7 @@ public class ServerUtils {
      */
     public Tag addTagToCard(Tag tag, long cardId) {
         return ClientBuilder.newClient(new ClientConfig())
-            .target(server).path("api/card/" + cardId + "/add-tag/")
+            .target(server).path("api/card/" + cardId + "/add-tag")
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);

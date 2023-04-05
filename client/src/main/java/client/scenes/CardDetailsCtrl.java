@@ -35,8 +35,11 @@ public class CardDetailsCtrl {
 
     private final BoardUserIdentifier boardUserIdentifier;
 
+    private Label label;
+    private HBox cardContainer;
+
     @FXML
-    private Label title;
+    private TextField title;
 
     @FXML
     private VBox subtasks;
@@ -52,7 +55,7 @@ public class CardDetailsCtrl {
     private TextArea descriptionField;
 
     @FXML
-    private Button saveDescriptionButton;
+    private Button saveButton;
 
     @FXML
     private ProgressBar progressBar;
@@ -236,26 +239,86 @@ public class CardDetailsCtrl {
         this.card.getTasks().remove(task);
         updateProgressBar();
     }
-    public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
-        saveDescriptionButton.setOnAction(event -> {
-            if(descriptionField.getText().equals("")){
-                boardOverviewService.updateCardDescription(card.getId(), " ",
-                        boardUserIdentifier.getCurrentBoard());
-                card.setDescription("");
-            }
-            else {
-                String description = descriptionField.getText();
-                boardOverviewService.updateCardDescription(card.getId(), description,
-                        boardUserIdentifier.getCurrentBoard());
-                card.setDescription(description);
-            }
 
-            HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
-            VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
-            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
-            descriptionIcon.setVisible(card.hasDescription());
+    /**
+     * This method saves all changes made to the title and the description
+     * of a card.
+     * It is called when the user pressed the save button.
+     * @param card
+     * @param cardContainer
+     */
+    public void configureSaveButton(Card card, HBox cardContainer) {
+        if(card.getDescription().trim().equals("")) {
+            card.setDescription("");
+        }
+
+        this.cardContainer = cardContainer;
+
+        saveButton.setOnAction(event -> {
+            updateCardTitle(card);
+            updateCardDescription(card);
+            updateCardDescriptionIcon(card, cardContainer);
         });
+
+        title.setText(card.getTitle());
         descriptionField.setText(card.getDescription());
+    }
+
+    /**
+     * Updates card description on board overview corresponding to the text
+     * in the description text area.
+     * If the text area is empty or has white spaces, the card will have
+     * an empty description
+     * @param card card of which method changes the title of
+     */
+    public void updateCardDescription(Card card) {
+        if(descriptionField.getText().trim().equals("")){
+            boardOverviewService.updateCardDescription(card.getId(), " ",
+                    boardUserIdentifier.getCurrentBoard());
+            card.setDescription("");
+        }
+        else {
+            String description = descriptionField.getText();
+            boardOverviewService.updateCardDescription(card.getId(), description,
+                    boardUserIdentifier.getCurrentBoard());
+        }
+    }
+
+    /**
+     * Selects and makes description icon visible or invisible,
+     * depending on if the card has a description or not, respectively
+     * @param card card object
+     * @param cardContainer card container which holds the description icon
+     */
+    public void updateCardDescriptionIcon(Card card, HBox cardContainer) {
+        HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
+        VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
+        ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
+        descriptionIcon.setVisible(card.hasDescription());
+    }
+
+    /**
+     * Updates card title on board overview corresponding to the text
+     * in the title text field.
+     * If the text field is empty or has white spaces when the method is called
+     * then a warning will pop up, otherwise the title will be saved
+     * and changed.
+     * @param card card of which method changes the title of
+     */
+    public void updateCardTitle(Card card) {
+        if(title.getText().trim().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alert");
+            alert.setHeaderText(null);
+            alert.setContentText("You cannot leave the title field blank!");
+            alert.showAndWait();
+        }
+        else {
+            mainCtrl.changeName(label, title.getText());
+            boardOverviewService.updateCardTitle(card.getId(), title.getText(),
+                    boardUserIdentifier.getCurrentBoard());
+        }
+
     }
 
     /**
@@ -380,7 +443,7 @@ public class CardDetailsCtrl {
      * and the list of tags of the board
      */
     public void addTag() {
-        mainCtrl.showAllTagsListWithinACard(card);
+        mainCtrl.showAllTagsListWithinACard(card, cardContainer, label);
     }
 
     /**
@@ -441,4 +504,11 @@ public class CardDetailsCtrl {
         tagBox.setFillHeight(true);
     }
 
+    /**
+     * Selects label of card
+     * @param label
+     */
+    public void setLabel(Label label) {
+        this.label = label;
+    }
 }

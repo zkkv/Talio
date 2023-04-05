@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -22,6 +23,8 @@ public class TagsInCardCtrl {
     private final BoardUserIdentifier boardUserIdentifier;
 
     private Card currentCard;
+    private HBox hboxOfCard;
+    private Label labelOfCard;
     private Set<Tag> tagsInCardSet;
 
     @FXML
@@ -52,8 +55,10 @@ public class TagsInCardCtrl {
      * A method to show all the tags needed
      * @param currentCard
      */
-    public void openTagsInCard(Card currentCard){
+    public void openTagsInCard(Card currentCard, HBox hboxOfCard, Label labelOfCard){
         this.currentCard = currentCard;
+        this.hboxOfCard = hboxOfCard;
+        this.labelOfCard = labelOfCard;
         drawTagsFromCard();
         drawTagsFromBoard();
     }
@@ -251,7 +256,7 @@ public class TagsInCardCtrl {
      * A method which closes the window and loads the card tags inside its details
      */
     public void closeTagsInCard(){
-        mainCtrl.showCardDetails(currentCard.getTitle());
+        mainCtrl.showCardDetails(currentCard, hboxOfCard, labelOfCard);
         mainCtrl.initTagsInCardDetails();
     }
 }
