@@ -27,8 +27,10 @@ public class CardDetailsCtrl {
 
     private final BoardUserIdentifier boardUserIdentifier;
 
+    private Label label;
+
     @FXML
-    private Label title;
+    private TextField title;
 
     @FXML
     private VBox subtasks;
@@ -39,7 +41,7 @@ public class CardDetailsCtrl {
     private TextArea descriptionField;
 
     @FXML
-    private Button saveDescriptionButton;
+    private Button saveButton;
 
     @FXML
     private ProgressBar progressBar;
@@ -166,26 +168,47 @@ public class CardDetailsCtrl {
 
         updateProgressBar();
     }
-    public void configureSaveDescriptionButton(Card card, HBox cardContainer) {
-        saveDescriptionButton.setOnAction(event -> {
-            if(descriptionField.getText().equals("")){
-                boardOverviewService.updateCardDescription(card.getId(), " ",
-                        boardUserIdentifier.getCurrentBoard());
-                card.setDescription("");
-            }
-            else {
-                String description = descriptionField.getText();
-                boardOverviewService.updateCardDescription(card.getId(), description,
-                        boardUserIdentifier.getCurrentBoard());
-                card.setDescription(description);
-            }
+    public void configureSaveButton(Card card, HBox cardContainer) {
+        if(card.getDescription().trim().equals("")) {
+            card.setDescription("");
+        }
 
-            HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
-            VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
-            ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
-            descriptionIcon.setVisible(card.hasDescription());
+        saveButton.setOnAction(event -> {
+            updateCardTitle(card);
+            updateCardDescription(card);
+            updateCardDescriptionIcon(card, cardContainer);
         });
+
+        title.setText(card.getTitle());
         descriptionField.setText(card.getDescription());
+    }
+
+    public void updateCardDescription(Card card) {
+        if(descriptionField.getText().trim().equals("")){
+            boardOverviewService.updateCardDescription(card.getId(), " ",
+                    boardUserIdentifier.getCurrentBoard());
+            card.setDescription("");
+        }
+        else {
+            String description = descriptionField.getText();
+            boardOverviewService.updateCardDescription(card.getId(), description,
+                    boardUserIdentifier.getCurrentBoard());
+            card.setDescription(description);
+        }
+    }
+
+    public void updateCardDescriptionIcon(Card card, HBox cardContainer) {
+        HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
+        VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
+        ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
+        descriptionIcon.setVisible(card.hasDescription());
+    }
+
+    public void updateCardTitle(Card card) {
+        mainCtrl.changeName(label, title.getText());
+        boardOverviewService.updateCardTitle(card.getId(), title.getText(),
+                boardUserIdentifier.getCurrentBoard());
+        card.setTitle(title.getText());
     }
 
     /**
@@ -213,4 +236,7 @@ public class CardDetailsCtrl {
         progressIndicator.setProgress(progress);
     }
 
+    public void setLabel(Label label) {
+        this.label = label;
+    }
 }
