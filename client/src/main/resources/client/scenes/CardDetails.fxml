@@ -47,7 +47,7 @@
                 <Separator prefWidth="200.0" />
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="582.0">
                     <children>
-                        <Button layoutX="210.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
+                        <Button layoutX="199.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
                         <ScrollPane layoutY="29.0" prefHeight="117.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="315.0" AnchorPane.topAnchor="29.0">
                             <content>
                                 <VBox id="subtasks" fx:id="subtasks" minHeight="250.0" minWidth="272.0" spacing="2.0">
@@ -62,6 +62,21 @@
                                 <Font size="20.0" />
                             </font>
                         </Label>
+                  <ScrollPane layoutX="300.0" layoutY="28.0" prefHeight="263.0" prefWidth="286.0">
+                     <content>
+                        <VBox id="subtasks" fx:id="tags" minHeight="250.0" minWidth="272.0" spacing="2.0">
+                           <padding>
+                              <Insets left="2.0" top="2.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Label layoutX="300.0" layoutY="-2.0" text="Tags:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="525.0" mnemonicParsing="false" onAction="#addTag" text="Add Tag" />
                     </children>
                 </AnchorPane>
             <HBox prefHeight="17.0" prefWidth="600.0">
