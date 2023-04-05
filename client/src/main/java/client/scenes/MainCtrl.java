@@ -16,6 +16,7 @@
 package client.scenes;
 
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -77,6 +78,8 @@ public class MainCtrl {
 
     private TagDetailsCtrl tagDetailsCtrl;
     private Scene tagDetails;
+    private TagsInCardCtrl tagsInCardCtrl;
+    private Scene tagsInCard;
 
     @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
@@ -93,7 +96,8 @@ public class MainCtrl {
                            Pair<AdminOverviewCtrl,Parent> adminOverview,
                            Pair<CardDetailsCtrl, Parent> cardDetails,
                            Pair<TagsListCtrl,Parent> tagsList,
-                           Pair<TagDetailsCtrl, Parent> tagDetails) {
+                           Pair<TagDetailsCtrl, Parent> tagDetails,
+                           Pair<TagsInCardCtrl, Parent> tagsInCard) {
         this.primaryStage = primaryStage;
         addIcons(primaryStage);
 
@@ -146,6 +150,9 @@ public class MainCtrl {
         this.tagDetailsStage = new Stage();
         this.tagDetailsStage.setScene(this.tagDetails);
         tagDetailsStage.initModality(Modality.APPLICATION_MODAL);
+
+        this.tagsInCardCtrl = tagsInCard.getKey();
+        this.tagsInCard = new Scene(tagsInCard.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -278,6 +285,25 @@ public class MainCtrl {
         tagsListStage.show();
         addIcons(tagsListStage);
         tagsListCtrl.drawTags();
+    }
+
+    /**
+     * A method to show the tags in the card
+     * @param currentCard is the card from which to get the tags
+     */
+    public void showAllTagsListWithinACard(Card currentCard) {
+        primaryStage.setTitle("Talio: Card Tags");
+
+        tagsInCardCtrl.openTagsInCard(currentCard);
+
+        primaryStage.setScene(tagsInCard);
+    }
+
+    /**
+     * A method with which we show the tags of the cards inside the card details
+     */
+    public void initTagsInCardDetails(){
+        cardDetailsCtrl.addRetrievedTags();
     }
 
     /**

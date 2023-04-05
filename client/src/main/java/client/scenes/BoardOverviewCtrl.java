@@ -342,6 +342,7 @@ public class BoardOverviewCtrl implements Initializable {
                 cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
                 cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
 
+                mainCtrl.initTagsInCardDetails();
                 cardDetailsCtrl.updateProgressBar();
             }
         });
