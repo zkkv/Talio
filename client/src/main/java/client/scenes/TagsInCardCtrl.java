@@ -188,7 +188,7 @@ public class TagsInCardCtrl {
         tagButton.setOnAction(event -> {
             tagsInCard.getChildren().remove(tagBox);
             configureTagAfterSwitchingToBoard(tagBox, tagButton, tag);
-            tagsInBoard.getChildren().add(tagsInBoard.getChildren().size()-1, tagBox);
+            tagsInBoard.getChildren().add(tagsInBoard.getChildren().size(), tagBox);
             tagsListService.removeTagFromCard(tag, currentCard.getId());
         });
     }
