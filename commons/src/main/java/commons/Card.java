@@ -82,4 +82,12 @@ public class Card {
     public void setTasks(List<SubTask> subTasks) {
         this.subTasks = subTasks;
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 }

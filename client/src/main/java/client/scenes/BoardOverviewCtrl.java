@@ -335,6 +335,7 @@ public class BoardOverviewCtrl implements Initializable {
         task.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2) {
                 mainCtrl.showCardDetails(cardEntity, card, task);
+                mainCtrl.initTagsInCardDetails();
             }
         });
 

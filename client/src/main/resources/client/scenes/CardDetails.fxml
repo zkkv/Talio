@@ -60,6 +60,21 @@
                                 <Font size="20.0" />
                             </font>
                         </Label>
+                  <ScrollPane layoutX="300.0" layoutY="28.0" prefHeight="263.0" prefWidth="286.0">
+                     <content>
+                        <VBox id="subtasks" fx:id="tags" minHeight="250.0" minWidth="272.0" spacing="2.0">
+                           <padding>
+                              <Insets left="2.0" top="2.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Label layoutX="300.0" layoutY="-2.0" text="Tags:">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="525.0" mnemonicParsing="false" onAction="#addTag" text="Add Tag" />
                     </children>
                 </AnchorPane>
             <HBox prefHeight="17.0" prefWidth="331.0">

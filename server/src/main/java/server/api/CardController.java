@@ -3,12 +3,14 @@ package server.api;
 import commons.Board;
 import commons.Card;
 import commons.SubTask;
+import commons.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.services.BoardService;
 import server.services.CardService;
 import server.services.SubTaskService;
+import server.services.TagService;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
 public class CardController {
     private final CardService cardService;
     private final SubTaskService subTaskService;
-
+    private final TagService tagService;
     private final BoardService boardService;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
@@ -25,11 +27,13 @@ public class CardController {
 
     public CardController(CardService cardService, BoardService boardService,
                           SimpMessagingTemplate simpMessagingTemplate,
-                          SubTaskService subTaskService) {
+                          SubTaskService subTaskService,
+                          TagService tagService) {
         this.cardService = cardService;
         this.boardService = boardService;
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.subTaskService = subTaskService;
+        this.tagService = tagService;
     }
 
     @GetMapping(path = {"", "/"})
@@ -92,6 +96,37 @@ public class CardController {
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId, board);
         return ResponseEntity.ok(card);
     }
+
+    @PostMapping("/{id}/add-tag")
+    public ResponseEntity<Tag> addTag(@RequestBody Tag tag, @PathVariable("id") long cardId) {
+
+        tag = tagService.save(tag);
+        Card card = cardService.getCard(cardId);
+        card.getTags().add(tag);
+        card = cardService.save(card);
+
+        return ResponseEntity.ok(tag);
+    }
+
+    @DeleteMapping("/{id}/remove-tag/{tagId}")
+    public ResponseEntity<Tag> removeTag(@PathVariable("tagId") long tagId,
+                                         @PathVariable("id") long cardId){
+        Tag tag = tagService.getTag(tagId);
+        tag = tagService.save(tag);
+        Card card = cardService.getCard(cardId);
+
+        card.getTags().remove(tag);
+
+        card = cardService.save(card);
+        return ResponseEntity.ok(tag);
+    }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<Tag>> getAllTags(@PathVariable("id") long cardId) {
+        List<Tag> tags = cardService.getCard(cardId).getTags();
+        return ResponseEntity.ok(tags);
+    }
+
     @PutMapping("/update-subTasks/{id}/board/{boardId}")
     public ResponseEntity<Card> updateSubTasks(@RequestBody List<SubTask> subtasks,
                                                @PathVariable("id") long id,

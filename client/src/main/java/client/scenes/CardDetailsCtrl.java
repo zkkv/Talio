@@ -2,10 +2,13 @@ package client.scenes;
 
 import client.services.BoardOverviewService;
 import client.services.BoardUserIdentifier;
+import client.services.TagsListService;
 import com.google.inject.Inject;
 import commons.Card;
 import commons.SubTask;
+import commons.Tag;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -26,18 +29,23 @@ import javafx.scene.image.ImageView;
 public class CardDetailsCtrl {
 
     private final BoardOverviewService boardOverviewService;
+    private final TagsListService tagsListService;
 
     private final MainCtrl mainCtrl;
 
     private final BoardUserIdentifier boardUserIdentifier;
 
     private Label label;
+    private HBox cardContainer;
 
     @FXML
     private TextField title;
 
     @FXML
     private VBox subtasks;
+
+    @FXML
+    private VBox tags;
 
     private Card card;
 
@@ -58,10 +66,12 @@ public class CardDetailsCtrl {
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
                            BoardUserIdentifier boardUserIdentifier,
-                           MainCtrl mainCtrl) {
+                           MainCtrl mainCtrl,
+                           TagsListService tagsListService) {
         this.boardOverviewService = boardOverviewService;
         this.boardUserIdentifier = boardUserIdentifier;
         this.mainCtrl = mainCtrl;
+        this.tagsListService = tagsListService;
     }
 
     /**
@@ -241,6 +251,8 @@ public class CardDetailsCtrl {
         if(card.getDescription().trim().equals("")) {
             card.setDescription("");
         }
+
+        this.cardContainer = cardContainer;
 
         saveButton.setOnAction(event -> {
             updateCardTitle(card);
@@ -424,6 +436,72 @@ public class CardDetailsCtrl {
         double progress = (double) numberOfChecked / numberOfSubTasks;
         progressBar.setProgress(progress);
         progressIndicator.setProgress(progress);
+    }
+
+    /**
+     * A method to show the scene with the list of tags of the cards
+     * and the list of tags of the board
+     */
+    public void addTag() {
+        mainCtrl.showAllTagsListWithinACard(card, cardContainer, label);
+    }
+
+    /**
+     * A method which shows the tags inside the card details
+     */
+    public void addRetrievedTags() {
+        tags.setAlignment(Pos.TOP_CENTER);
+        tags.getChildren().clear();
+        var tagsFromCard = tagsListService.getAllTagsFromCard(card.getId());
+        for (Tag tag : tagsFromCard) {
+            drawTagForCard(tag);
+        }
+    }
+
+    /**
+     * A helper method to make the new tag
+     * @param tag
+     */
+    private void drawTagForCard(Tag tag) {
+        Button tagButton = new Button();
+        HBox tagBox = new HBox();
+
+        configureTagButtonForCard(tagBox, tagButton, tag);
+
+        tagBox.getChildren().add(tagButton);
+        tags.getChildren().add(tagBox);
+    }
+
+    /**
+     * A helper method to show the tag in its colors
+     * @param tagBox is the Hbox in which is our button
+     * @param tagButton the button with which you could delete the card easily
+     * @param tag the tag which to remove from the card if it is pressed
+     */
+    private void configureTagButtonForCard(HBox tagBox, Button tagButton, Tag tag) {
+        tagButton.setOnAction(event -> {
+            tags.getChildren().remove(tagBox);
+            tagsListService.removeTagFromCard(tag, card.getId());
+        });
+
+        tagButton.setFocusTraversable(false);
+        tagButton.setAlignment(Pos.CENTER);
+        tagButton.setMnemonicParsing(false);
+        tagButton.setPrefHeight(30);
+        tagButton.setPrefWidth(140);
+        tagButton.setMinHeight(30);
+        tagButton.setMinWidth(140);
+
+        String color = "rgb(" + tag.getRed() + ", " + tag.getGreen() + ", " + tag.getBlue() + ");";
+        String title = tag.getTitle();
+        tagButton.setStyle("-fx-border-color: black; -fx-background-color: " + color);
+        tagButton.setText(title);
+
+        tagBox.setStyle("-fx-start-margin: 20; -fx-end-margin: 20");
+        tagBox.setSpacing(3);
+        tagBox.setPadding(new Insets(5, 20, 5, 20));
+        tagBox.setAlignment(Pos.CENTER);
+        tagBox.setFillHeight(true);
     }
 
     /**

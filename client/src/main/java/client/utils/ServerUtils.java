@@ -383,6 +383,46 @@ public class ServerUtils {
                 .get(new GenericType<List<Tag>>() {});
     }
 
+    /**
+     * A new method to get the tags of the cards from
+     * @param cardId the card from which to get all the tags
+     * @return the list of the tags of the card
+     */
+    public List<Tag> getAllTagsFromCard(long cardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+            .target(server).path("api/card/" + cardId + "/tags")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<List<Tag>>() {});
+    }
+
+    /**
+     * A method do add the tag to the card
+     * @param tag the tag to add
+     * @param cardId the id of the card to which we add
+     * @return the tag which we add
+     */
+    public Tag addTagToCard(Tag tag, long cardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+            .target(server).path("api/card/" + cardId + "/add-tag")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * A method to remove the tag from the card
+     * @param tagId the id of the tag which we add
+     * @param cardId cardId the id of the card from which we remove
+     * @return if the tag has been removed from the card successfully
+     */
+    public Response removeTagFromCard(long tagId, long cardId) {
+        return ClientBuilder.newClient(new ClientConfig())
+            .target(server).path("api/card/" + cardId + "/remove-tag/"+tagId)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .delete();
+    }
 
     /**
      * Long-polls the server on a dedicated thread for any tag updates on
