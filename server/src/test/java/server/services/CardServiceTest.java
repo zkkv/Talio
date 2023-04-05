@@ -1,6 +1,7 @@
 package server.services;
 
 import commons.Card;
+import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -93,4 +94,32 @@ public class CardServiceTest {
 
         assertEquals(expectedSavedCard, actualSavedCard);
     }
+
+    @Test
+    public void testGetTags() {
+        Card cardWithTags = new Card();
+        cardWithTags.setId(2L);
+
+        List<Tag> tagsForCard = new ArrayList<>();
+        List<Tag> tagsToExcept = new ArrayList<>();
+
+        Tag tag = new Tag();
+        tag.setId(1L);
+
+        tagsForCard.add(tag);
+        tagsForCard.add(tag);
+
+        tagsToExcept.add(tag);
+        tagsToExcept.add(tag);
+
+        cardWithTags.setTags(tagsForCard);
+
+        when(cardRepository.findTagsById(cardWithTags.getId())).thenReturn(tagsToExcept);
+
+        List<Tag> actualList = cardService.getTags(cardWithTags.getId());
+
+        assertEquals(tagsToExcept, actualList);
+    }
+
+
 }

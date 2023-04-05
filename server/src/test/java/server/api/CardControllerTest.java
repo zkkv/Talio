@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import commons.Board;
 import commons.Card;
+import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardService;
+import server.services.TagService;
 
 
 public class CardControllerTest {
@@ -27,6 +30,9 @@ public class CardControllerTest {
 
     @Mock
     private BoardService boardService;
+
+    @Mock
+    private TagService tagService;
 
     @Mock
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -97,5 +103,76 @@ public class CardControllerTest {
         assertEquals(cardToRename.getTitle(),actualResponse.getBody().getTitle());
     }
 
+    @Test
+    public void testAddTag() {
+        Tag tag = new Tag();
+        tag.setId(2L);
 
+        Card card = new Card();
+        card.setId(1L);
+        card.setTags(new ArrayList<>(Arrays.asList(tag)));
+
+        when(cardService.getCard(1L)).thenReturn(card);
+        when(cardService.save(any(Card.class))).thenReturn(card);
+
+        when(tagService.save(any(Tag.class))).thenReturn(tag);
+
+        ResponseEntity<Tag> actualResponse = cardController.addTag(tag, 1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(tag, actualResponse.getBody());
+    }
+
+    @Test
+    public void testRemoveTag() {
+        Card cardWithTags = new Card();
+        cardWithTags.setId(1L);
+
+        Tag tag = new Tag();
+        tag.setId(2L);
+
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+
+        cardWithTags.setTags(tags);
+
+        when(tagService.getTag(2L)).thenReturn(tag);
+        when(tagService.save(tag)).thenReturn(tag);
+        when(cardService.getCard(1L)).thenReturn(cardWithTags);
+
+        ResponseEntity<Tag> actualResponse = cardController.removeTag(2L, 1L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(tag, actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetAllTags() {
+        Tag tag1 = new Tag();
+        tag1.setId(1L);
+        Tag tag2 = new Tag();
+        tag2.setId(2L);
+
+        Card card = new Card();
+        card.setId(3L);
+
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tag1);
+        tags.add(tag2);
+
+        card.setTags(tags);
+
+        when(cardService.getCard(3L)).thenReturn(card);
+        when(cardService.save(any(Card.class))).thenReturn(card);
+        when(tagService.save(any(Tag.class))).thenReturn(tag1);
+        when(tagService.save(any(Tag.class))).thenReturn(tag2);
+
+        cardController.addTag(tag1, 3L);
+        cardController.addTag(tag1, 3L);
+
+        ResponseEntity<List<Tag>> actualResponse = cardController.getAllTags(3L);
+
+        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
+        assertEquals(tags, actualResponse.getBody());
+    }
 }
