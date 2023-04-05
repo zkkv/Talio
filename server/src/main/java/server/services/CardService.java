@@ -1,6 +1,7 @@
 package server.services;
 
 import commons.Card;
+import commons.Tag;
 import org.springframework.stereotype.Service;
 import server.database.CardRepository;
 
@@ -32,6 +33,10 @@ public class CardService {
 
     public Card save(Card card) {
         return cardRepository.save(card);
+    }
+
+    public List<Tag> getTags(long cardId){
+        return cardRepository.findTagsById(cardId);
     }
 
 }
