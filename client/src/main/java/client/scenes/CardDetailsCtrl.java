@@ -266,10 +266,20 @@ public class CardDetailsCtrl {
     }
 
     public void updateCardTitle(Card card) {
-        mainCtrl.changeName(label, title.getText());
-        boardOverviewService.updateCardTitle(card.getId(), title.getText(),
-                boardUserIdentifier.getCurrentBoard());
-        card.setTitle(title.getText());
+        if(title.getText().trim().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alert");
+            alert.setHeaderText(null);
+            alert.setContentText("You cannot leave the title field blank!");
+            alert.showAndWait();
+        }
+        else {
+            mainCtrl.changeName(label, title.getText());
+            boardOverviewService.updateCardTitle(card.getId(), title.getText(),
+                    boardUserIdentifier.getCurrentBoard());
+            card.setTitle(title.getText());
+        }
+
     }
 
     /**
