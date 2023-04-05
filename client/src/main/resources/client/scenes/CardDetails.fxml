@@ -23,6 +23,7 @@
                     <children>
                         <Button layoutX="562.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeCardDetails" text="X" AnchorPane.rightAnchor="14.8" AnchorPane.topAnchor="7.0" />
                   <TextField fx:id="title" layoutX="14.0" layoutY="7.0" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
+                        <Button fx:id="saveButton" alignment="CENTER" layoutX="371.0" layoutY="2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
                     </children>
                 </AnchorPane>
                 <Separator prefWidth="200.0" />
@@ -59,7 +60,6 @@
                                 <Font size="20.0" />
                             </font>
                         </Label>
-                        <Button fx:id="saveButton" alignment="CENTER" layoutX="482.0" layoutY="252.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="85.0" text="Save details" />
                     </children>
                 </AnchorPane>
             <HBox prefHeight="17.0" prefWidth="331.0">
