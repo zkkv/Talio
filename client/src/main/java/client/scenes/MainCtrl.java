@@ -216,6 +216,15 @@ public class MainCtrl {
         }
     }
 
+    /**
+     * This method changes the primaryStage to the card details scene
+     * and also the title of the stage.
+     * It selects the card object, its container and its label
+     * which are passed on to cardDetalsCtrl
+     * @param cardEntity
+     * @param card
+     * @param label
+     */
     public void showCardDetails(Card cardEntity, HBox card, Label label) {
         primaryStage.setTitle("Talio: Card Details");
         cardDetailsCtrl.setTitle(label.getText());

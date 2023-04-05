@@ -229,6 +229,14 @@ public class CardDetailsCtrl {
         this.card.getTasks().remove(task);
         updateProgressBar();
     }
+
+    /**
+     * This method saves all changes made to the title and the description
+     * of a card.
+     * It is called when the user pressed the save button.
+     * @param card
+     * @param cardContainer
+     */
     public void configureSaveButton(Card card, HBox cardContainer) {
         if(card.getDescription().trim().equals("")) {
             card.setDescription("");
@@ -244,6 +252,13 @@ public class CardDetailsCtrl {
         descriptionField.setText(card.getDescription());
     }
 
+    /**
+     * Updates card description on board overview corresponding to the text
+     * in the description text area.
+     * If the text area is empty or has white spaces, the card will have
+     * an empty description
+     * @param card card of which method changes the title of
+     */
     public void updateCardDescription(Card card) {
         if(descriptionField.getText().trim().equals("")){
             boardOverviewService.updateCardDescription(card.getId(), " ",
@@ -254,10 +269,15 @@ public class CardDetailsCtrl {
             String description = descriptionField.getText();
             boardOverviewService.updateCardDescription(card.getId(), description,
                     boardUserIdentifier.getCurrentBoard());
-            card.setDescription(description);
         }
     }
 
+    /**
+     * Selects and makes description icon visible or invisible,
+     * depending on if the card has a description or not, respectively
+     * @param card card object
+     * @param cardContainer card container which holds the description icon
+     */
     public void updateCardDescriptionIcon(Card card, HBox cardContainer) {
         HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
         VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
@@ -265,6 +285,14 @@ public class CardDetailsCtrl {
         descriptionIcon.setVisible(card.hasDescription());
     }
 
+    /**
+     * Updates card title on board overview corresponding to the text
+     * in the title text field.
+     * If the text field is empty or has white spaces when the method is called
+     * then a warning will pop up, otherwise the title will be saved
+     * and changed.
+     * @param card card of which method changes the title of
+     */
     public void updateCardTitle(Card card) {
         if(title.getText().trim().equals("")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -277,7 +305,6 @@ public class CardDetailsCtrl {
             mainCtrl.changeName(label, title.getText());
             boardOverviewService.updateCardTitle(card.getId(), title.getText(),
                     boardUserIdentifier.getCurrentBoard());
-            card.setTitle(title.getText());
         }
 
     }
@@ -399,6 +426,10 @@ public class CardDetailsCtrl {
         progressIndicator.setProgress(progress);
     }
 
+    /**
+     * Selects label of card
+     * @param label
+     */
     public void setLabel(Label label) {
         this.label = label;
     }
