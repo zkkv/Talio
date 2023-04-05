@@ -16,6 +16,7 @@
 package client.scenes;
 
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -36,10 +38,6 @@ public class MainCtrl {
 
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
-
-    private AddTaskCtrl addTaskCtrl;
-
-    private Scene addTask;
 
     private ClientConnectCtrl clientConnectCtrl;
     private Scene clientConnect;
@@ -83,7 +81,6 @@ public class MainCtrl {
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
-                           Pair<AddTaskCtrl, Parent> addTask,
                            Pair<ListMenuCtrl, Parent> listMenu,
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
@@ -105,9 +102,6 @@ public class MainCtrl {
 
         this.boardOverviewCtrl = board.getKey();
         this.board = new Scene(board.getValue());
-
-        this.addTaskCtrl = addTask.getKey();
-        this.addTask = new Scene(addTask.getValue());
 
         this.listMenuCtrl = listMenu.getKey();
         this.listMenu = new Scene(listMenu.getValue());
@@ -168,7 +162,6 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Client connect");
         primaryStage.setScene(clientConnect);
         setMinSize();
-
     }
 
     public void showUserPage(){
@@ -202,13 +195,6 @@ public class MainCtrl {
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
-    public void showAddTask(Label label) {
-        primaryStage.setTitle("Talio: Adding Task");
-        addTaskCtrl.setLabel(label);
-        primaryStage.setScene(addTask);
-        setMinSizeForCardDetails();
-    }
-
     public void showBoardSettings() {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
@@ -230,10 +216,24 @@ public class MainCtrl {
         }
     }
 
-    public void showCardDetails(String title) {
+    /**
+     * This method changes the primaryStage to the card details scene
+     * and also the title of the stage.
+     * It selects the card object, its container and its label
+     * which are passed on to cardDetalsCtrl
+     * @param cardEntity
+     * @param card
+     * @param label
+     */
+    public void showCardDetails(Card cardEntity, HBox card, Label label) {
         primaryStage.setTitle("Talio: Card Details");
-        cardDetailsCtrl.setTitle(title);
+        cardDetailsCtrl.setTitle(label.getText());
         primaryStage.setScene(cardDetails);
+        cardDetailsCtrl.setCard(cardEntity);
+        cardDetailsCtrl.configureSaveButton(cardEntity, card);
+        cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+        cardDetailsCtrl.updateProgressBar();
+        cardDetailsCtrl.setLabel(label);
     }
 
     public void setMinSize(){

@@ -72,7 +72,7 @@ public class Card {
     }
 
     public boolean hasDescription() {
-        return !description.equals("");
+        return !description.equals(" ") && !description.equals("");
     }
 
     public List<SubTask> getTasks() {

@@ -36,8 +36,6 @@ public class BoardOverviewCtrl implements Initializable {
 
     private final ListMenuCtrl listMenuCtrl;
 
-    private final AddTaskCtrl addTaskCtrl;
-
     private final CardDetailsCtrl cardDetailsCtrl;
 
     @FXML
@@ -59,14 +57,13 @@ public class BoardOverviewCtrl implements Initializable {
 
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
-                             ListMenuCtrl listMenuCtrl, AddTaskCtrl addTaskCtrl,
+                             ListMenuCtrl listMenuCtrl,
                              BoardUserIdentifier boardUserIdentifier,
                              CardDetailsCtrl cardDetailsCtrl) {
         this.boardOverviewService = boardOverviewService;
         this.mainCtrl = mainCtrl;
         this.listMenuCtrl = listMenuCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
-        this.addTaskCtrl = addTaskCtrl;
         this.cardDetailsCtrl = cardDetailsCtrl;
     }
 
@@ -146,8 +143,7 @@ public class BoardOverviewCtrl implements Initializable {
         });
 
         edit.setOnAction(event -> {
-            mainCtrl.showAddTask(task);
-            addTaskCtrl.configureEditButton(card);
+            mainCtrl.showCardDetails(card, hbox, task);
         });
 
         button.setOnMouseClicked(event -> {
@@ -337,12 +333,7 @@ public class BoardOverviewCtrl implements Initializable {
         cardMenu(vbox, card, menu, cardListId, cardEntity, task);
         task.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2) {
-                mainCtrl.showCardDetails(title);
-                cardDetailsCtrl.setCard(cardEntity);
-                cardDetailsCtrl.configureSaveDescriptionButton(cardEntity, card);
-                cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
-
-                cardDetailsCtrl.updateProgressBar();
+                mainCtrl.showCardDetails(cardEntity, card, task);
             }
         });
 

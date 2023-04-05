@@ -9,19 +9,21 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="613.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
     <children>
-        <VBox prefHeight="613.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="620.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <AnchorPane prefHeight="40.0" prefWidth="600.0">
                     <children>
-                        <Label fx:id="title" layoutX="24.0" layoutY="7.0" prefHeight="26.0" prefWidth="126.0" text="TITLE" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="7.0" />
                         <Button layoutX="562.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeCardDetails" text="X" AnchorPane.rightAnchor="14.8" AnchorPane.topAnchor="7.0" />
+                  <TextField fx:id="title" layoutX="14.0" layoutY="7.0" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
+                        <Button fx:id="saveButton" alignment="CENTER" layoutX="371.0" layoutY="2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
                     </children>
                 </AnchorPane>
                 <Separator prefWidth="200.0" />
@@ -38,16 +40,12 @@
                             <rotationAxis>
                                 <Point3D />
                             </rotationAxis></TextArea>
-                        <Button fx:id="saveDescriptionButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save">
-                            <VBox.margin>
-                                <Insets left="5.0" />
-                            </VBox.margin></Button>
                     </children>
                 </VBox>
                 <Separator prefWidth="200.0" />
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="582.0">
                     <children>
-                        <Button layoutX="210.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
+                        <Button layoutX="199.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
                         <ScrollPane layoutY="29.0" prefHeight="117.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="315.0" AnchorPane.topAnchor="29.0">
                             <content>
                                 <VBox id="subtasks" fx:id="subtasks" minHeight="250.0" minWidth="272.0" spacing="2.0">
@@ -64,7 +62,7 @@
                         </Label>
                     </children>
                 </AnchorPane>
-            <HBox prefHeight="17.0" prefWidth="600.0">
+            <HBox prefHeight="17.0" prefWidth="331.0">
                <children>
                   <ProgressBar fx:id="progressBar" prefHeight="17.0" prefWidth="286.0" progress="0.0" />
                   <ProgressIndicator fx:id="progressIndicator" progress="0.0" />
