@@ -141,6 +141,7 @@ public class BoardOverviewCtrl implements Initializable {
         configureCardMenu(button, menu, remove, edit);
 
         remove.setOnAction(event -> {
+            hiddenLabel.requestFocus();
             vbox.getChildren().remove(hbox);
             boardOverviewService.removeCard(card,cardListId, boardUserIdentifier.getCurrentBoard());
         });
