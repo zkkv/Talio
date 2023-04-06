@@ -47,8 +47,6 @@ public class CardDetailsCtrl {
 
     private Card card;
 
-    private boolean rearranged = false;
-
     @FXML
     private TextArea descriptionField;
 
@@ -78,10 +76,6 @@ public class CardDetailsCtrl {
      * @author Sofia Dimieva
      */
     public void closeCardDetails(){
-        if(rearranged){
-            boardOverviewService.updateCardSubTasks( this.card.getId(),
-                    this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
-        }
         mainCtrl.showBoardPage();
     }
     public void setTitle(String title) {
@@ -260,10 +254,10 @@ public class CardDetailsCtrl {
 
 
         saveButton.setOnAction(event -> {
-            updateCardTitle(card);
-            updateCardDescription(card);
-            updateCardDescriptionIcon(card, cardContainer);
-        });
+                    updateCardTitle(card);
+                    updateCardDescription(card);
+                    updateCardDescriptionIcon(card, cardContainer);
+                });
 
         title.setText(card.getTitle());
         descriptionField.setText(card.getDescription());
@@ -370,6 +364,8 @@ public class CardDetailsCtrl {
 
         vbox.getChildren().remove(hbox);
         this.card.getTasks().remove(subTask);
+        boardOverviewService.updateCardSubTasks( this.card.getId(),
+                this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
         configureCardListVBoxOnDragDropped(subTask, hbox, vbox);
     }
 
@@ -399,14 +395,16 @@ public class CardDetailsCtrl {
                 }
                 //if it is not dropped on an element from the list
                 if (dropIndex < 0) {
-                    rearranged = true;
                     vbox.getChildren().add(vbox.getChildren().size(), hbox);
                     this.card.getTasks().add(vbox.getChildren().size()-1, subTask);
+                    boardOverviewService.updateCardSubTasks( this.card.getId(),
+                            this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
                 }
                 else {
-                    rearranged = true;
                     vbox.getChildren().add(dropIndex, hbox);
                     this.card.getTasks().add(dropIndex, subTask);
+                    boardOverviewService.updateCardSubTasks( this.card.getId(),
+                            this.card.getTasks(), boardUserIdentifier.getCurrentBoard());
                 }
 
             }
