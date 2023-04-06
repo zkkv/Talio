@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -23,8 +22,6 @@ public class TagsInCardCtrl {
     private final BoardUserIdentifier boardUserIdentifier;
 
     private Card currentCard;
-    private HBox hboxOfCard;
-    private Label labelOfCard;
     private Set<Tag> tagsInCardSet;
 
     @FXML
@@ -43,8 +40,8 @@ public class TagsInCardCtrl {
      */
     @Inject
     public TagsInCardCtrl(TagsListService tagsListService,
-                        MainCtrl mainCtrl,
-                        BoardUserIdentifier boardUserIdentifier) {
+                          MainCtrl mainCtrl,
+                          BoardUserIdentifier boardUserIdentifier) {
         this.tagsListService = tagsListService;
         this.mainCtrl = mainCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
@@ -55,10 +52,8 @@ public class TagsInCardCtrl {
      * A method to show all the tags needed
      * @param currentCard
      */
-    public void openTagsInCard(Card currentCard, HBox hboxOfCard, Label labelOfCard){
+    public void openTagsInCard(Card currentCard){
         this.currentCard = currentCard;
-        this.hboxOfCard = hboxOfCard;
-        this.labelOfCard = labelOfCard;
         drawTagsFromCard();
         drawTagsFromBoard();
     }
@@ -160,7 +155,8 @@ public class TagsInCardCtrl {
             tagsInBoard.getChildren().remove(tagBox);
             configureTagAfterSwitchingToCard(tagBox, tagButton, tag);
             tagsInCard.getChildren().add(tagBox);
-            tagsListService.addTagToCard(tag, currentCard.getId());
+            tagsListService.addTagToCard(tag, currentCard.getId(),
+                boardUserIdentifier.getCurrentBoard());
         });
 
         tagButton.setFocusTraversable(false);
@@ -189,7 +185,8 @@ public class TagsInCardCtrl {
             tagsInCard.getChildren().remove(tagBox);
             configureTagAfterSwitchingToBoard(tagBox, tagButton, tag);
             tagsInBoard.getChildren().add(tagsInBoard.getChildren().size(), tagBox);
-            tagsListService.removeTagFromCard(tag, currentCard.getId());
+            tagsListService.removeTagFromCard(tag, currentCard.getId(),
+                boardUserIdentifier.getCurrentBoard());
         });
     }
 
@@ -205,7 +202,8 @@ public class TagsInCardCtrl {
             tagsInBoard.getChildren().remove(tagBox);
             configureTagAfterSwitchingToCard(tagBox, tagButton, tag);
             tagsInCard.getChildren().add(tagBox);
-            tagsListService.addTagToCard(tag, currentCard.getId());
+            tagsListService.addTagToCard(tag, currentCard.getId(),
+                boardUserIdentifier.getCurrentBoard());
         });
     }
 
@@ -221,7 +219,8 @@ public class TagsInCardCtrl {
             tagsInCard.getChildren().remove(tagBox);
             configureTagAfterSwitchingToBoard(tagBox, tagButton, tag);
             tagsInBoard.getChildren().add(tagBox);
-            tagsListService.removeTagFromCard(tag, currentCard.getId());
+            tagsListService.removeTagFromCard(tag, currentCard.getId(),
+                boardUserIdentifier.getCurrentBoard());
         });
 
         tagButton.setFocusTraversable(false);
@@ -256,7 +255,6 @@ public class TagsInCardCtrl {
      * A method which closes the window and loads the card tags inside its details
      */
     public void closeTagsInCard(){
-        mainCtrl.showCardDetails(currentCard, hboxOfCard, labelOfCard);
-        mainCtrl.initTagsInCardDetails();
+        mainCtrl.showCardDetails(currentCard.getTitle(), currentCard);
     }
 }
