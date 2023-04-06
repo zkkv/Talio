@@ -38,6 +38,9 @@ public class JoinBoardCtrl {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.show();
                 alert.setContentText("You have already joined this board");
+                alert.setOnCloseRequest(event -> {
+                    boardKey.clear();
+                });
             }
             else {
                 user = boardOverviewService.addBoardToUser(boardKey.getText(), user.getUserName());
@@ -52,15 +55,25 @@ public class JoinBoardCtrl {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();
             alert.setContentText("There doesn't exist such board");
+            alert.setOnCloseRequest(event -> {
+                boardKey.clear();
+            });
         }
         catch (BadRequestException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.show();
             alert.setContentText("Board key field can't be left blank");
+            alert.setOnCloseRequest(event -> {
+                boardKey.clear();
+            });
         }
     }
 
     public void goBack(){
         mainCtrl.showStartPage();
+    }
+
+    public void setField(String s) {
+        boardKey.setText(s);
     }
 }

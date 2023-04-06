@@ -162,11 +162,13 @@ public class MainCtrl {
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
+        userPageCtrl.setField("");
     }
 
     public void showJoinBoard(){
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
+        joinBoardCtrl.setField("");
     }
 
     public void showStartPage() {

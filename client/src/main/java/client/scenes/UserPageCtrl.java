@@ -90,4 +90,8 @@ public class UserPageCtrl {
             mainCtrl.subscribeForAllUpdates(board);
         }
     }
+
+    public void setField(String s) {
+        userName.setText(s);
+    }
 }
