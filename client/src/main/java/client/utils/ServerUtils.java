@@ -76,184 +76,184 @@ public class ServerUtils {
 
     public Board createBoard(String title,String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/create/"+userName) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(title,APPLICATION_JSON),Board.class);
+            .target(server).path("api/boards/create/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(title,APPLICATION_JSON),Board.class);
     }
 
     public Board getBoard(long boardId){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/"+boardId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<Board>(){});
+            .target(server).path("api/boards/"+boardId) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<Board>(){});
     }
 
     public List<Board> getAllBoards(){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Board>>(){});
+            .target(server).path("api/boards") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<Board>>(){});
     }
 
     public CardList addCardListToBoard(CardList cardList,Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/"+board.getId()+"/add-card-list") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
+            .target(server).path("api/boards/"+board.getId()+"/add-card-list") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(cardList, APPLICATION_JSON), CardList.class);
     }
 
     public Board updateBoardTitle(Board board,String title){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/update-title/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(title, APPLICATION_JSON), Board.class);
+            .target(server).path("api/boards/update-title/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title, APPLICATION_JSON), Board.class);
     }
 
     public Response removeBoard(Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/remove-board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/boards/remove-board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
     public User addBoardToUser(String boardKey,String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/users/"+userName+"/board/"+boardKey) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(boardKey,APPLICATION_JSON),User.class);
+            .target(server).path("api/users/"+userName+"/board/"+boardKey) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(boardKey,APPLICATION_JSON),User.class);
     }
 
     public List<Board> getUserBoards(String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/user/"+userName) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Board>>() {});
+            .target(server).path("api/boards/user/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<Board>>() {});
     }
 
     public User getUser(String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/users/"+userName) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<User>() {});
+            .target(server).path("api/users/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<User>() {});
     }
 
     public User createUser(String userName){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/users/"+userName) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(userName,APPLICATION_JSON), User.class);
+            .target(server).path("api/users/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(userName,APPLICATION_JSON), User.class);
     }
 
     public Board getBoardByKey(String key){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/key/"+key) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<Board>(){});
+            .target(server).path("api/boards/key/"+key) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<Board>(){});
     }
     public User removeBoardForUser(String userName,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/users/"+userName) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(board, APPLICATION_JSON), User.class);
+            .target(server).path("api/users/"+userName) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(board, APPLICATION_JSON), User.class);
     }
 
 
     public Response removeCardListFromBoard(CardList cardList,Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/remove-card-list/" + cardList.getId()+
-                        "/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/boards/remove-card-list/" + cardList.getId()+
+                "/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
     public List<CardList> getAllCardLists(Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/boards/"+board.getId()+"/card-lists") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<CardList>>() {});
+            .target(server).path("api/boards/"+board.getId()+"/card-lists") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<CardList>>() {});
     }
 
     public CardList getCardList(long id){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/"+id) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<CardList>() {});
+            .target(server).path("api/card-lists/"+id) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<CardList>() {});
     }
 
     public CardList updateCardListTitle(long cardListId,String title,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/update-title/"+
-                        cardListId+"/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(title,APPLICATION_JSON), CardList.class);
+            .target(server).path("api/card-lists/update-title/"+
+                cardListId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title,APPLICATION_JSON), CardList.class);
     }
 
     public Card updateCardTitle(long cardId,String title,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-title/"+cardId+"/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(title,APPLICATION_JSON), Card.class);
+            .target(server).path("api/card/update-title/"+cardId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title,APPLICATION_JSON), Card.class);
     }
 
     public Card updateCardDescription(long cardId, String description, Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-description/"
-                        +cardId+"/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(description,APPLICATION_JSON), Card.class);
+            .target(server).path("api/card/update-description/"
+                +cardId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(description,APPLICATION_JSON), Card.class);
     }
 
     public Card addCardToCardList(Card card, long cardListID,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/card-lists/" + cardListID + "/cards/board/"+board.getId())
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+            .target(server).path("api/card-lists/" + cardListID + "/cards/board/"+board.getId())
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
     public Card addCardToCardListWithIndex(Card card, long cardId,
                                            long cardListID, int index,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/card-lists/" + cardListID +
-                        "/cards/"+cardId+"/"+index+"/board/"+board.getId())
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+            .target(server).path("api/card-lists/" + cardListID +
+                "/cards/"+cardId+"/"+index+"/board/"+board.getId())
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
     public List<Card> getCardsOfCardList(long cardListID) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/card-lists/" + cardListID + "/cards")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Card>>() {});
+            .target(server).path("api/card-lists/" + cardListID + "/cards")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<List<Card>>() {});
     }
 
     public Response removeCardFromList(Card card,long cardListId,Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card-lists/remove-card-list/" + cardListId
-                        + "/remove-card/" + card.getId()+"/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/card-lists/remove-card-list/" + cardListId
+                + "/remove-card/" + card.getId()+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
     public Response removeCardFromListWhenDragged(Card card,long cardListId,Board board) {
@@ -310,10 +310,10 @@ public class ServerUtils {
      */
     public String getAdminPassword() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/users/admin") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<String>(){});
+            .target(server).path("api/users/admin") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<String>(){});
     }
 
 
@@ -328,10 +328,10 @@ public class ServerUtils {
      */
     public Tag addTagToBoard(Tag tag, long boardId) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/" + boardId + "/add-tag")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+            .target(server).path("api/boards/" + boardId + "/add-tag")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
 
 
@@ -377,10 +377,10 @@ public class ServerUtils {
      */
     public List<Tag> getAllTags(long boardId) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/boards/" + boardId + "/tags")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<Tag>>() {});
+            .target(server).path("api/boards/" + boardId + "/tags")
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<List<Tag>>() {});
     }
 
     /**
@@ -402,9 +402,9 @@ public class ServerUtils {
      * @param cardId the id of the card to which we add
      * @return the tag which we add
      */
-    public Tag addTagToCard(Tag tag, long cardId) {
+    public Tag addTagToCard(Tag tag, long cardId,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-            .target(server).path("api/card/" + cardId + "/add-tag")
+            .target(server).path("api/card/" + cardId + "/add-tag/board/"+board.getId())
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
@@ -416,9 +416,10 @@ public class ServerUtils {
      * @param cardId cardId the id of the card from which we remove
      * @return if the tag has been removed from the card successfully
      */
-    public Response removeTagFromCard(long tagId, long cardId) {
+    public Response removeTagFromCard(long tagId, long cardId,Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-            .target(server).path("api/card/" + cardId + "/remove-tag/"+tagId)
+            .target(server).path("api/card/" + cardId + "/remove-tag/"+
+                tagId+"/board/"+board.getId())
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .delete();
@@ -441,10 +442,10 @@ public class ServerUtils {
         EXEC.submit(() -> {
             while (!Thread.interrupted()) {
                 Response res = ClientBuilder.newClient(new ClientConfig())
-                        .target(server).path("api/boards/" + boardId + "/tags/updates")
-                        .request(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON)
-                        .get(Response.class);
+                    .target(server).path("api/boards/" + boardId + "/tags/updates")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(Response.class);
 
                 var key = new Object();
                 listeners.put(key, consumer);
@@ -478,47 +479,49 @@ public class ServerUtils {
     }
 
 
-    public SubTask addSubTaskToCard(SubTask subTask, long cardId) {
+    public SubTask addSubTaskToCard(SubTask subTask, long cardId, Board board) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(server).path("api/card/" + cardId + "/tasks")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(subTask, APPLICATION_JSON), SubTask.class);
+            .target(server).path("api/card/" + cardId + "/tasks/board/"+board.getId())
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .post(Entity.entity(subTask, APPLICATION_JSON), SubTask.class);
     }
 
 
-    public SubTask updateTitleSubTask(long taskId, String title) {
+    public SubTask updateTitleSubTask(long taskId, String title, Board board, Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/subTask/update-titleTask/" + taskId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(title, APPLICATION_JSON), SubTask.class);
+            .target(server).path("api/subTask/update-titleTask/" + taskId+"/card/"
+                +card.getId()+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(title, APPLICATION_JSON), SubTask.class);
     }
 
 
-    public SubTask updateIsChecked(long taskId, boolean checked) {
+    public SubTask updateIsChecked(long taskId, boolean checked, Board board, Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/subTask/update-checkbox-Task/" + taskId) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(checked, APPLICATION_JSON), SubTask.class);
+            .target(server).path("api/subTask/update-checkbox-Task/" +
+                taskId+"/card/"+card.getId()+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(checked, APPLICATION_JSON), SubTask.class);
     }
 
 
-    public Response removeSubTask(SubTask subTask, long cardId) {
+    public Response removeSubTask(SubTask subTask, long cardId,Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/remove-card/" + cardId
-                        + "/remove-task/" + subTask.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .delete();
+            .target(server).path("api/card/remove-card/" + cardId
+                + "/remove-task/" + subTask.getId()+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .delete();
     }
 
     public Card updateCardSubTasks(long cardId,List<SubTask> subtasks,Board board){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(server).path("api/card/update-subTasks/"+cardId+"/board/"+board.getId()) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .put(Entity.entity(subtasks,APPLICATION_JSON), Card.class);
+            .target(server).path("api/card/update-subTasks/"+cardId+"/board/"+board.getId()) //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .put(Entity.entity(subtasks,APPLICATION_JSON), Card.class);
     }
 }
