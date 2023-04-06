@@ -179,6 +179,7 @@ public class MainCtrl {
     public void showCreateBoardPage() {
         primaryStage.setTitle("Talio: Create a new Board");
         primaryStage.setScene(createBoard);
+        createBoardCtrl.setField("");
     }
 
     public void showBoardPage() {
