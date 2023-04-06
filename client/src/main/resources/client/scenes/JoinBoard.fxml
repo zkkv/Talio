@@ -19,5 +19,10 @@
                 <Font size="20.0" />
             </font>
         </Button>
+        <Button layoutX="444.0" layoutY="334.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="133.0" text="Back">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Button>
     </children>
 </AnchorPane>
