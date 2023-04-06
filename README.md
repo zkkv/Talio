@@ -1,10 +1,8 @@
-# Starting template
+# Talio
 
-This README will need to contain a description of your project, how to run it, how to set up the development environment, and who worked on it.
-This information can be added throughout the course, except for the names of the group members.
-Add your own name (do not add the names for others!) to the section below.
+## Description of the project
 
-## Description of project
+Talio lets you keep track of your work. Create a board and start adding tasks immediately. Once the task is done, you can move it to another list. Create more lists if needed. Add tags, description and subtasks to tasks to keep track of every detail. Share the board key with your colleagues to monitor progress together.
 
 ## Group members
 
@@ -29,6 +27,24 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## How to run it
 
-## How to contribute to it
+Clone the repository, then use an IDE to run `server.Main` and then `client.Main`. Alternatively, build with gradle wrapper:
 
-## Copyright / License (opt.)
+```
+./gradlew		# MacOS and Linux
+./gradlew.bat		# Windows
+```
+
+Run the server with either of the two:
+```
+./gradlew bootRun
+./gradlew.bat bootRun
+```
+
+Run the client with either of the two:
+```
+./gradlew run
+./gradlew.bat run
+```
+
+## How to contribute to it
+Contributions are not accepted.
