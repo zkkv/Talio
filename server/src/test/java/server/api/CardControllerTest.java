@@ -9,6 +9,7 @@ import java.util.List;
 
 import commons.Board;
 import commons.Card;
+import commons.SubTask;
 import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -185,5 +186,27 @@ public class CardControllerTest {
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(tags, actualResponse.getBody());
+    }
+
+    @Test
+    public void testUpdateSubTask(){
+        List<SubTask> subtasks = new ArrayList<>();
+        subtasks.add(new SubTask());
+        subtasks.add(new SubTask());
+        Card card = new Card();
+        card.setId(1L);
+
+        Board board =new Board();
+        board.setId(2L);
+
+        when(cardService.getCard(1L)).thenReturn(card);
+        when(cardService.save(card)).thenReturn(card);
+        when(boardService.getBoard(2L)).thenReturn(board);
+
+        ResponseEntity<Card> actualResponse = cardController.updateSubTasks(subtasks,
+                1L,2L);
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(subtasks,card.getTasks());
+
     }
 }
