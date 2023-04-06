@@ -254,10 +254,10 @@ public class CardDetailsCtrl {
 
 
         saveButton.setOnAction(event -> {
-                    updateCardTitle(card);
-                    updateCardDescription(card);
-                    updateCardDescriptionIcon(card, cardContainer);
-                });
+            updateCardTitle(card);
+            updateCardDescription(card);
+            updateCardDescriptionIcon(card, cardContainer);
+        });
 
         title.setText(card.getTitle());
         descriptionField.setText(card.getDescription());

@@ -558,7 +558,7 @@ public class BoardOverviewCtrl implements Initializable {
                         mainCtrl.showAllTagsListWithinACard(card);
                     }
                 });
-        });
+            });
         boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card",
                 Board.class,b -> {
                     Platform.runLater(()->{
