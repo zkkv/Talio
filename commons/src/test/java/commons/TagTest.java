@@ -16,8 +16,8 @@ class TagTest {
 
     @BeforeEach
     void setUp() {
-        Card c1 = new Card("card1");
-        Card c2 = new Card("card2");
+        Card c1 = new Card("card1",new ArrayList<>(),new ArrayList<>());
+        Card c2 = new Card("card2",new ArrayList<>(),new ArrayList<>());
 
         cards = new ArrayList<>();
         cards.add(c1);
