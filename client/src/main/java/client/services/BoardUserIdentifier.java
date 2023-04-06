@@ -9,6 +9,8 @@ public class BoardUserIdentifier {
     private Board currentBoard;
     private User currentUser;
 
+    private boolean isAdmin;
+
     public void setCurrentBoard(Board board) {
         currentBoard = board;
     }
@@ -23,5 +25,13 @@ public class BoardUserIdentifier {
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
