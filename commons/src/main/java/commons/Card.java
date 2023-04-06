@@ -22,16 +22,17 @@ public class Card {
     @OneToMany(cascade = CascadeType.ALL)
     private List<SubTask> subTasks;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
 
     public Card(){
         subTasks = new ArrayList<>();
         this.description = "";
     }
-    public Card(String title){
+    public Card(String title,List<Tag> tags,List<SubTask> subTasks){
         this.title = title;
-        subTasks = new ArrayList<>();
+        this.subTasks = subTasks;
+        this.tags = tags;
         this.description = "";
     }
 
