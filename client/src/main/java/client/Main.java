@@ -66,9 +66,6 @@ public class Main extends Application {
         var adminLogin = FXML.load(
 				AdminLoginCtrl.class,
 				"client", "scenes", "AdminLogin.fxml");
-        var adminOverview = FXML.load(
-				AdminOverviewCtrl.class,
-                "client", "scenes", "AdminOverview.fxml");
         var cardDetails = FXML.load(
 				CardDetailsCtrl.class,
 				"client", "scenes", "CardDetails.fxml");
@@ -96,7 +93,6 @@ public class Main extends Application {
 				userPage,
 				joinBoard,
 				adminLogin,
-				adminOverview,
 				cardDetails,
                 tagsList,
 				tagDetails,
