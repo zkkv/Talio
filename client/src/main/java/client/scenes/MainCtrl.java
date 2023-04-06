@@ -19,7 +19,6 @@ import commons.Board;
 import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -199,9 +198,6 @@ public class MainCtrl {
         primaryStage.setScene(boardSettings);
     }
 
-    public void changeName(Label label, String title){
-        label.setText(title);
-    }
 
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
@@ -211,6 +207,14 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+
+    public boolean isCardDetailsShowing(){
+        return primaryStage.getScene().equals(cardDetails);
+    }
+
+    public boolean isTagsInCardShowing(){
+        return primaryStage.getScene().equals(tagsInCard);
     }
 
     /**
