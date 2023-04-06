@@ -8,7 +8,6 @@ import server.generators.SequenceGenerator;
 import server.services.BoardService;
 import server.services.UserService;
 
-//TODO join board
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

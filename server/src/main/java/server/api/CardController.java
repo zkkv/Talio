@@ -60,9 +60,10 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("/{id}/tasks")
+    @PostMapping("/{id}/tasks/board/{boardId}")
     public ResponseEntity<SubTask> addSubTask(@RequestBody SubTask subTask,
-                                              @PathVariable("id") long id) {
+                                              @PathVariable("id") long id,
+                                              @PathVariable("boardId") long boardId) {
         var saved = subTaskService.save(subTask);
         Card card = cardService.getCard(id);
         card.getTasks().add(saved);
@@ -71,11 +72,12 @@ public class CardController {
         return ResponseEntity.ok(subTask);
     }
 
-    @DeleteMapping("/remove-card/{cardId}/remove-task/{taskId}")
+    @DeleteMapping("/remove-card/{cardId}/remove-task/{taskId}/board/{boardId}")
     public ResponseEntity<SubTask> removeSubTask(@PathVariable(name = "cardId") long cardId,
-                                                 @PathVariable(name = "taskId") long taskId) {
+                                                 @PathVariable(name = "taskId") long taskId,
+                                                 @PathVariable("boardId") long boardId) {
         if (cardId < 0 || !cardService.exists(cardId) ||
-                taskId < 0 || !subTaskService.exists(taskId)) {
+            taskId < 0 || !subTaskService.exists(taskId)) {
             return ResponseEntity.notFound().build();
         }
         Card card = cardService.getCard(cardId);
@@ -83,6 +85,8 @@ public class CardController {
         card.getTasks().remove(subTask);
         cardService.save(card);
         subTaskService.delete(taskId);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
+            boardService.getBoard(boardId));
         return ResponseEntity.ok(subTask);
     }
     @PutMapping("/update-description/{id}/board/{boardId}")
@@ -97,20 +101,24 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("/{id}/add-tag")
-    public ResponseEntity<Tag> addTag(@RequestBody Tag tag, @PathVariable("id") long cardId) {
+    @PostMapping("/{id}/add-tag/board/{boardId}")
+    public ResponseEntity<Tag> addTag(@RequestBody Tag tag,
+                                      @PathVariable("id") long cardId,
+                                      @PathVariable("boardId") long boardId) {
 
         tag = tagService.save(tag);
         Card card = cardService.getCard(cardId);
         card.getTags().add(tag);
         card = cardService.save(card);
-
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
+            boardService.getBoard(boardId));
         return ResponseEntity.ok(tag);
     }
 
-    @DeleteMapping("/{id}/remove-tag/{tagId}")
+    @DeleteMapping("/{id}/remove-tag/{tagId}/board/{boardId}")
     public ResponseEntity<Tag> removeTag(@PathVariable("tagId") long tagId,
-                                         @PathVariable("id") long cardId){
+                                         @PathVariable("id") long cardId,
+                                         @PathVariable("boardId") long boardId){
         Tag tag = tagService.getTag(tagId);
         tag = tagService.save(tag);
         Card card = cardService.getCard(cardId);
@@ -118,6 +126,8 @@ public class CardController {
         card.getTags().remove(tag);
 
         card = cardService.save(card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
+            boardService.getBoard(boardId));
         return ResponseEntity.ok(tag);
     }
 
