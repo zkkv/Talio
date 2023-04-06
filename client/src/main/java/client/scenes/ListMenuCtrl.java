@@ -7,7 +7,6 @@ import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 
 public class ListMenuCtrl {
 
@@ -16,8 +15,6 @@ public class ListMenuCtrl {
     private final BoardUserIdentifier boardUserIdentifier;
 
     private final MainCtrl mainCtrl;
-    private CardList cardList;
-    private BorderPane bp;
 
     @FXML
     private Button listMenuButton;
@@ -41,12 +38,4 @@ public class ListMenuCtrl {
                 listLabel.getText(),boardUserIdentifier.getCurrentBoard());
         });
     }
-
-    public void setCardListBorderPane(CardList cardList, BorderPane bp) {
-        this.cardList = cardList;
-        this.bp = bp;
-    }
-
-
-
 }
