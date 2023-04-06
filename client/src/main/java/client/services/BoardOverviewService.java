@@ -31,8 +31,8 @@ public class BoardOverviewService {
     public List<CardList> getCardLists(Board board) {
         return serverUtils.getAllCardLists(board);
     }
-    public SubTask addSubTask(SubTask subTask, long cardId){
-        return serverUtils.addSubTaskToCard(subTask,cardId);
+    public SubTask addSubTask(SubTask subTask, long cardId, Board board){
+        return serverUtils.addSubTaskToCard(subTask,cardId,board);
     }
 
     public Board updateBoardTitle(Board board,String title){
@@ -118,14 +118,14 @@ public class BoardOverviewService {
     public void setServerAddress(String ip) {
         serverUtils.setServer(ip);
     }
-    public SubTask updateTitleSubTask(long taskId, String title){
-        return serverUtils.updateTitleSubTask(taskId,title);
+    public SubTask updateTitleSubTask(long taskId, String title,Board board,Card card){
+        return serverUtils.updateTitleSubTask(taskId,title,board,card);
     }
-    public SubTask updateCheckboxTask(long taskId, boolean isChecked){
-        return serverUtils.updateIsChecked(taskId,isChecked);
+    public SubTask updateCheckboxTask(long taskId, boolean isChecked, Board board, Card card){
+        return serverUtils.updateIsChecked(taskId,isChecked,board,card);
     }
-    public void removeSubTask(SubTask subTask, long cardId) {
-        serverUtils.removeSubTask(subTask,cardId);
+    public void removeSubTask(SubTask subTask, long cardId,Board board) {
+        serverUtils.removeSubTask(subTask,cardId,board);
     }
 
     public void testServerConnection() throws IOException {

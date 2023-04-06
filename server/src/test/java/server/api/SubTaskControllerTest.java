@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.services.BoardService;
 import server.services.CardService;
 import server.services.SubTaskService;
@@ -30,6 +31,9 @@ public class SubTaskControllerTest {
 
     @Mock
     private CardService cardService;
+
+    @Mock
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @InjectMocks
     private CardController cardController;
@@ -91,18 +95,22 @@ public class SubTaskControllerTest {
         titleSubtask.setName("Title 1");
         Board board = new Board();
         board.setId(2L);
+        Card card = new Card();
+        card.setId(3L);
+        when(cardService.getCard(3L)).thenReturn(card);
+        when(cardService.save(card)).thenReturn(card);
         when(subTaskService.getSubTask(1L)).thenReturn(titleSubtask);
         when(subTaskService.save(titleSubtask)).thenReturn(titleSubtask);
         when(boardService.getBoard(2L)).thenReturn(board);
 
         ResponseEntity<SubTask> actualResponse =
-                subTaskController.updateTitleSubTask("New Title",1L);
+                subTaskController.updateTitleSubTask("New Title",1L,3L,2L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(titleSubtask.getName(),actualResponse.getBody().getName());
     }
     @Test
     public void testAddCard() {
-        Card card = new Card("Card 1");
+        Card card = new Card("Card 1",new ArrayList<>(),new ArrayList<>());
         SubTask subTaskToAdd = new SubTask();
         subTaskToAdd.setId(1L);
 
@@ -114,7 +122,7 @@ public class SubTaskControllerTest {
         when(cardService.save(card)).thenReturn(card);
         when(boardService.getBoard(2L)).thenReturn(board);
 
-        ResponseEntity<SubTask> actualResponse = cardController.addSubTask(subTaskToAdd, 1L);
+        ResponseEntity<SubTask> actualResponse = cardController.addSubTask(subTaskToAdd, 1L,2L);
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(subTaskToAdd, actualResponse.getBody());
         assertEquals(card.getTasks().size(),1);
@@ -124,7 +132,7 @@ public class SubTaskControllerTest {
     public void testDeleteCard(){
         SubTask subTaskToBeRemoved = new SubTask();
         subTaskToBeRemoved.setId(1L);
-        Card card = new Card("Card");
+        Card card = new Card("Card",new ArrayList<>(),new ArrayList<>());
         card.setId(2L);
         Board board = new Board();
         board.setId(2L);
@@ -139,7 +147,7 @@ public class SubTaskControllerTest {
 
         when(cardService.save(card)).thenReturn(card);
 
-        ResponseEntity<SubTask> actualResponse = cardController.removeSubTask(2L, 1L);
+        ResponseEntity<SubTask> actualResponse = cardController.removeSubTask(2L, 1L,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(subTaskToBeRemoved,actualResponse.getBody());

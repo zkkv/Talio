@@ -16,6 +16,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -34,9 +35,6 @@ public class CardDetailsCtrl {
     private final MainCtrl mainCtrl;
 
     private final BoardUserIdentifier boardUserIdentifier;
-
-    private Label label;
-    private HBox cardContainer;
 
     @FXML
     private TextField title;
@@ -96,7 +94,8 @@ public class CardDetailsCtrl {
 
     public void addSubTask() {
         SubTask subTask = new SubTask();
-        subTask = boardOverviewService.addSubTask(subTask, card.getId());
+        subTask = boardOverviewService.addSubTask(subTask, card.getId(),
+            boardUserIdentifier.getCurrentBoard());
         this.card.getTasks().add(subTask);
         subTaskSetUp(subTask, "SubTask", false);
         updateProgressBar();
@@ -160,13 +159,18 @@ public class CardDetailsCtrl {
         checkBox.setPrefWidth(36);
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            subTask.setChecked(!checked);
-            boardOverviewService.updateCheckboxTask(subTask.getId(), !checked);
 
+            if(oldValue.equals(true)) {
+                boardOverviewService.updateCheckboxTask(subTask.getId(), false,
+                    boardUserIdentifier.getCurrentBoard(), card);
+            }
+            else{
+                boardOverviewService.updateCheckboxTask(subTask.getId(), true,
+                    boardUserIdentifier.getCurrentBoard(), card);
+            }
             updateProgressBar();
         });
     }
-
     /**
      * The method lets the user rename the subtask
      * @param task
@@ -182,7 +186,8 @@ public class CardDetailsCtrl {
             if (!text.getText().equals("")) {
                 name.setText(text.getText());
                 task.setName(text.getText());
-                boardOverviewService.updateTitleSubTask(task.getId(), text.getText());
+                boardOverviewService.updateTitleSubTask(task.getId(),
+                    text.getText(),boardUserIdentifier.getCurrentBoard(),card);
             }
             subTask.getChildren().remove(text);
             subTask.getChildren().remove(rename);
@@ -235,7 +240,8 @@ public class CardDetailsCtrl {
      */
     public void deleteSubTask(SubTask task, HBox subTask) {
         subtasks.getChildren().remove(subTask);
-        boardOverviewService.removeSubTask(task, card.getId());
+        boardOverviewService.removeSubTask(task, card.getId(),
+            boardUserIdentifier.getCurrentBoard());
         this.card.getTasks().remove(task);
         updateProgressBar();
     }
@@ -247,12 +253,11 @@ public class CardDetailsCtrl {
      * @param card
      * @param cardContainer
      */
-    public void configureSaveButton(Card card, HBox cardContainer) {
+    public void configureSaveButton(Card card, GridPane cardContainer) {
         if(card.getDescription().trim().equals("")) {
             card.setDescription("");
         }
 
-        this.cardContainer = cardContainer;
 
         saveButton.setOnAction(event -> {
             updateCardTitle(card);
@@ -290,10 +295,9 @@ public class CardDetailsCtrl {
      * @param card card object
      * @param cardContainer card container which holds the description icon
      */
-    public void updateCardDescriptionIcon(Card card, HBox cardContainer) {
-        HBox iconsAndTask = (HBox) cardContainer.getChildren().get(0);
-        VBox cardDetails = (VBox) iconsAndTask.getChildren().get(0);
-        ImageView descriptionIcon = (ImageView) cardDetails.getChildren().get(1);
+    public void updateCardDescriptionIcon(Card card, GridPane cardContainer) {
+        HBox icons = (HBox) cardContainer.getChildren().get(1);
+        ImageView descriptionIcon = (ImageView) icons.getChildren().get(1);
         descriptionIcon.setVisible(card.hasDescription());
     }
 
@@ -314,7 +318,6 @@ public class CardDetailsCtrl {
             alert.showAndWait();
         }
         else {
-            mainCtrl.changeName(label, title.getText());
             boardOverviewService.updateCardTitle(card.getId(), title.getText(),
                     boardUserIdentifier.getCurrentBoard());
         }
@@ -443,7 +446,7 @@ public class CardDetailsCtrl {
      * and the list of tags of the board
      */
     public void addTag() {
-        mainCtrl.showAllTagsListWithinACard(card, cardContainer, label);
+        mainCtrl.showAllTagsListWithinACard(card);
     }
 
     /**
@@ -481,7 +484,8 @@ public class CardDetailsCtrl {
     private void configureTagButtonForCard(HBox tagBox, Button tagButton, Tag tag) {
         tagButton.setOnAction(event -> {
             tags.getChildren().remove(tagBox);
-            tagsListService.removeTagFromCard(tag, card.getId());
+            tagsListService.removeTagFromCard(tag, card.getId(),
+                boardUserIdentifier.getCurrentBoard());
         });
 
         tagButton.setFocusTraversable(false);
@@ -504,11 +508,7 @@ public class CardDetailsCtrl {
         tagBox.setFillHeight(true);
     }
 
-    /**
-     * Selects label of card
-     * @param label
-     */
-    public void setLabel(Label label) {
-        this.label = label;
+    public void setDescription(Card cardEntity) {
+        descriptionField.setText(cardEntity.getDescription());
     }
 }

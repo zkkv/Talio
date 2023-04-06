@@ -2,10 +2,7 @@ package client.scenes;
 import client.services.BoardOverviewService;
 import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.SubTask;
+import commons.*;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,9 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -28,6 +23,7 @@ import java.net.URL;
 import java.util.*;
 
 
+@SuppressWarnings("checkstyle:LineLength")
 public class BoardOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
 
@@ -70,7 +66,7 @@ public class BoardOverviewCtrl implements Initializable {
     public void createList(Button addList) {
         CardList newCardList = new CardList(new ArrayList<>(), "");
         newCardList = boardOverviewService.addCardList(newCardList,
-                boardUserIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
         Timer timer = new Timer();
@@ -105,9 +101,9 @@ public class BoardOverviewCtrl implements Initializable {
         addList.setTooltip(tooltip);
     }
     public void createCard(VBox vbox, Button button, String title, long cardListId) {
-        Card newCard = new Card(title);
+        Card newCard = new Card(title, new ArrayList<>(),new ArrayList<>());
         newCard = boardOverviewService.addCard(newCard, cardListId,
-                boardUserIdentifier.getCurrentBoard());
+            boardUserIdentifier.getCurrentBoard());
         drawCard(vbox, button, title, cardListId, newCard);
     }
 
@@ -130,28 +126,6 @@ public class BoardOverviewCtrl implements Initializable {
         boardTitle.setText(boardUserIdentifier.getCurrentBoard().getTitle());
     }
 
-    public void cardMenu(VBox vbox, HBox hbox, Button button, long cardListId, Card card,
-                         Label task) {
-        ContextMenu menu = new ContextMenu();
-        MenuItem edit = new MenuItem("Edit card");
-        MenuItem remove = new MenuItem("Remove card");
-        configureCardMenu(button, menu, remove, edit);
-
-        remove.setOnAction(event -> {
-            hiddenLabel.requestFocus();
-            vbox.getChildren().remove(hbox);
-            boardOverviewService.removeCard(card,cardListId, boardUserIdentifier.getCurrentBoard());
-        });
-
-        edit.setOnAction(event -> {
-            mainCtrl.showCardDetails(card, hbox, task);
-        });
-
-        button.setOnMouseClicked(event -> {
-            menu.show(button, event.getScreenX(), event.getScreenY());
-        });
-    }
-
     public void listMenu(ScrollPane sp,
                          BorderPane bp,
                          Button button,
@@ -167,7 +141,7 @@ public class BoardOverviewCtrl implements Initializable {
             hiddenLabel.requestFocus();
         });
         edit.setOnAction(event -> {
-            mainCtrl.showListMenu(button, cardList, bp);
+            mainCtrl.showListMenu();
             listMenuCtrl.changeListLabel(cardList,label);
         });
         button.setOnMouseClicked(event -> {
@@ -175,22 +149,13 @@ public class BoardOverviewCtrl implements Initializable {
         });
     }
 
-    public HBox getNewDroppedCard(long cardListId, VBox vbox, Dragboard db) {
-        String title = db.getString();
-        Card newCard = new Card(title);
-        newCard = boardOverviewService.addCard(newCard,cardListId,
-                boardUserIdentifier.getCurrentBoard());
-        HBox card = drawCardAfterDrop(vbox, title, cardListId, newCard);
-        return card;
-    }
-
-    public HBox getNewDroppedCardWithIndex(long cardListId, VBox vbox,
-                                           Dragboard db, int dropIndex) {
+    public GridPane getNewDroppedCardWithIndex(long cardListId, VBox vbox,
+                                               Dragboard db, int dropIndex) {
         long cardId = Long.parseLong((db.getString()));
         Card newCard = new Card();
         newCard = boardOverviewService.addCardAtIndex(newCard, cardId,cardListId,dropIndex,
-                boardUserIdentifier.getCurrentBoard());
-        HBox card = drawCardAfterDrop(vbox, "", cardListId, newCard);
+            boardUserIdentifier.getCurrentBoard());
+        GridPane card = drawCardAfterDrop(vbox, "", cardListId, newCard);
         return card;
     }
 
@@ -200,6 +165,8 @@ public class BoardOverviewCtrl implements Initializable {
         BorderPane bp = new BorderPane();
         VBox vbox = new VBox();
         ScrollPane sp = new ScrollPane();
+
+        vbox.setPadding(new Insets(10.0));
 
         configureCardListScrollPane(bp, sp);
 
@@ -249,25 +216,25 @@ public class BoardOverviewCtrl implements Initializable {
                 for (int i = 0; i < vbox.getChildren().size(); i++) {
                     Node child = vbox.getChildren().get(i);
                     if (event.getY() <= child.getBoundsInParent().getMinY() +
-                            child.getBoundsInParent().getHeight()) {
+                        child.getBoundsInParent().getHeight()) {
                         dropIndex = i;
                         break;
                     }
                 }
                 if (dropIndex == -1) { //if it is dropped under all the cards
-                    HBox card = getNewDroppedCardWithIndex(cardListId,
+                    GridPane card = getNewDroppedCardWithIndex(cardListId,
                         vbox, db, (vbox.getChildren().size() - 1));
 
                     vbox.getChildren().add(vbox.getChildren().size() - 1, card);
                 }
                 else {
                     if(dropIndex== vbox.getChildren().size()-1){ //card is dropped on the "+" button
-                        HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
+                        GridPane card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
 
                         vbox.getChildren().add(dropIndex, card);
                     }
                     else {
-                        HBox card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
+                        GridPane card = getNewDroppedCardWithIndex(cardListId, vbox, db, dropIndex);
 
                         vbox.getChildren().add(dropIndex, card);
                     }
@@ -311,31 +278,29 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     private void drawCard(VBox vbox, Button button, String title, long cardListId, Card cardEntity){
-        HBox card = makeNewCard(vbox, title, cardListId, cardEntity);
+        GridPane card = makeNewCard(vbox, title, cardListId, cardEntity);
         if (button != null) {
             vbox.getChildren().remove(button);
         }
         vbox.getChildren().add(card);
     }
 
-    private HBox drawCardAfterDrop(VBox vbox, String title, long cardListId, Card cardEntity){
-        HBox card = makeNewCard(vbox, title, cardListId, cardEntity);
+    private GridPane drawCardAfterDrop(VBox vbox, String title, long cardListId, Card cardEntity){
+        GridPane card = makeNewCard(vbox, title, cardListId, cardEntity);
         return card;
     }
 
-    private HBox makeNewCard(VBox vbox, String title, long cardListId, Card cardEntity) {
-        HBox card = new HBox();
+    private GridPane makeNewCard(VBox vbox, String title, long cardListId, Card cardEntity) {
+        GridPane card = new GridPane();
 
-        VBox icons = configureIcon(cardEntity);
+        HBox icons = configureIcon(cardEntity);
         Label task = new Label(title);
-        Button menu = new Button(":");
-        configureNewCard(cardEntity, card, task, menu, icons);
+        configureNewCard(cardEntity, card, task, icons,vbox,cardListId);
 
-        cardMenu(vbox, card, menu, cardListId, cardEntity, task);
-        task.setOnMouseClicked(event -> {
+        card.setOnMouseClicked(event -> {
             if(event.getClickCount() == 2) {
-                mainCtrl.showCardDetails(cardEntity, card, task);
-                mainCtrl.initTagsInCardDetails();
+                mainCtrl.showCardDetails(title,cardEntity);
+                mainCtrl.configureSaveButton(cardEntity,card);
             }
         });
 
@@ -344,11 +309,11 @@ public class BoardOverviewCtrl implements Initializable {
             ClipboardContent content = new ClipboardContent();
             configureDragboardAndClipboard(vbox, card, cardEntity, event, db, content);
             boardOverviewService.removeCardWhenDragged(cardEntity,cardListId,
-                    boardUserIdentifier.getCurrentBoard());
+                boardUserIdentifier.getCurrentBoard());
         });
 
         card.setOnDragDone(event -> {
-            if (!event.getGestureSource().getClass().equals(HBox.class)) {
+            if (!event.getGestureSource().getClass().equals(GridPane.class)) {
                 boardOverviewService.removeCard(cardEntity,cardListId,
                     boardUserIdentifier.getCurrentBoard());
                 event.consume();
@@ -359,7 +324,7 @@ public class BoardOverviewCtrl implements Initializable {
         return card;
     }
 
-    public VBox configureIcon(Card card) {
+    public HBox configureIcon(Card card) {
         Image icon = new Image("img/descriptionIcon.png");
         ImageView descriptionIcon = new ImageView(icon);
         descriptionIcon.setFitWidth(15);
@@ -391,15 +356,15 @@ public class BoardOverviewCtrl implements Initializable {
         progressOfSubTasks.setAlignment(Pos.CENTER);
         progressOfSubTasks.setMinWidth(30);
 
-        VBox vbox = new VBox(progressOfSubTasks, descriptionIcon);
-        vbox.setStyle("-fx-background-color: #DAD2BF;");
-        VBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
-        vbox.setSpacing(3);
+        HBox iconList = new HBox(progressOfSubTasks, descriptionIcon);
+        iconList.setStyle("-fx-background-color: #DAD2BF;");
+        HBox.setMargin(descriptionIcon, new Insets(3,3,3,3));
+        iconList.setSpacing(3);
 
-        return vbox;
+        return iconList;
     }
 
-    private void configureDragboardAndClipboard(VBox vbox, HBox card, Card cardEntity,
+    private void configureDragboardAndClipboard(VBox vbox, GridPane card, Card cardEntity,
                                                 MouseEvent event, Dragboard db,
                                                 ClipboardContent content) {
         content.putString(Long.toString(cardEntity.getId()));
@@ -410,29 +375,77 @@ public class BoardOverviewCtrl implements Initializable {
         vbox.getChildren().remove(card);
     }
 
-    private void configureNewCard(Card cardEntity, HBox card, Label task, Button menu, VBox icons) {
-        HBox iconsAndTask = new HBox(icons, task);
-        iconsAndTask.setPrefHeight(46);
-        iconsAndTask.setPrefWidth(120);
-        iconsAndTask.setMinHeight(46);
-        iconsAndTask.setMinWidth(120);
-        iconsAndTask.setStyle("-fx-border-color: black;");
+    @SuppressWarnings("checkstyle:MethodLength")
+    private void configureNewCard(Card cardEntity, GridPane card, Label task, HBox icons, VBox cardListVbox, long cardListId) {
+        RowConstraints row1 = new RowConstraints();
+        RowConstraints row2 = new RowConstraints();
+        RowConstraints row3 = new RowConstraints();
+        row1.setMinHeight(5.0);
+        row1.setPrefHeight(5.0);
+        row2.setMinHeight(30.0);
+        row2.setPrefHeight(30.0);
+        row3.setMinHeight(18.0);
+        row3.setPrefHeight(18.0);
 
-        card.getChildren().add(iconsAndTask);
-        card.getChildren().add(menu);
-        card.setAlignment(Pos.CENTER);
 
-        menu.setPrefHeight(46);
-        menu.setPrefWidth(20);
-        menu.setStyle("-fx-border-color: black; -fx-background-color: #DAD2BF;");
-        menu.setMnemonicParsing(false);
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints();
+        col1.setMinWidth(10.0);
+        col1.setPrefWidth(100.0);
+        col2.setMinWidth(10.0);
+        col2.setPrefWidth(100.0);
+        col3.setMinWidth(10.0);
+        col3.setPrefWidth(50.0);
+        card.getColumnConstraints().addAll(col1, col2, col3);
 
-        task.setAlignment(Pos.CENTER);
-        task.setPrefHeight(42);
-        task.setPrefWidth(100);
-        task.setMinHeight(42);
-        task.setMinWidth(100);
-        task.setStyle("-fx-background-color: #DAD2BF;");
+        card.getRowConstraints().addAll(row1,row2,row3);
+        Button remove = new Button("X");
+        icons.setStyle("-fx-background-color: white");
+        remove.setOnAction(event -> {
+            cardListVbox.getChildren().remove(card);
+            boardOverviewService.removeCard(cardEntity,cardListId, boardUserIdentifier.getCurrentBoard());
+        });
+        remove.setPrefHeight(20);
+        remove.setMinHeight(20);
+        remove.setPrefWidth(20);
+        remove.setMinWidth(20);
+        remove.setFont(new Font(10));
+        card.add(remove, 2, 0);
+
+        card.add(icons, 0, 0,2,1);
+        card.add(task, 0, 1, 3, 1);
+
+        ScrollPane scrollPane = new ScrollPane();
+        card.add(scrollPane, 0, 2, 3, 1);
+        HBox tagList = new HBox();
+
+        card.setPadding(new Insets(15));
+        BorderStroke borderStroke = new BorderStroke(
+            null, null, null, null,
+            BorderStrokeStyle.SOLID,
+            BorderStrokeStyle.SOLID,
+            BorderStrokeStyle.SOLID,
+            BorderStrokeStyle.SOLID,
+            null,
+            new BorderWidths(1), // width of the border
+            null
+        );
+        card.setBorder(new Border(borderStroke));
+        card.setVgap(10);
+        tagList.setMinHeight(1.0);
+        tagList.setPrefHeight(22.0);
+        tagList.setPrefWidth(100.0);
+        tagList.setSpacing(2);
+        scrollPane.setMinHeight(1.0);
+        scrollPane.setMinWidth(1.0);
+        scrollPane.setPrefHeight(25.0);
+        scrollPane.setPrefWidth(100.0);
+        scrollPane.setContent(tagList);
+        task.setPrefHeight(5);
+        card.setStyle("-fx-background-color: white");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         task.setId(String.valueOf(cardEntity.getId()));
     }
 
@@ -445,9 +458,9 @@ public class BoardOverviewCtrl implements Initializable {
         //List Name
         TextField label = new TextField(cardList.getTitle());
         final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
         final String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
-                " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
         label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.getId()));
@@ -482,9 +495,16 @@ public class BoardOverviewCtrl implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
-                    long cardListId = Long.parseLong(label.getId());
-                    boardOverviewService.updateCardListTitle(cardListId,label.getText(),
+                    if(label.getText().equals("")){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("List name cannot be left blank!");
+                        alert.show();
+                    }
+                    else {
+                        long cardListId = Long.parseLong(label.getId());
+                        boardOverviewService.updateCardListTitle(cardListId, label.getText(),
                             boardUserIdentifier.getCurrentBoard());
+                    }
                 }
             }
         });
@@ -499,14 +519,6 @@ public class BoardOverviewCtrl implements Initializable {
         cm.getItems().add(remove);
         cm.getItems().add(edit);
         button.setContextMenu(cm);
-    }
-
-    private void configureCardMenu(Button button, ContextMenu menu, MenuItem remove,
-                                   MenuItem edit) {
-        menu.getItems().add(edit);
-        menu.getItems().add(remove);
-        menu.setStyle("-fx-border-color: black");
-        button.setContextMenu(menu);
     }
 
     public void subscribeForUpdates(Board board){
@@ -545,7 +557,7 @@ public class BoardOverviewCtrl implements Initializable {
         boardSettings.setText("Board Settings");
 
         boardSettings.setOnAction(event -> {
-            mainCtrl.showBoardSettings();
+            mainCtrl.showBoardSettings(boardUserIdentifier.getCurrentBoard().getTitle());
         });
 
         changeBoard.setOnAction(event -> {
@@ -587,4 +599,3 @@ public class BoardOverviewCtrl implements Initializable {
         mainCtrl.showClientConnectPage();
     }
 }
-

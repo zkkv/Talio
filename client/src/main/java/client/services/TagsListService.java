@@ -104,8 +104,8 @@ public class TagsListService {
      * @param cardId the id of the card to which we add
      * @return the tag which we add
      */
-    public Tag addTagToCard(Tag tag, long cardId){
-        return serverUtils.addTagToCard(tag,cardId);
+    public Tag addTagToCard(Tag tag, long cardId,Board board){
+        return serverUtils.addTagToCard(tag,cardId,board);
     }
 
     /**
@@ -113,7 +113,7 @@ public class TagsListService {
      * @param tag the tag to remove
      * @param cardId the id of the card from which we remove
      */
-    public void removeTagFromCard(Tag tag, long cardId){
-        serverUtils.removeTagFromCard(tag.getId(),cardId);
+    public void removeTagFromCard(Tag tag, long cardId,Board board){
+        serverUtils.removeTagFromCard(tag.getId(),cardId,board);
     }
 }

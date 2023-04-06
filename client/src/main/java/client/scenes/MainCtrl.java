@@ -17,14 +17,11 @@ package client.scenes;
 
 import commons.Board;
 import commons.Card;
-import commons.CardList;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -63,9 +60,6 @@ public class MainCtrl {
     private AdminLoginCtrl adminLoginCtrl;
     private Scene adminLogin;
 
-    private AdminOverviewCtrl adminOverviewCtrl;
-    private Scene adminOverview;
-
     private CardDetailsCtrl cardDetailsCtrl;
 
     private Scene cardDetails;
@@ -89,7 +83,6 @@ public class MainCtrl {
                            Pair<UserPageCtrl,Parent> userPage,
                            Pair<JoinBoardCtrl,Parent> joinBoard,
                            Pair<AdminLoginCtrl,Parent> adminLogin,
-                           Pair<AdminOverviewCtrl,Parent> adminOverview,
                            Pair<CardDetailsCtrl, Parent> cardDetails,
                            Pair<TagsListCtrl,Parent> tagsList,
                            Pair<TagDetailsCtrl, Parent> tagDetails,
@@ -125,9 +118,6 @@ public class MainCtrl {
 
         this.adminLoginCtrl = adminLogin.getKey();
         this.adminLogin = new Scene(adminLogin.getValue());
-
-        this.adminOverviewCtrl = adminOverview.getKey();
-        this.adminOverview = new Scene(adminOverview.getValue());
 
         this.cardDetailsCtrl = cardDetails.getKey();
         this.cardDetails = new Scene(cardDetails.getValue());
@@ -201,9 +191,10 @@ public class MainCtrl {
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
-    public void showBoardSettings() {
+    public void showBoardSettings(String title) {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
+        boardSettingsCtrl.setBoardTitle(title);
         primaryStage.setScene(boardSettings);
     }
 
@@ -211,8 +202,7 @@ public class MainCtrl {
         label.setText(title);
     }
 
-    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
-        listMenuCtrl.setCardListBorderPane(cardList, borderPane);
+    public void showListMenu(){
         if(!listMenuStage.isShowing()){
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
@@ -227,19 +217,22 @@ public class MainCtrl {
      * and also the title of the stage.
      * It selects the card object, its container and its label
      * which are passed on to cardDetalsCtrl
+     * @param title
      * @param cardEntity
-     * @param card
-     * @param label
      */
-    public void showCardDetails(Card cardEntity, HBox card, Label label) {
+    public void showCardDetails(String title, Card cardEntity) {
         primaryStage.setTitle("Talio: Card Details");
-        cardDetailsCtrl.setTitle(label.getText());
+        cardDetailsCtrl.setTitle(title);
         primaryStage.setScene(cardDetails);
         cardDetailsCtrl.setCard(cardEntity);
-        cardDetailsCtrl.configureSaveButton(cardEntity, card);
         cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+        cardDetailsCtrl.setDescription(cardEntity);
         cardDetailsCtrl.updateProgressBar();
-        cardDetailsCtrl.setLabel(label);
+        initTagsInCardDetails();
+    }
+
+    public void configureSaveButton(Card card, GridPane gridPane){
+        cardDetailsCtrl.configureSaveButton(card,gridPane);
     }
 
     public void setMinSize(){
@@ -266,12 +259,6 @@ public class MainCtrl {
         adminLoginCtrl.setPass(pass);
     }
 
-    public void showAdminOverview(){
-        primaryStage.setTitle("Talio: Admin Overview");
-        primaryStage.setScene(adminOverview);
-        adminOverviewCtrl.initBoardList();
-    }
-
     /**
      * Pops up a scene with all the tags in the current board
      */
@@ -288,13 +275,11 @@ public class MainCtrl {
 
     /**
      * A method to show the tags in the card
-     * @param currentCard is the card from which to get the tags
+     * @param card is the card from which to get the tags
      */
-    public void showAllTagsListWithinACard(Card currentCard, HBox hbox, Label label) {
+    public void showAllTagsListWithinACard(Card card) {
         primaryStage.setTitle("Talio: Card Tags");
-
-        tagsInCardCtrl.openTagsInCard(currentCard, hbox, label);
-
+        tagsInCardCtrl.openTagsInCard(card);
         primaryStage.setScene(tagsInCard);
     }
 

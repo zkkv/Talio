@@ -1,6 +1,10 @@
 package client.scenes;
 
+import client.services.BoardOverviewService;
+import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
+import commons.Board;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -8,13 +12,20 @@ import javafx.scene.control.TextField;
 public class AdminLoginCtrl {
     private final MainCtrl mainCtrl;
 
+    private final BoardUserIdentifier boardUserIdentifier;
+
+    private final BoardOverviewService boardOverviewService;
+
     private String pass;
     @FXML
     private TextField password;
 
     @Inject
-    public AdminLoginCtrl(MainCtrl mainCtrl) {
+    public AdminLoginCtrl(MainCtrl mainCtrl, BoardUserIdentifier boardUserIdentifier,
+                          BoardOverviewService boardOverviewService) {
         this.mainCtrl = mainCtrl;
+        this.boardUserIdentifier = boardUserIdentifier;
+        this.boardOverviewService = boardOverviewService;
     }
 
     /**
@@ -25,7 +36,16 @@ public class AdminLoginCtrl {
      */
     public void loginAsAdmin(){
         if(password.getText().equals(pass)){
-            mainCtrl.showAdminOverview();
+            boardUserIdentifier.setAdmin(true);
+            mainCtrl.showStartPage();
+
+            boardOverviewService.registerForUpdates("/topic/board",Board.class,board -> {
+                Platform.runLater(()->{
+                    if(boardUserIdentifier.isAdmin()){
+                        mainCtrl.showStartPage();
+                    }
+                });
+            });
         }
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);

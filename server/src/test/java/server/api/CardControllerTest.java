@@ -112,12 +112,16 @@ public class CardControllerTest {
         card.setId(1L);
         card.setTags(new ArrayList<>(Arrays.asList(tag)));
 
+        Board board = new Board();
+        board.setId(3L);
+
         when(cardService.getCard(1L)).thenReturn(card);
         when(cardService.save(any(Card.class))).thenReturn(card);
+        when(boardService.getBoard(3L)).thenReturn(board);
 
         when(tagService.save(any(Tag.class))).thenReturn(tag);
 
-        ResponseEntity<Tag> actualResponse = cardController.addTag(tag, 1L);
+        ResponseEntity<Tag> actualResponse = cardController.addTag(tag, 1L,3L);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(tag, actualResponse.getBody());
@@ -136,11 +140,15 @@ public class CardControllerTest {
 
         cardWithTags.setTags(tags);
 
+        Board board = new Board();
+        board.setId(3L);
+
         when(tagService.getTag(2L)).thenReturn(tag);
         when(tagService.save(tag)).thenReturn(tag);
         when(cardService.getCard(1L)).thenReturn(cardWithTags);
+        when(boardService.getBoard(3L)).thenReturn(board);
 
-        ResponseEntity<Tag> actualResponse = cardController.removeTag(2L, 1L);
+        ResponseEntity<Tag> actualResponse = cardController.removeTag(2L, 1L,3L);
 
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
         assertEquals(tag, actualResponse.getBody());
@@ -159,6 +167,8 @@ public class CardControllerTest {
         List<Tag> tags = new ArrayList<>();
         tags.add(tag1);
         tags.add(tag2);
+        Board board = new Board();
+        board.setId(4L);
 
         card.setTags(tags);
 
@@ -166,9 +176,10 @@ public class CardControllerTest {
         when(cardService.save(any(Card.class))).thenReturn(card);
         when(tagService.save(any(Tag.class))).thenReturn(tag1);
         when(tagService.save(any(Tag.class))).thenReturn(tag2);
+        when(boardService.getBoard(4L)).thenReturn(board);
 
-        cardController.addTag(tag1, 3L);
-        cardController.addTag(tag1, 3L);
+        cardController.addTag(tag1, 3L,4L);
+        cardController.addTag(tag1, 3L,4L);
 
         ResponseEntity<List<Tag>> actualResponse = cardController.getAllTags(3L);
 
