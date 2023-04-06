@@ -34,6 +34,9 @@ public class BoardService {
         boardRepository.deleteById(boardId);
     }
 
+    public boolean existsByKey(String key){
+        return boardRepository.existsByKey(key);
+    }
     public Board save(Board board){
         return boardRepository.save(board);
     }
