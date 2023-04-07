@@ -83,6 +83,9 @@ public class BoardController {
 
     @GetMapping("/key/{key}")
     public ResponseEntity<Board> getByKey(@PathVariable("key") String boardKey){
+        if(!boardService.existsByKey(boardKey)){
+            return ResponseEntity.notFound().build();
+        }
         Board board = boardService.getBoardByKey(boardKey);
 
         return ResponseEntity.ok(board);
