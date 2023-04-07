@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -60,6 +61,19 @@ public class BoardOverviewCtrl implements Initializable {
         this.listMenuCtrl = listMenuCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
         this.cardDetailsCtrl = cardDetailsCtrl;
+    }
+
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void createList(Button addList) {
@@ -503,8 +517,10 @@ public class BoardOverviewCtrl implements Initializable {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if(label.getText().equals("")){
                         Alert alert = new Alert(Alert.AlertType.ERROR);
+                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                        alert.setHeaderText(null);
                         alert.setContentText("List name cannot be left blank!");
-                        alert.show();
+                        alert.showAndWait();
                     }
                     else {
                         long cardListId = Long.parseLong(label.getId());

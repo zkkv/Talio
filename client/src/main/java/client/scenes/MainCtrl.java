@@ -157,7 +157,7 @@ public class MainCtrl {
      *
      * @param stage the stage for which the icons need to be set
      */
-    private static void addIcons(Stage stage) {
+    private void addIcons(Stage stage) {
         /* Icon created by Freepik - Flaticon */
         stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
         stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
