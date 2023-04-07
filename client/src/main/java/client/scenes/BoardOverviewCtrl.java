@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.*;
 
 
-@SuppressWarnings("checkstyle:LineLength")
 public class BoardOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
 
@@ -376,7 +375,12 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     @SuppressWarnings("checkstyle:MethodLength")
-    private void configureNewCard(Card cardEntity, GridPane card, Label task, HBox icons, VBox cardListVbox, long cardListId) {
+    private void configureNewCard(Card cardEntity,
+                                  GridPane card,
+                                  Label task,
+                                  HBox icons,
+                                  VBox cardListVbox,
+                                  long cardListId) {
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();
         RowConstraints row3 = new RowConstraints();
@@ -404,7 +408,9 @@ public class BoardOverviewCtrl implements Initializable {
         icons.setStyle("-fx-background-color: white");
         remove.setOnAction(event -> {
             cardListVbox.getChildren().remove(card);
-            boardOverviewService.removeCard(cardEntity,cardListId, boardUserIdentifier.getCurrentBoard());
+            boardOverviewService.removeCard(cardEntity,
+                    cardListId,
+                    boardUserIdentifier.getCurrentBoard());
         });
         remove.setPrefHeight(20);
         remove.setMinHeight(20);
