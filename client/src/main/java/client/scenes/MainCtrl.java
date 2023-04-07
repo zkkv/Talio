@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.services.BoardUserIdentifier;
+import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import javafx.scene.Parent;
@@ -72,6 +74,9 @@ public class MainCtrl {
     private TagsInCardCtrl tagsInCardCtrl;
     private Scene tagsInCard;
 
+    @Inject
+    private BoardUserIdentifier boardUserIdentifier;
+
     @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
@@ -88,7 +93,6 @@ public class MainCtrl {
                            Pair<TagDetailsCtrl, Parent> tagDetails,
                            Pair<TagsInCardCtrl, Parent> tagsInCard) {
         this.primaryStage = primaryStage;
-        addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -139,6 +143,13 @@ public class MainCtrl {
 
         showClientConnectPage();
         primaryStage.show();
+        setupPrimaryStage();
+    }
+
+    private void setupPrimaryStage() {
+        addIcons(primaryStage);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
     }
 
     /**
@@ -155,14 +166,15 @@ public class MainCtrl {
     }
 
     public void showClientConnectPage() {
-        primaryStage.setTitle("Talio: Client connect");
+        primaryStage.setTitle("Talio: Server selection");
         primaryStage.setScene(clientConnect);
-        setMinSize();
+        primaryStage.centerOnScreen();
     }
 
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
+        primaryStage.centerOnScreen();
     }
 
     public void showJoinBoard(){
@@ -183,7 +195,7 @@ public class MainCtrl {
     }
 
     public void showBoardPage() {
-        primaryStage.setTitle("Talio: Board page");
+        primaryStage.setTitle("Talio: " + boardUserIdentifier.getCurrentBoard().getTitle());
         boardOverviewCtrl.drawBoard();
         primaryStage.setScene(board);
     }

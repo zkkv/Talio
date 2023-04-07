@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="242.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoardCtrl">
+<AnchorPane minHeight="590.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CreateBoardCtrl">
     <children>
-        <Label layoutX="175.0" layoutY="35.0" text="Create a new board">
-            <font>
-                <Font size="29.0" />
-            </font>
-        </Label>
-        <Label layoutX="123.0" layoutY="121.0" text="Title:">
-            <font>
-                <Font size="27.0" />
-            </font>
-        </Label>
-        <TextField fx:id="boardTitle" layoutX="198.0" layoutY="128.0" />
-        <Button layoutX="373.0" layoutY="119.0" mnemonicParsing="false" onAction="#createBoard" prefHeight="39.0" prefWidth="133.0" text="Create">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
-        <Button layoutX="440.0" layoutY="175.0" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="133.0" text="Back">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
+        <GridPane alignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="339.8000015258789" minHeight="10.0" prefHeight="210.9999755859375" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="339.8000015258789" minHeight="0.0" prefHeight="47.79998168945315" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="365.59998779296876" minHeight="10.0" prefHeight="78.20001220703125" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="373.99994812011715" minHeight="10.0" prefHeight="49.59996337890624" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="361.4" minHeight="10.0" prefHeight="215.20003662109372" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label alignment="CENTER" text="Create a new board" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="27.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="boardTitle" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="227.0" promptText="Board name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <GridPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </GridPane.margin>
+                </TextField>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#createBoard" prefHeight="39.0" prefWidth="133.0" text="Create" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Button>
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#goBack" prefHeight="39.0" prefWidth="133.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Button>
+            </children>
+        </GridPane>
     </children>
 </AnchorPane>

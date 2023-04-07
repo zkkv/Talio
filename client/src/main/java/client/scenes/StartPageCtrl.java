@@ -72,7 +72,7 @@ public class StartPageCtrl implements Initializable {
         Button removeBoard = new Button();
         Button leaveBoard = new Button();
         removeBoard.setText("X");
-        leaveBoard.setText("Bye");
+        leaveBoard.setText("Leave");
         boardTitle.setText(board.getTitle());
         boardTitle.setFont(new Font(20.0));
 

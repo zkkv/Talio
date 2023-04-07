@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.UserPageCtrl">
+<AnchorPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.UserPageCtrl">
     <children>
-        <Label layoutX="127.0" layoutY="147.0" text="User Name:">
-            <font>
-                <Font size="30.0" />
-            </font>
-        </Label>
-        <TextField fx:id="userName" layoutX="297.0" layoutY="152.0" prefHeight="36.0" prefWidth="176.0" />
-        <Button layoutX="259.0" layoutY="228.0" mnemonicParsing="false" onAction="#createUser" prefHeight="34.0" prefWidth="76.0" text="Create user" />
-        <Button layoutX="259.0" layoutY="288.0" mnemonicParsing="false" onAction="#logIn" prefHeight="34.0" prefWidth="76.0" text="Log in" />
+      <VBox alignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+              <Label text="User">
+                  <font>
+                      <Font size="30.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="userName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" promptText="Username">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </TextField>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="55.0" prefWidth="199.0">
+               <children>
+                    <Button mnemonicParsing="false" onAction="#createUser" prefHeight="34.0" prefWidth="103.0" text="Create user">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                    <Button mnemonicParsing="false" onAction="#logIn" prefHeight="34.0" prefWidth="76.0" text="Log in">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
