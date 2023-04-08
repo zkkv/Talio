@@ -36,6 +36,9 @@ public class StartPageCtrl implements Initializable {
     private Button logoutAdmin;
 
     @FXML
+    private Button loginAdmin;
+
+    @FXML
     private ScrollPane scrollPane;
 
     @Inject
@@ -52,11 +55,19 @@ public class StartPageCtrl implements Initializable {
         if (boardUserIdentifier.isAdmin()) {
             boards = boardOverviewService.getAllBoards();
             adminLabel.setVisible(true);
+            adminLabel.setFocusTraversable(true);
             logoutAdmin.setVisible(true);
+            logoutAdmin.setFocusTraversable(true);
+            loginAdmin.setVisible(false);
+            loginAdmin.setFocusTraversable(false);
         }
         else {
             adminLabel.setVisible(false);
+            adminLabel.setFocusTraversable(false);
             logoutAdmin.setVisible(false);
+            logoutAdmin.setFocusTraversable(false);
+            loginAdmin.setVisible(true);
+            loginAdmin.setFocusTraversable(true);
             User user = boardUserIdentifier.getCurrentUser();
             boards = boardOverviewService.getUserBoards(user.getUserName());
         }
