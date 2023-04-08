@@ -227,6 +227,7 @@ public class MainCtrl {
 
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
+            addIcons(listMenuStage);
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
         }
