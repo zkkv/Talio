@@ -168,13 +168,11 @@ public class MainCtrl {
     public void showClientConnectPage() {
         primaryStage.setTitle("Talio: Server selection");
         primaryStage.setScene(clientConnect);
-        primaryStage.centerOnScreen();
     }
 
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
-        primaryStage.centerOnScreen();
     }
 
     public void showJoinBoard(){
