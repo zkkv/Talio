@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class AdminLoginCtrl {
     private final MainCtrl mainCtrl;
@@ -26,6 +28,19 @@ public class AdminLoginCtrl {
         this.mainCtrl = mainCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
         this.boardOverviewService = boardOverviewService;
+    }
+
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     /**
@@ -48,10 +63,12 @@ public class AdminLoginCtrl {
             });
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Wrong Password");
+            alert.setHeaderText(null);
             alert.setContentText("Please try again with a different password");
-            alert.show();
+            alert.showAndWait();
         }
     }
 
