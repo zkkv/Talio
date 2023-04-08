@@ -9,6 +9,7 @@ import commons.User;
 import commons.SubTask;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -128,7 +129,7 @@ public class BoardOverviewService {
         serverUtils.removeSubTask(subTask,cardId,board);
     }
 
-    public void testServerConnection() throws IOException {
+    public void testServerConnection() throws IOException, RuntimeException {
         serverUtils.testConnection();
     }
 

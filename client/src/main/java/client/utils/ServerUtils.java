@@ -20,6 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,8 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 @Singleton
 public class ServerUtils {
     private String server;
+    private String httpUrl;
+    private String wsUrl;
     private HttpURLConnection connection;
 
     private StompSession session;
@@ -59,13 +62,15 @@ public class ServerUtils {
     private Map<Object, Consumer<Tag>> listeners = new HashMap<>();
 
     public void setServer(String ip) {
-        this.server ="http://"+ ip;
-        session = connect("ws://"+ip+"/websocket");
+        this.server = ip;
+        this.httpUrl = "http://" + server;
+        this.wsUrl = "ws://" + server + "/websocket";
     }
 
-    public void testConnection() throws IOException {
-        var url = new URL(server + "/api/quotes");
+    public void testConnection() throws IOException, RuntimeException {
+        var url = new URL(httpUrl + "/api/quotes");
         connection = (HttpURLConnection) url.openConnection();
+        session = connect(wsUrl);
     }
 
     public void closeConnection() {
