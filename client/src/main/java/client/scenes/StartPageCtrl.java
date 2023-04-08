@@ -24,10 +24,16 @@ public class StartPageCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
     private final MainCtrl mainCtrl;
 
-    private BoardUserIdentifier boardUserIdentifier;
+    private final BoardUserIdentifier boardUserIdentifier;
+
+    @FXML
+    private Label adminLabel;
 
     @FXML
     private VBox boardList;
+
+    @FXML
+    private Button logoutAdmin;
 
     @FXML
     private ScrollPane scrollPane;
@@ -40,18 +46,28 @@ public class StartPageCtrl implements Initializable {
         this.boardUserIdentifier = boardUserIdentifier;
     }
 
-    public void initBoardList(){
+    public void initBoardList() {
         boardList.getChildren().clear();
-        User user = boardUserIdentifier.getCurrentUser();
-        List<Board> boards = boardOverviewService.getUserBoards(user.getUserName());
-        for(Board board:boards){
+        List<Board> boards;
+        if (boardUserIdentifier.isAdmin()) {
+            boards = boardOverviewService.getAllBoards();
+            adminLabel.setVisible(true);
+            logoutAdmin.setVisible(true);
+        }
+        else {
+            adminLabel.setVisible(false);
+            logoutAdmin.setVisible(false);
+            User user = boardUserIdentifier.getCurrentUser();
+            boards = boardOverviewService.getUserBoards(user.getUserName());
+        }
+        for (Board board : boards) {
             GridPane boardTab = new GridPane();
-            configureBoardTab(boardTab,board);
+            configureBoardTab(boardTab, board);
             boardList.getChildren().add(boardTab);
         }
     }
 
-    public void configureBoardTab(GridPane gridPane,Board board){
+    public void configureBoardTab(GridPane gridPane, Board board) {
         Label boardTitle = new Label();
         Button removeBoard = new Button();
         Button leaveBoard = new Button();
@@ -67,7 +83,7 @@ public class StartPageCtrl implements Initializable {
 
         leaveBoard.setOnMouseClicked(event -> {
             boardOverviewService.removeBoardForUser(board,
-                    boardUserIdentifier.getCurrentUser().getUserName());
+                boardUserIdentifier.getCurrentUser().getUserName());
             boardList.getChildren().remove(gridPane);
         });
 
@@ -75,37 +91,47 @@ public class StartPageCtrl implements Initializable {
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
         ColumnConstraints col3 = new ColumnConstraints();
+
         col1.setPercentWidth(60);
         col2.setPercentWidth(20);
         col3.setPercentWidth(20);
         gridPane.getColumnConstraints().addAll(col1, col2, col3);
-        gridPane.add(boardTitle,0,0);
-        gridPane.add(leaveBoard,1,0);
-        gridPane.add(removeBoard,2,0);
+        gridPane.add(boardTitle, 0, 0);
+        gridPane.add(leaveBoard, 1, 0);
+        gridPane.add(removeBoard, 2, 0);
         gridPane.setPadding(new Insets(10.0));
 
-        gridPane.setOnMouseClicked(e->{
+        gridPane.setOnMouseClicked(e -> {
             boardUserIdentifier.setCurrentBoard(board);
             mainCtrl.showBoardPage();
         });
     }
 
-    public void createNewBoard(){
+    public void createNewBoard() {
         mainCtrl.showCreateBoardPage();
     }
 
-    //TODO check if you have already joined
-    public void joinNewBoard(){
+    public void joinNewBoard() {
         mainCtrl.showJoinBoard();
+    }
+
+    public void disconnect() {
+        boardOverviewService.closeServerConnection();
+        mainCtrl.showClientConnectPage();
     }
 
     /**
      * Gets admin password from boardOverviewService and passes it to mainCtrl
      *
-     * @author      Kirill Zhankov
+     * @author Kirill Zhankov
      */
-    public void loginAsAdmin(){
+    public void loginAsAdmin() {
         mainCtrl.showAdminLogin(boardOverviewService.getAdminPassword());
+    }
+
+    public void logOutAdmin(){
+        boardUserIdentifier.setAdmin(false);
+        mainCtrl.showStartPage();
     }
 
     /**
@@ -119,6 +145,7 @@ public class StartPageCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        boardUserIdentifier.setAdmin(false);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setPannable(true);

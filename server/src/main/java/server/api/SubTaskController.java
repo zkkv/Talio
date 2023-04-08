@@ -1,8 +1,11 @@
 package server.api;
 
+import commons.Card;
 import commons.SubTask;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import server.services.BoardService;
 import server.services.CardService;
 import server.services.SubTaskService;
 
@@ -14,9 +17,16 @@ public class SubTaskController {
     private final CardService cardService;
     private final SubTaskService subTaskService;
 
-    public SubTaskController(CardService cardService, SubTaskService subTaskService) {
+    private final BoardService boardService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public SubTaskController(CardService cardService, SubTaskService subTaskService,
+                             BoardService boardService,
+                             SimpMessagingTemplate simpMessagingTemplate) {
         this.cardService = cardService;
         this.subTaskService = subTaskService;
+        this.boardService = boardService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping(path = {"", "/"})
@@ -34,19 +44,32 @@ public class SubTaskController {
     }
 
 
-    @PutMapping("/update-titleTask/{id}")
+    @PutMapping("/update-titleTask/{id}/card/{cardId}/board/{boardId}")
     public ResponseEntity<SubTask> updateTitleSubTask(@RequestBody String title,
-                                                      @PathVariable("id") long id) {
+                                                      @PathVariable("id") long id,
+                                                      @PathVariable("cardId") long cardId,
+                                                      @PathVariable("boardId") long boardId) {
         SubTask subTask = subTaskService.getSubTask(id);
         subTask.setName(title);
+        Card card = cardService.getCard(cardId);
+        card = cardService.save(card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+
+            boardId,boardService.getBoard(boardId));
         return ResponseEntity.ok(subTaskService.save(subTask));
     }
 
-    @PutMapping("/update-checkbox-Task/{id}")
+    @PutMapping("/update-checkbox-Task/{id}/card/{cardId}/board/{boardId}")
     public ResponseEntity<SubTask> updateIsChecked(@RequestBody boolean isChecked,
-                                                   @PathVariable("id") long id) {
+                                                   @PathVariable("id") long id,
+                                                   @PathVariable("cardId") long cardId,
+                                                   @PathVariable("boardId") long boardId) {
         SubTask subTask = subTaskService.getSubTask(id);
         subTask.setChecked(isChecked);
-        return ResponseEntity.ok(subTaskService.save(subTask));
+        subTask = subTaskService.save(subTask);
+        Card card = cardService.getCard(cardId);
+        card = cardService.save(card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+
+            boardId,boardService.getBoard(boardId));
+        return ResponseEntity.ok(subTask);
     }
 }

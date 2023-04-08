@@ -16,13 +16,12 @@
 package client.scenes;
 
 import commons.Board;
-import commons.CardList;
+import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -32,13 +31,10 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage listMenuStage;
     private Stage tagsListStage;
+    private Stage tagDetailsStage;
 
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene board;
-
-    private AddTaskCtrl addTaskCtrl;
-
-    private Scene addTask;
 
     private ClientConnectCtrl clientConnectCtrl;
     private Scene clientConnect;
@@ -64,9 +60,6 @@ public class MainCtrl {
     private AdminLoginCtrl adminLoginCtrl;
     private Scene adminLogin;
 
-    private AdminOverviewCtrl adminOverviewCtrl;
-    private Scene adminOverview;
-
     private CardDetailsCtrl cardDetailsCtrl;
 
     private Scene cardDetails;
@@ -74,21 +67,26 @@ public class MainCtrl {
     private TagsListCtrl tagsListCtrl;
     private Scene tagsList;
 
+    private TagDetailsCtrl tagDetailsCtrl;
+    private Scene tagDetails;
+    private TagsInCardCtrl tagsInCardCtrl;
+    private Scene tagsInCard;
+
     @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
                            Pair<ClientConnectCtrl, Parent> clientConnect,
                            Pair<StartPageCtrl, Parent> startPage,
-                           Pair<AddTaskCtrl, Parent> addTask,
                            Pair<ListMenuCtrl, Parent> listMenu,
                            Pair<CreateBoardCtrl, Parent> createBoard,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
                            Pair<UserPageCtrl,Parent> userPage,
                            Pair<JoinBoardCtrl,Parent> joinBoard,
                            Pair<AdminLoginCtrl,Parent> adminLogin,
-                           Pair<AdminOverviewCtrl,Parent> adminOverview,
                            Pair<CardDetailsCtrl, Parent> cardDetails,
-                           Pair<TagsListCtrl,Parent> tagsList) {
+                           Pair<TagsListCtrl,Parent> tagsList,
+                           Pair<TagDetailsCtrl, Parent> tagDetails,
+                           Pair<TagsInCardCtrl, Parent> tagsInCard) {
         this.primaryStage = primaryStage;
         addIcons(primaryStage);
 
@@ -100,9 +98,6 @@ public class MainCtrl {
 
         this.boardOverviewCtrl = board.getKey();
         this.board = new Scene(board.getValue());
-
-        this.addTaskCtrl = addTask.getKey();
-        this.addTask = new Scene(addTask.getValue());
 
         this.listMenuCtrl = listMenu.getKey();
         this.listMenu = new Scene(listMenu.getValue());
@@ -124,9 +119,6 @@ public class MainCtrl {
         this.adminLoginCtrl = adminLogin.getKey();
         this.adminLogin = new Scene(adminLogin.getValue());
 
-        this.adminOverviewCtrl = adminOverview.getKey();
-        this.adminOverview = new Scene(adminOverview.getValue());
-
         this.cardDetailsCtrl = cardDetails.getKey();
         this.cardDetails = new Scene(cardDetails.getValue());
 
@@ -135,6 +127,15 @@ public class MainCtrl {
         this.tagsListStage = new Stage();
         this.tagsListStage.setScene(this.tagsList);
         tagsListStage.initModality(Modality.APPLICATION_MODAL);
+
+        this.tagDetailsCtrl = tagDetails.getKey();
+        this.tagDetails = new Scene(tagDetails.getValue());
+        this.tagDetailsStage = new Stage();
+        this.tagDetailsStage.setScene(this.tagDetails);
+        tagDetailsStage.initModality(Modality.APPLICATION_MODAL);
+
+        this.tagsInCardCtrl = tagsInCard.getKey();
+        this.tagsInCard = new Scene(tagsInCard.getValue());
 
         showClientConnectPage();
         primaryStage.show();
@@ -157,7 +158,6 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Client connect");
         primaryStage.setScene(clientConnect);
         setMinSize();
-
     }
 
     public void showUserPage(){
@@ -191,16 +191,10 @@ public class MainCtrl {
         boardOverviewCtrl.subscribeForUpdates(board);
     }
 
-    public void showAddTask(Label label) {
-        primaryStage.setTitle("Talio: Adding Task");
-        addTaskCtrl.setLabel(label);
-        primaryStage.setScene(addTask);
-        setMinSizeForCardDetails();
-    }
-
-    public void showBoardSettings() {
+    public void showBoardSettings(String title) {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
+        boardSettingsCtrl.setBoardTitle(title);
         primaryStage.setScene(boardSettings);
     }
 
@@ -208,8 +202,7 @@ public class MainCtrl {
         label.setText(title);
     }
 
-    public void showListMenu(Button button, CardList cardList, BorderPane borderPane){
-        listMenuCtrl.setCardListBorderPane(cardList, borderPane);
+    public void showListMenu(){
         if(!listMenuStage.isShowing()){
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
@@ -219,10 +212,27 @@ public class MainCtrl {
         }
     }
 
-    public void showCardDetails(String title) {
+    /**
+     * This method changes the primaryStage to the card details scene
+     * and also the title of the stage.
+     * It selects the card object, its container and its label
+     * which are passed on to cardDetalsCtrl
+     * @param title
+     * @param cardEntity
+     */
+    public void showCardDetails(String title, Card cardEntity) {
         primaryStage.setTitle("Talio: Card Details");
         cardDetailsCtrl.setTitle(title);
         primaryStage.setScene(cardDetails);
+        cardDetailsCtrl.setCard(cardEntity);
+        cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
+        cardDetailsCtrl.setDescription(cardEntity);
+        cardDetailsCtrl.updateProgressBar();
+        initTagsInCardDetails();
+    }
+
+    public void configureSaveButton(Card card, GridPane gridPane){
+        cardDetailsCtrl.configureSaveButton(card,gridPane);
     }
 
     public void setMinSize(){
@@ -249,28 +259,45 @@ public class MainCtrl {
         adminLoginCtrl.setPass(pass);
     }
 
-    public void showAdminOverview(){
-        primaryStage.setTitle("Talio: Admin Overview");
-        primaryStage.setScene(adminOverview);
-        adminOverviewCtrl.initBoardList();
-    }
-
     /**
      * Pops up a scene with all the tags in the current board
      */
     public void showAllTagsList() {
-        if(!tagsListStage.isShowing()){
-            tagsListStage.setTitle("Talio: Tag List");
-            tagsListStage.setMinWidth(300);
-            tagsListStage.setMinHeight(450);
-            tagsListStage.setResizable(false);
-            tagsListStage.show();
-            addIcons(tagsListStage);
-            tagsListCtrl.drawTags();
-        }
-        else{
-            tagsListStage.hide();
-        }
+        tagsListStage.setTitle("Talio: Tag List");
+        tagsListStage.setMinWidth(300);
+        tagsListStage.setMinHeight(450);
+        tagsListStage.setResizable(false);
+        tagDetailsStage.setOnCloseRequest(e -> tagsListCtrl.stopPolling());
+        tagsListStage.show();
+        addIcons(tagsListStage);
+        tagsListCtrl.drawTags();
+    }
+
+    /**
+     * A method to show the tags in the card
+     * @param card is the card from which to get the tags
+     */
+    public void showAllTagsListWithinACard(Card card) {
+        primaryStage.setTitle("Talio: Card Tags");
+        tagsInCardCtrl.openTagsInCard(card);
+        primaryStage.setScene(tagsInCard);
+    }
+
+    /**
+     * A method with which we show the tags of the cards inside the card details
+     */
+    public void initTagsInCardDetails(){
+        cardDetailsCtrl.addRetrievedTags();
+    }
+
+    /**
+     * A method which shows the scene for editing the tag
+     */
+    public void showTagDetails() {
+        tagDetailsStage.setTitle("Talio: Tag Details");
+        tagDetailsStage.setResizable(false);
+        tagDetailsStage.show();
+        addIcons(tagDetailsStage);
     }
 
 }

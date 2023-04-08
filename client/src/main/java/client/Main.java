@@ -48,9 +48,6 @@ public class Main extends Application {
         var startPage = FXML.load(
 				StartPageCtrl.class,
                 "client", "scenes", "StartPage.fxml");
-        var addTask = FXML.load(
-				AddTaskCtrl.class,
-				"client", "scenes", "AddTask.fxml");
         var listMenu = FXML.load(
 				ListMenuCtrl.class,
 				"client", "scenes", "ListMenu.fxml");
@@ -69,15 +66,18 @@ public class Main extends Application {
         var adminLogin = FXML.load(
 				AdminLoginCtrl.class,
 				"client", "scenes", "AdminLogin.fxml");
-        var adminOverview = FXML.load(
-				AdminOverviewCtrl.class,
-                "client", "scenes", "AdminOverview.fxml");
         var cardDetails = FXML.load(
 				CardDetailsCtrl.class,
 				"client", "scenes", "CardDetails.fxml");
         var tagsList = FXML.load(
 				TagsListCtrl.class,
             "client", "scenes", "TagsList.fxml");
+	var tagDetails = FXML.load(
+			TagDetailsCtrl.class,
+			"client", "scenes", "TagDetails.fxml");
+	var tagsInCard = FXML.load(
+		TagsInCardCtrl.class,
+		"client", "scenes", "TagsInCard.fxml");
 
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
@@ -87,16 +87,16 @@ public class Main extends Application {
                 board,
                 clientConnect,
 				startPage,
-				addTask,
 				listMenu,
 				createBoard,
                 boardSettings,
 				userPage,
 				joinBoard,
 				adminLogin,
-				adminOverview,
 				cardDetails,
-                tagsList);
+                tagsList,
+				tagDetails,
+				tagsInCard);
 
         primaryStage.setOnCloseRequest(event -> tagsList.getKey().stopPolling());
     }

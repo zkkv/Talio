@@ -22,16 +22,17 @@ public class Card {
     @OneToMany(cascade = CascadeType.ALL)
     private List<SubTask> subTasks;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
 
     public Card(){
         subTasks = new ArrayList<>();
         this.description = "";
     }
-    public Card(String title){
+    public Card(String title,List<Tag> tags,List<SubTask> subTasks){
         this.title = title;
-        subTasks = new ArrayList<>();
+        this.subTasks = subTasks;
+        this.tags = tags;
         this.description = "";
     }
 
@@ -72,7 +73,7 @@ public class Card {
     }
 
     public boolean hasDescription() {
-        return !description.equals("");
+        return !description.equals(" ") && !description.equals("");
     }
 
     public List<SubTask> getTasks() {
@@ -81,5 +82,13 @@ public class Card {
 
     public void setTasks(List<SubTask> subTasks) {
         this.subTasks = subTasks;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

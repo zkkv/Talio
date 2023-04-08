@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
+<AnchorPane prefHeight="550.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
-      <Label alignment="CENTER" layoutX="154.0" layoutY="25.0" prefHeight="76.0" prefWidth="179.0" text="Talio">
+      <Label alignment="CENTER" layoutX="43.0" layoutY="25.0" prefHeight="76.0" prefWidth="179.0" text="Talio">
          <font>
             <Font name="Perpetua Bold" size="61.0" />
          </font>
@@ -29,7 +29,7 @@
             <Font size="23.0" />
          </font>
       </Label>
-      <Button layoutX="161.0" layoutY="355.0" mnemonicParsing="false" onAction="#loginAsAdmin" prefHeight="52.0" prefWidth="211.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Log in as Admin" textAlignment="CENTER">
+      <Button layoutX="99.0" layoutY="355.0" mnemonicParsing="false" onAction="#loginAsAdmin" prefHeight="52.0" prefWidth="211.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Log in as Admin" textAlignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>
@@ -39,5 +39,20 @@
             <VBox fx:id="boardList" prefHeight="169.0" prefWidth="208.0" />
          </content>
       </ScrollPane>
+      <Button fx:id="logoutAdmin" layoutX="377.0" layoutY="355.0" mnemonicParsing="false" onAction="#logOutAdmin" prefHeight="52.0" prefWidth="250.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Log out from Admin" textAlignment="CENTER" visible="false">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+      <Label fx:id="adminLabel" alignment="CENTER" layoutX="222.0" layoutY="25.0" prefHeight="76.0" prefWidth="480.0" text="Admin Overview" visible="false">
+         <font>
+            <Font name="Perpetua Bold" size="61.0" />
+         </font>
+      </Label>
+      <Button layoutX="490.0" layoutY="471.0" mnemonicParsing="false" onAction="#disconnect" prefHeight="52.0" prefWidth="211.0" style="-fx-border-color: #86bccf; -fx-background-color: #cce7f0;" text="Disconnect" textAlignment="CENTER">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

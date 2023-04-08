@@ -24,4 +24,21 @@ public class TagService {
         return tagRepository.save(tag);
     }
 
+    /**
+     * A method to get the tag by its id
+     * @param tagId the id of the tag to be returned
+     * @return the tag found by its id
+     */
+    public Tag getTag(long tagId){
+        return tagRepository.findById(tagId).get();
+    }
+
+    /**
+     * A method to remove the chosen tag
+     * @param tagId the id of the tag to be removed
+     */
+    public void removeTag(long tagId){
+        tagRepository.deleteById(tagId);
+    }
+
 }

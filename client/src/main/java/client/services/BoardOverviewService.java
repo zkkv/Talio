@@ -31,8 +31,8 @@ public class BoardOverviewService {
     public List<CardList> getCardLists(Board board) {
         return serverUtils.getAllCardLists(board);
     }
-    public SubTask addSubTask(SubTask subTask, long cardId){
-        return serverUtils.addSubTaskToCard(subTask,cardId);
+    public SubTask addSubTask(SubTask subTask, long cardId, Board board){
+        return serverUtils.addSubTaskToCard(subTask,cardId,board);
     }
 
     public Board updateBoardTitle(Board board,String title){
@@ -68,12 +68,16 @@ public class BoardOverviewService {
         serverUtils.removeCardFromList(card, cardListId,board);
     }
 
+    public void removeCardWhenDragged(Card card, long cardListId,Board board) {
+        serverUtils.removeCardFromListWhenDragged(card, cardListId,board);
+    }
+
     public void removeCardList(CardList cardList,Board board) {
         serverUtils.removeCardListFromBoard(cardList,board);
     }
 
-    public Card addCardAtIndex(Card card, long cardListId, int index,Board board) {
-        return serverUtils.addCardToCardListWithIndex(card, cardListId, index,board);
+    public Card addCardAtIndex(Card card, long cardId, long cardListId, int index,Board board) {
+        return serverUtils.addCardToCardListWithIndex(card, cardId, cardListId, index,board);
     }
 
     public List<Card> getCards(long cardListId) {
@@ -114,14 +118,14 @@ public class BoardOverviewService {
     public void setServerAddress(String ip) {
         serverUtils.setServer(ip);
     }
-    public SubTask updateTitleSubTask(long taskId, String title){
-        return serverUtils.updateTitleSubTask(taskId,title);
+    public SubTask updateTitleSubTask(long taskId, String title,Board board,Card card){
+        return serverUtils.updateTitleSubTask(taskId,title,board,card);
     }
-    public SubTask updateCheckboxTask(long taskId, boolean isChecked){
-        return serverUtils.updateIsChecked(taskId,isChecked);
+    public SubTask updateCheckboxTask(long taskId, boolean isChecked, Board board, Card card){
+        return serverUtils.updateIsChecked(taskId,isChecked,board,card);
     }
-    public void removeSubTask(SubTask subTask, long cardId) {
-        serverUtils.removeSubTask(subTask,cardId);
+    public void removeSubTask(SubTask subTask, long cardId,Board board) {
+        serverUtils.removeSubTask(subTask,cardId,board);
     }
 
     public void testServerConnection() throws IOException {
@@ -143,5 +147,9 @@ public class BoardOverviewService {
      */
     public String getAdminPassword(){
         return serverUtils.getAdminPassword();
+    }
+
+    public Card updateCardSubTasks(long cardId, List<SubTask> subtasks,Board board) {
+        return serverUtils.updateCardSubTasks(cardId, subtasks,board);
     }
 }

@@ -48,7 +48,7 @@ public class BoardSettingsCtrl {
     public void leaveBoard() {
         User user = boardIdentifier.getCurrentUser();
         user = boardOverviewService.removeBoardForUser(boardIdentifier.getCurrentBoard(),
-                user.getUserName());
+            user.getUserName());
         boardIdentifier.setCurrentUser(user);
         mainCtrl.showStartPage();
     }
@@ -66,5 +66,9 @@ public class BoardSettingsCtrl {
 
     public void setBoardKey(){
         boardKey.setText(boardIdentifier.getCurrentBoard().getKey());
+    }
+
+    public void setBoardTitle(String title) {
+        boardTitle.setText(title);
     }
 }

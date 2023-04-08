@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Tag;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -22,6 +23,7 @@ public class TagsListCtrl {
     private final TagsListService tagsListService;
     private final MainCtrl mainCtrl;
     private final BoardUserIdentifier boardUserIdentifier;
+    private final TagDetailsCtrl tagDetailsCtrl;
 
     private Set<Tag> drawnTags;
 
@@ -34,15 +36,18 @@ public class TagsListCtrl {
      * @param tagsListService       the service it is going use
      * @param mainCtrl              the controller to which it is bounded
      * @param boardUserIdentifier   the identifier object used to get current board
+     * @param tagDetailsCtrl        the controller which is bounded to it
      * @author                      Vinchentzo Bunardzhiev
      */
     @Inject
     public TagsListCtrl(TagsListService tagsListService,
                         MainCtrl mainCtrl,
-                        BoardUserIdentifier boardUserIdentifier) {
+                        BoardUserIdentifier boardUserIdentifier,
+                        TagDetailsCtrl tagDetailsCtrl) {
         this.tagsListService = tagsListService;
         this.mainCtrl = mainCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
+        this.tagDetailsCtrl = tagDetailsCtrl;
         drawnTags = new HashSet<>();
     }
 
@@ -85,12 +90,28 @@ public class TagsListCtrl {
     private void drawTag(Tag tag) {
         Button tagButton = new Button();
         HBox tagBox = new HBox();
+        Button removeTag = new Button("X");
 
         configureTagButton(tagButton, tag);
+        configureRemoveTagButton(tagBox,removeTag,tag);
         configureTagBox(tagBox);
 
         tagBox.getChildren().add(tagButton);
+        tagBox.getChildren().add(removeTag);
         vbox.getChildren().add(tagBox);
+    }
+
+    /**
+     *
+     * @param tagBox    the hbox to which the new button is added
+     * @param removeTag the button which is added to the tag
+     * @param tag   the tag that is deleted upon pressing the button
+     */
+    private void configureRemoveTagButton(HBox tagBox, Button removeTag, Tag tag) {
+        removeTag.setOnAction(event -> {
+            vbox.getChildren().remove(tagBox);
+            tagsListService.removeTagFromBoard(tag.getId(),boardUserIdentifier.getCurrentBoard());
+        });
     }
 
 
@@ -103,7 +124,8 @@ public class TagsListCtrl {
      */
     private void configureTagButton(Button tagButton, Tag tag) {
         tagButton.setOnAction(event -> {
-            // TODO Open scene with editing
+            mainCtrl.showTagDetails();
+            tagDetailsCtrl.changeTagName(tag, tagButton);
         });
 
         tagButton.setFocusTraversable(false);
@@ -129,6 +151,7 @@ public class TagsListCtrl {
     private void drawAddTagButton(){
         Button addTagButton = new Button("+");
         HBox tagBox = new HBox();
+
         configureTagBox(tagBox);
         configureAddTagButton(addTagButton);
         configureAddTagHint(addTagButton);
@@ -151,6 +174,7 @@ public class TagsListCtrl {
     private void configureTagBox(HBox tagBox) {
         tagBox.setStyle("-fx-start-margin: 20; -fx-end-margin: 20");
         tagBox.setSpacing(3);
+        tagBox.setPadding(new Insets(5, 20, 5, 20));
         tagBox.setAlignment(Pos.CENTER);
         tagBox.setFillHeight(true);
     }
@@ -166,10 +190,10 @@ public class TagsListCtrl {
         addTagButton.setFocusTraversable(false);
         addTagButton.setAlignment(Pos.CENTER);
         addTagButton.setMnemonicParsing(false);
-        addTagButton.setPrefHeight(34);
-        addTagButton.setPrefWidth(140);
-        addTagButton.setMinHeight(34);
-        addTagButton.setMinWidth(140);
+        addTagButton.setPrefHeight(29);
+        addTagButton.setPrefWidth(90);
+        addTagButton.setMinHeight(29);
+        addTagButton.setMinWidth(90);
         addTagButton.setStyle("-fx-border-color: black;");
     }
 

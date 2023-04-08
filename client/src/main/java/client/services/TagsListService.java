@@ -2,6 +2,7 @@ package client.services;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Tag;
 
 import java.util.List;
@@ -43,6 +44,15 @@ public class TagsListService {
         return serverUtils.getAllTags(boardId);
     }
 
+    /**
+     * A new method to get the tags of the cards from
+     * @param cardId the card from which to get all the tags
+     * @return the list of the tags of the card
+     */
+    public List<Tag> getAllTagsFromCard(long cardId) {
+        return serverUtils.getAllTagsFromCard(cardId);
+    }
+
 
     /**
      * Registers for tag updates of a board with {@code boardId} and executes the {@code consumer}
@@ -64,5 +74,46 @@ public class TagsListService {
      */
     public void stopPolling() {
         serverUtils.stopPolling();
+    }
+
+    /**
+     * A method to change the name of the tag
+     *
+     * @param tagId the id of the tag which name is updated
+     * @param title the new name
+     * @param board the baord in which the tag is switched
+     * @return the tag with the updated name
+     */
+    public Tag updateTagName(long tagId, String title, Board board) {
+        return serverUtils.updateTagName(tagId, title,board);
+    }
+
+    /**
+     * A method to remove a tag
+     *
+     * @param tagId the id of the tag which is removed
+     * @param board the board from which the tag is removed
+     */
+    public void removeTagFromBoard(long tagId,Board board){
+        serverUtils.removeTag(tagId,board);
+    }
+
+    /**
+     * A method do add the tag to the card
+     * @param tag the tag to add
+     * @param cardId the id of the card to which we add
+     * @return the tag which we add
+     */
+    public Tag addTagToCard(Tag tag, long cardId,Board board){
+        return serverUtils.addTagToCard(tag,cardId,board);
+    }
+
+    /**
+     * A method to remove the tag from the card
+     * @param tag the tag to remove
+     * @param cardId the id of the card from which we remove
+     */
+    public void removeTagFromCard(Tag tag, long cardId,Board board){
+        serverUtils.removeTagFromCard(tag.getId(),cardId,board);
     }
 }

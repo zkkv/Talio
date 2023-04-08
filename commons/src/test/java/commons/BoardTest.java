@@ -23,9 +23,9 @@ public class BoardTest {
         cardLists2 = new ArrayList<>();
         cards = new ArrayList<>();
         cards2 = new ArrayList<>();
-        cards.add(new Card("t1"));
-        cards.add(new Card("t2"));
-        cards2.add(new Card("t3"));
+        cards.add(new Card("t1",new ArrayList<>(),new ArrayList<>()));
+        cards.add(new Card("t2",new ArrayList<>(),new ArrayList<>()));
+        cards2.add(new Card("t3",new ArrayList<>(),new ArrayList<>()));
         cardLists.add(new CardList(cards,"l1"));
         cardLists2.add(new CardList(cards2,"l2"));
     }

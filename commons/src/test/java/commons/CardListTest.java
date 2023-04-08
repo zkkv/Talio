@@ -16,13 +16,13 @@ public class CardListTest {
 
     @BeforeEach
     public void initializeObjects() {
-        Card card1 = new Card("title1");
-        Card card2 = new Card("title2");
-        Card card3 = new Card("title3");
+        Card card1 = new Card("title1",new ArrayList<>(),new ArrayList<>());
+        Card card2 = new Card("title2",new ArrayList<>(),new ArrayList<>());
+        Card card3 = new Card("title3",new ArrayList<>(),new ArrayList<>());
 
-        Card card4 = new Card("title4");
-        Card card5 = new Card("title5");
-        Card card6 = new Card("title6");
+        Card card4 = new Card("title4",new ArrayList<>(),new ArrayList<>());
+        Card card5 = new Card("title5",new ArrayList<>(),new ArrayList<>());
+        Card card6 = new Card("title6",new ArrayList<>(),new ArrayList<>());
 
         list1 = new ArrayList<>(3);
         list1.add(card1);
