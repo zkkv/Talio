@@ -7,6 +7,7 @@ import commons.Board;
 import commons.User;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -112,5 +113,10 @@ public class UserPageCtrl {
         for(Board board : userBoards){
             mainCtrl.subscribeForAllUpdates(board);
         }
+    }
+
+    public void disconnect() {
+        boardOverviewService.closeServerConnection();
+        mainCtrl.showClientConnectPage();
     }
 }
