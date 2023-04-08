@@ -326,9 +326,9 @@ public class CardDetailsCtrl {
      */
     public void updateCardTitle(Card card) {
         if(title.getText().trim().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-            alert.setTitle("Alert");
+            alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
             alert.setContentText("You cannot leave the title field blank!");
             alert.showAndWait();

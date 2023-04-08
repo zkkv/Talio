@@ -43,10 +43,11 @@ public class CreateBoardCtrl {
 
     public void createBoard(){
         if(boardTitle.getText().equals("")){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
-            alert.setContentText("Please type a correct name for the board");
+            alert.setContentText("Board name cannot be blank");
             alert.showAndWait();
         }
         else {

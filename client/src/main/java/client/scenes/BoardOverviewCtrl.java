@@ -516,9 +516,10 @@ public class BoardOverviewCtrl implements Initializable {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if(label.getText().equals("")){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
                         addIcons((Stage) alert.getDialogPane().getScene().getWindow());
                         alert.setHeaderText(null);
+                        alert.setTitle("Incorrect Name");
                         alert.setContentText("List name cannot be left blank!");
                         alert.showAndWait();
                     }

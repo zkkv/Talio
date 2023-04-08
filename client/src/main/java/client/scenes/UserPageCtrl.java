@@ -50,9 +50,10 @@ public class UserPageCtrl {
     public void logIn(){
         try {
             if(userName.getText().equals("")){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
                 addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                alert.setContentText("User name cannot be blank!");
+                alert.setTitle("Incorrect Username");
+                alert.setContentText("Username cannot be blank!");
                 alert.setOnCloseRequest(event -> {
                     userName.clear();
                 });
@@ -67,8 +68,9 @@ public class UserPageCtrl {
             }
         }
         catch (NotFoundException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Username doesn't exist");
             alert.setContentText("This username doesn't exist. Try with a different name.");
             alert.setOnCloseRequest(event -> {
                 userName.clear();
@@ -80,9 +82,9 @@ public class UserPageCtrl {
     public void createUser(){
         try {
             if(userName.getText().equals("")){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
                 addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                alert.setContentText("User name cannot be blank!");
+                alert.setContentText("Username cannot be blank!");
                 alert.setOnCloseRequest(event -> {
                     userName.clear();
                 });
@@ -96,8 +98,9 @@ public class UserPageCtrl {
             }
         }
         catch (BadRequestException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Username doesn't exist");
             alert.setContentText("This username already exist. Try with a different name.");
             alert.setOnCloseRequest(event -> {
                 userName.clear();

@@ -52,6 +52,7 @@ public class JoinBoardCtrl {
                     .getBoardByKey(boardKey.getText()))) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setTitle("Board has been joined before");
                 alert.setHeaderText(null);
                 alert.setContentText("You have already joined this board");
                 alert.showAndWait();
@@ -66,16 +67,18 @@ public class JoinBoardCtrl {
             }
         }
         catch (NotFoundException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setHeaderText(null);
+            alert.setTitle("Board doesn't exist");
             alert.setContentText("There doesn't exist such a board");
             alert.showAndWait();
         }
         catch (BadRequestException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setHeaderText(null);
+            alert.setTitle("Incorrect key");
             alert.setContentText("Board key field can't be left blank");
             alert.showAndWait();
         }

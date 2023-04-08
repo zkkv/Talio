@@ -63,7 +63,7 @@ public class AdminLoginCtrl {
             });
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Wrong Password");
             alert.setHeaderText(null);
