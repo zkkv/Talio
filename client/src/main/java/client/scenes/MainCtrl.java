@@ -15,6 +15,8 @@
  */
 package client.scenes;
 
+import client.services.BoardUserIdentifier;
+import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import javafx.scene.Parent;
@@ -72,6 +74,9 @@ public class MainCtrl {
     private TagsInCardCtrl tagsInCardCtrl;
     private Scene tagsInCard;
 
+    @Inject
+    private BoardUserIdentifier boardUserIdentifier;
+
     @SuppressWarnings("checkstyle:methodlength")
     public void initialize(Stage primaryStage,
                            Pair<BoardOverviewCtrl, Parent> board,
@@ -88,7 +93,6 @@ public class MainCtrl {
                            Pair<TagDetailsCtrl, Parent> tagDetails,
                            Pair<TagsInCardCtrl, Parent> tagsInCard) {
         this.primaryStage = primaryStage;
-        addIcons(primaryStage);
 
         this.clientConnectCtrl = clientConnect.getKey();
         this.clientConnect = new Scene(clientConnect.getValue());
@@ -139,6 +143,13 @@ public class MainCtrl {
 
         showClientConnectPage();
         primaryStage.show();
+        setupPrimaryStage();
+    }
+
+    private void setupPrimaryStage() {
+        addIcons(primaryStage);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
     }
 
     /**
@@ -146,7 +157,7 @@ public class MainCtrl {
      *
      * @param stage the stage for which the icons need to be set
      */
-    private static void addIcons(Stage stage) {
+    private void addIcons(Stage stage) {
         /* Icon created by Freepik - Flaticon */
         stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
         stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
@@ -155,37 +166,46 @@ public class MainCtrl {
     }
 
     public void showClientConnectPage() {
-        primaryStage.setTitle("Talio: Client connect");
+        primaryStage.setTitle("Talio: Server selection");
         primaryStage.setScene(clientConnect);
-        setMinSize();
     }
 
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     public void showJoinBoard(){
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     public void showStartPage() {
         primaryStage.setTitle("Talio: Start page");
         primaryStage.setScene(startPage);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
         startPageCtrl.initBoardList();
     }
 
     public void showCreateBoardPage() {
         primaryStage.setTitle("Talio: Create a new Board");
         primaryStage.setScene(createBoard);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
         createBoardCtrl.setField("");
     }
 
     public void showBoardPage() {
-        primaryStage.setTitle("Talio: Board page");
+        primaryStage.setTitle("Talio: " + boardUserIdentifier.getCurrentBoard().getTitle());
         boardOverviewCtrl.drawBoard();
         primaryStage.setScene(board);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     public void subscribeForAllUpdates(Board board){
@@ -197,6 +217,8 @@ public class MainCtrl {
         boardSettingsCtrl.setBoardKey();
         boardSettingsCtrl.setBoardTitle(title);
         primaryStage.setScene(boardSettings);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     public void changeName(Label label, String title){
@@ -225,6 +247,8 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Card Details");
         cardDetailsCtrl.setTitle(title);
         primaryStage.setScene(cardDetails);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
         cardDetailsCtrl.setCard(cardEntity);
         cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         cardDetailsCtrl.setDescription(cardEntity);
@@ -257,6 +281,8 @@ public class MainCtrl {
     public void showAdminLogin(String pass){
         primaryStage.setTitle("Talio: Admin Login");
         primaryStage.setScene(adminLogin);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
         adminLoginCtrl.setPass(pass);
     }
 
@@ -282,6 +308,8 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Card Tags");
         tagsInCardCtrl.openTagsInCard(card);
         primaryStage.setScene(tagsInCard);
+        primaryStage.setMinWidth(primaryStage.getWidth());
+        primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
     /**
