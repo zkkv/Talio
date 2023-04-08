@@ -23,7 +23,9 @@ public class UserController {
 
     @PostMapping("/{name}")
     public ResponseEntity<User> createUser(@PathVariable("name") String name) {
-
+        if(userService.exists(name)){
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(userService.createUser(name));
     }
 
@@ -40,6 +42,9 @@ public class UserController {
 
     @GetMapping("/{name}")
     public ResponseEntity<User> getUser(@PathVariable("name") String name){
+        if(!userService.exists(name)){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(userService.getUser(name));
     }
 

@@ -82,6 +82,20 @@ class BoardControllerTest {
     }
 
     @Test
+    public void testGetByKey(){
+        Board board = new Board();
+        board.setKey("asdfgh");
+
+        when(boardService.getBoardByKey("asdfgh")).thenReturn(board);
+        when(boardService.existsByKey("asdfgh")).thenReturn(true);
+
+        ResponseEntity<Board> actualResponse = boardController.getByKey("asdfgh");
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(board,actualResponse.getBody());
+    }
+
+    @Test
     public void testGetByIdWithInvalidId() {
         when(boardService.exists(-1L)).thenReturn(false);
 
