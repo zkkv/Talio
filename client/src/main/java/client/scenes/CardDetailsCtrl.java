@@ -127,7 +127,7 @@ public class CardDetailsCtrl {
      */
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
-        subTask.setAlignment(Pos.CENTER_LEFT);
+        subTask.setAlignment(Pos.CENTER);
 
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
@@ -470,6 +470,7 @@ public class CardDetailsCtrl {
      */
     public void addRetrievedTags() {
         tags.setAlignment(Pos.TOP_CENTER);
+        tags.setMaxWidth(Double.MAX_VALUE);
         tags.getChildren().clear();
         var tagsFromCard = tagsListService.getAllTagsFromCard(card.getId());
         for (Tag tag : tagsFromCard) {
