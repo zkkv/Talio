@@ -107,6 +107,7 @@ public class MainCtrl {
         this.listMenu = new Scene(listMenu.getValue());
         this.listMenuStage = new Stage();
         this.listMenuStage.setScene(this.listMenu);
+        this.listMenuStage.initModality(Modality.APPLICATION_MODAL);
 
         this.createBoardCtrl = createBoard.getKey();
         this.createBoard = new Scene(createBoard.getValue());
@@ -228,6 +229,7 @@ public class MainCtrl {
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
             addIcons(listMenuStage);
+            listMenuStage.setResizable(false);
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
         }
