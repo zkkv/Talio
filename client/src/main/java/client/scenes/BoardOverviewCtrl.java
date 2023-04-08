@@ -50,6 +50,7 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private Label addConfirmationLabel;
 
+    private Timer listWasAddedTimer;
 
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
@@ -82,14 +83,17 @@ public class BoardOverviewCtrl implements Initializable {
             boardUserIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
-        Timer timer = new Timer();
+        if (listWasAddedTimer != null) {
+            listWasAddedTimer.cancel();
+        }
+        listWasAddedTimer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 addConfirmationLabel.setVisible(false);
             }
         };
-        timer.schedule(task, 3000);
+        listWasAddedTimer.schedule(task, 3000);
         panel.getChildren().remove(addList);
         drawCardList(newCardList);
         addListButton();
