@@ -90,7 +90,7 @@ public class TagsListCtrl {
     private void drawTag(Tag tag) {
         Button tagButton = new Button();
         HBox tagBox = new HBox();
-        Button removeTag = new Button("X");
+        Button removeTag = new Button("\u2A2F");
 
         configureTagButton(tagButton, tag);
         configureRemoveTagButton(tagBox,removeTag,tag);
@@ -149,7 +149,7 @@ public class TagsListCtrl {
      * @author Kirill Zhankov
      */
     private void drawAddTagButton(){
-        Button addTagButton = new Button("+");
+        Button addTagButton = new Button("\uFF0B");
         HBox tagBox = new HBox();
 
         configureTagBox(tagBox);

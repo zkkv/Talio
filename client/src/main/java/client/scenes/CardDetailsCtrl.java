@@ -140,7 +140,7 @@ public class CardDetailsCtrl {
 
         subTask.getChildren().add(checkBox);
 
-        Button delete = new Button("x");
+        Button delete = new Button("\u2A2F");
         delete.setOnAction(event -> {
             deleteSubTask(task, subTask);
         });

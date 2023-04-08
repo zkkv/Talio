@@ -96,7 +96,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     private void addListButton(){
-        Button addList = new Button("+");
+        Button addList = new Button("\uFF0B");
         configureAddListButton(addList);
         addList.setOnAction(event -> {
             createList(addList);
@@ -260,7 +260,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     private void drawAddCardButton(VBox vbox, long cardListId){
-        Button addCard = new Button("+");
+        Button addCard = new Button("\uFF0B");
         configureAddCardButton(addCard);
         addCard.setOnAction(event -> {
             String title = "Card";
@@ -418,7 +418,7 @@ public class BoardOverviewCtrl implements Initializable {
         card.getColumnConstraints().addAll(col1, col2, col3);
 
         card.getRowConstraints().addAll(row1,row2,row3);
-        Button remove = new Button("X");
+        Button remove = new Button("\u2A2F");
         icons.setStyle("-fx-background-color: white");
         remove.setOnAction(event -> {
             cardListVbox.getChildren().remove(card);

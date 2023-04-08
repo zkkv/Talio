@@ -25,7 +25,7 @@
                   <Separator prefHeight="28.0" prefWidth="0.0" visible="false" HBox.hgrow="SOMETIMES" />
                         <Button fx:id="saveButton" alignment="CENTER" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
                   <Separator prefHeight="31.0" prefWidth="40.0" visible="false" HBox.hgrow="NEVER" />
-                        <Button mnemonicParsing="false" onAction="#closeCardDetails" text="X" />
+                        <Button mnemonicParsing="false" onAction="#closeCardDetails" text="⨯" />
                </children>
             </HBox>
                 <Separator prefWidth="200.0" />
