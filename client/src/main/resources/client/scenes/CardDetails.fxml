@@ -21,7 +21,7 @@
             <children>
             <HBox prefHeight="25.0" prefWidth="583.0" VBox.vgrow="NEVER">
                <children>
-                  <TextField fx:id="title" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
+                  <TextField fx:id="title" focusTraversable="false" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
                   <Separator prefHeight="28.0" prefWidth="0.0" visible="false" HBox.hgrow="SOMETIMES" />
                         <Button fx:id="saveButton" alignment="CENTER" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
                   <Separator prefHeight="31.0" prefWidth="40.0" visible="false" HBox.hgrow="NEVER" />
