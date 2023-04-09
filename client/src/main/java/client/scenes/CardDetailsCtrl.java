@@ -7,6 +7,8 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.SubTask;
 import commons.Tag;
+import javafx.application.Platform;
+import javafx.css.Size;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -77,6 +80,8 @@ public class CardDetailsCtrl {
     private Label nameErrorLabel;
 
     private Timer nameErrorTimer;
+
+    private Timer subtaskErrorTimer;
 
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
@@ -240,16 +245,26 @@ public class CardDetailsCtrl {
      */
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
-        subTask.setAlignment(Pos.CENTER);
+        subTask.setAlignment(Pos.TOP_CENTER);
+        subTask.setPrefHeight(HBox.USE_COMPUTED_SIZE);
+        subTask.setMinHeight(HBox.USE_PREF_SIZE);
+        subTask.setPadding(new Insets(10, 0, 10 , 0));
 
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
 
         Label name = new Label(taskName);
-        name.setPrefWidth(150);
+        name.setPrefWidth(300);
+        name.setMaxWidth(300);
+        name.setPrefHeight(Label.USE_COMPUTED_SIZE);
+        name.setWrapText(true);
 
-        TextField text = new TextField();
-        text.setPrefWidth(150);
+        TextArea text = new TextArea();
+        text.setPrefWidth(300);
+        text.setPrefHeight(TextArea.USE_COMPUTED_SIZE);
+        text.setMinHeight(TextArea.USE_PREF_SIZE);
+        text.setWrapText(true);
+        setUpSubTaskField(text);
 
         subTask.getChildren().add(checkBox);
 
@@ -269,8 +284,74 @@ public class CardDetailsCtrl {
         editSubTask(task, subTask, rename, text, delete, name);
 
         subtasks.getChildren().add(subTask);
+
+        HBox.setMargin(name, new Insets(0, 5, 0, 5));
+        HBox.setMargin(text, new Insets(0, 5, 0, 5));
+        HBox.setMargin(checkBox, new Insets(0, 5, 0, 0));
+        HBox.setMargin(delete, new Insets(0, 0, 0, 5));
+        HBox.setMargin(rename, new Insets(0, 0, 0, 5));
+
         rearrange(subTask,task);
     }
+
+
+    /**
+     * Sets up subtask text area {@code text} constraints and the error message
+     * which is shown in case they are violated.
+     * Error message disappears in some time after no action is taken.
+     *
+     * @param text  TextArea to be set up
+     * @author      Kirill Zhankov
+     */
+    private void setUpSubTaskField(TextArea text) {
+        final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
+        final int MAX_LENGTH = 255;
+        final int SHOW_DURATION_MS = 6000;
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setFont(Font.font(15));
+        tooltip.setWrapText(true);
+        tooltip.setText("Subtask has to be no more than " + MAX_LENGTH
+                + " characters long and can contain only letters, "
+                + "digits,\nspaces and any of: _-!@#$%^&*()~\" but "
+                + "it cannot start or end with spaces.");
+        
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getControlNewText();
+            if (input.matches(REGEXP) && input.length() <= MAX_LENGTH) {
+                Platform.runLater(tooltip::hide);
+                return change;
+            }
+            else {
+                tooltip.setAutoHide(true);
+
+                double x = text.localToScreen(text.getBoundsInLocal()).getMinX();
+                double y = text.localToScreen(text.getBoundsInLocal()).getMinY();
+
+                tooltip.show(text.getScene().getWindow(), x, y);
+                final double TOOLTIP_OFFSET_Y = tooltip.getHeight();
+                tooltip.setX(x);
+                tooltip.setY(y - TOOLTIP_OFFSET_Y);
+
+                if (subtaskErrorTimer != null) {
+                    subtaskErrorTimer.cancel();
+                }
+                subtaskErrorTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(tooltip::hide);
+                    }
+                };
+                subtaskErrorTimer.schedule(task, SHOW_DURATION_MS);
+                return null;
+            }
+        };
+
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        text.setTextFormatter(textFormatter);
+    }
+
 
     /**
      * The method sets up the checkbox and adds a lister which changes the value
@@ -283,8 +364,6 @@ public class CardDetailsCtrl {
      */
     public void checkboxSetUp(SubTask subTask, CheckBox checkBox, boolean checked) {
         checkBox.selectedProperty().set(checked);
-        checkBox.setPrefHeight(36);
-        checkBox.setPrefWidth(36);
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -309,24 +388,48 @@ public class CardDetailsCtrl {
      * @param name
      */
     public void editSubTask(SubTask task, HBox subTask, Button rename,
-                            TextField text, Button delete, Label name) {
+                            TextArea text, Button delete, Label name) {
         rename.setOnAction(event -> {
-            if (!text.getText().equals("")) {
+            final String REGEXP = "\\S(.*\\S)?";
+            String input = text.getText();
+
+            if(input.trim().equals("")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setTitle("Incorrect Subtask Name");
+                alert.setHeaderText(null);
+                alert.setContentText("You cannot leave the subtask field blank!");
+                alert.showAndWait();
+                subTask.getChildren().remove(text);
+                subTask.getChildren().remove(rename);
+                subTask.getChildren().add(name);
+                subTask.getChildren().add(delete);
+            }
+            else if (!input.matches(REGEXP)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setTitle("Incorrect Subtask Name");
+                alert.setHeaderText(null);
+                alert.setContentText("Subtask cannot start or end with spaces.");
+                alert.showAndWait();
+            }
+            else {
                 name.setText(text.getText());
                 task.setName(text.getText());
                 boardOverviewService.updateTitleSubTask(task.getId(),
                     text.getText(),boardUserIdentifier.getCurrentBoard(),card);
+                subTask.getChildren().remove(text);
+                subTask.getChildren().remove(rename);
+                subTask.getChildren().add(name);
+                subTask.getChildren().add(delete);
             }
-            subTask.getChildren().remove(text);
-            subTask.getChildren().remove(rename);
-            subTask.getChildren().add(name);
-            subTask.getChildren().add(delete);
         });
         name.setOnMouseClicked(event -> {
             subTask.getChildren().remove(name);
             subTask.getChildren().remove(delete);
             subTask.getChildren().add(text);
             subTask.getChildren().add(rename);
+            text.setText(name.getText());
         });
     }
 
