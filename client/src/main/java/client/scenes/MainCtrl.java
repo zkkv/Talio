@@ -176,6 +176,7 @@ public class MainCtrl {
         primaryStage.setScene(userPage);
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+        userPageCtrl.setUpTextField();
     }
 
     public void showJoinBoard(){
