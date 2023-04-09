@@ -55,6 +55,9 @@ public class JoinBoardCtrl {
                 alert.setTitle("Board has been joined before");
                 alert.setHeaderText(null);
                 alert.setContentText("You have already joined this board");
+                alert.setOnCloseRequest(event -> {
+                    boardKey.setText("");
+                });
                 alert.showAndWait();
             }
             else {
@@ -67,24 +70,33 @@ public class JoinBoardCtrl {
             }
         }
         catch (NotFoundException e){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setHeaderText(null);
             alert.setTitle("Board doesn't exist");
             alert.setContentText("There doesn't exist such a board");
             alert.showAndWait();
-        }
+            alert.setOnCloseRequest(event -> {
+                boardKey.setText("");
+            });}
         catch (BadRequestException e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setHeaderText(null);
             alert.setTitle("Incorrect key");
             alert.setContentText("Board key field can't be left blank");
+            alert.setOnCloseRequest(event -> {
+                boardKey.setText("");
+            });
             alert.showAndWait();
         }
     }
 
     public void goBack(){
         mainCtrl.showStartPage();
+    }
+
+    public void setField(String s) {
+        boardKey.setText(s);
     }
 }

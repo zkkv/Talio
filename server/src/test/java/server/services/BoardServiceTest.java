@@ -59,6 +59,17 @@ class BoardServiceTest {
     }
 
     @Test
+    public void testGetBoardByKey(){
+        Board board =new Board();
+        board.setKey("asd");
+
+        when(boardRepository.findBoardByKey("asd")).thenReturn(board);
+
+        Board actual = boardService.getBoardByKey("asd");
+
+        assertEquals(board,actual);
+    }
+    @Test
     public void testExists() {
         when(boardRepository.existsById(anyLong())).thenReturn(true);
 
@@ -90,5 +101,17 @@ class BoardServiceTest {
         Board actualSavedBoard = boardService.save(boardToSave);
 
         assertEquals(expectedSavedBoard, actualSavedBoard);
+    }
+
+    @Test
+    public void testExistsByKey(){
+        Board board = new Board();
+        board.setKey("asd");
+
+        when(boardRepository.existsByKey("asd")).thenReturn(true);
+
+        boolean actual = boardService.existsByKey("asd");
+
+        assertTrue(actual);
     }
 }

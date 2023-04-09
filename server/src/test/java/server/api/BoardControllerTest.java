@@ -191,6 +191,66 @@ class BoardControllerTest {
     }
 
     @Test
+    public void testGetUserBoards(){
+        List<Board> boards = new ArrayList<>();
+        boards.add(new Board());
+
+        when(userService.getUserBoards("asd")).thenReturn(boards);
+
+        ResponseEntity<List<Board>> actualResponse = boardController.getUserBoards("asd");
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(boards,actualResponse.getBody());
+    }
+
+    @Test
+    public void testGetByKeyInvalid(){
+        Board board = new Board();
+        board.setId(1L);
+
+        when(boardService.getBoardByKey("asd")).thenReturn(board);
+        when(boardService.existsByKey("asd")).thenReturn(false);
+
+        ResponseEntity<Board> actualResponse = boardController.getByKey("asd");
+
+        assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
+        assertNotEquals(actualResponse.getBody(),board);
+    }
+
+    @Test
+    public void testUpdateTitle(){
+        Board board = new Board();
+        board.setId(1L);
+
+        when(boardService.getBoard(1L)).thenReturn(board);
+        when(boardService.save(board)).thenReturn(board);
+
+        ResponseEntity<Board> actualResponse = boardController.updateTitle(1L,"Title");
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(board.getTitle(),actualResponse.getBody().getTitle());
+    }
+
+    @Test
+    public void testRemoveBoard(){
+        List<User> users = new ArrayList<>();
+        User user = new User("asd",new ArrayList<>());
+        users.add(user);
+        Board board = new Board();
+        board.setId(1L);
+        user.getJoinedBoards().add(board);
+        when(boardService.getBoard(1L)).thenReturn(board);
+        when(userService.getAllUsers()).thenReturn(users);
+        when(userService.save(users.get(0))).thenReturn(users.get(0));
+
+        ResponseEntity<Board> actualResponse = boardController.removeBoard(1L);
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+
+        assertEquals(board,actualResponse.getBody());
+    }
+
+    @Test
     public void testRemoveCardListValid() {
         CardList cardListToRemove = new CardList();
         cardListToRemove.setId(1L);
