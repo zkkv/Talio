@@ -656,7 +656,9 @@ public class BoardOverviewCtrl implements Initializable {
             Board.class, b -> {
                 Platform.runLater(() -> {
                     boardUserIdentifier.setCurrentBoard(b);
-                    mainCtrl.showAllTagsList();
+                    if(mainCtrl.isTagsListShowing()) {
+                        mainCtrl.initTags();
+                    }
                 });
             });
         boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card-details",
