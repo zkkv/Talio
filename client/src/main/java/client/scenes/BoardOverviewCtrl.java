@@ -528,31 +528,7 @@ public class BoardOverviewCtrl implements Initializable {
         // When unfocused
         label.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                final String REGEXP = "\\S(.*\\S)?";
-                String input = label.getText();
-
-                if(input.equals("")){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                    alert.setHeaderText(null);
-                    alert.setTitle("Incorrect Name");
-                    alert.setContentText("List name cannot be left blank!");
-                    alert.showAndWait();
-                }
-                else if (!input.matches(REGEXP)) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                    alert.setTitle("Incorrect Name");
-                    alert.setHeaderText(null);
-                    alert.setContentText("List name cannot start or end with spaces.");
-                    alert.showAndWait();
-                }
-                else {
-                    long cardListId = Long.parseLong(label.getId());
-                    boardOverviewService.updateCardListTitle(cardListId, label.getText(),
-                            boardUserIdentifier.getCurrentBoard());
-                }
-
+                handleListNameEdit(label);
             }
         });
 
@@ -561,30 +537,7 @@ public class BoardOverviewCtrl implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
-                    final String REGEXP = "\\S(.*\\S)?";
-                    String input = label.getText();
-
-                    if(input.equals("")){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                        alert.setHeaderText(null);
-                        alert.setTitle("Incorrect Name");
-                        alert.setContentText("List name cannot be left blank!");
-                        alert.showAndWait();
-                    }
-                    else if (!input.matches(REGEXP)) {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                        alert.setTitle("Incorrect Name");
-                        alert.setHeaderText(null);
-                        alert.setContentText("List name cannot start or end with spaces.");
-                        alert.showAndWait();
-                    }
-                    else {
-                        long cardListId = Long.parseLong(label.getId());
-                        boardOverviewService.updateCardListTitle(cardListId, label.getText(),
-                            boardUserIdentifier.getCurrentBoard());
-                    }
+                    handleListNameEdit(label);
                 }
             }
         });
@@ -593,6 +546,33 @@ public class BoardOverviewCtrl implements Initializable {
 
         label.setOnMouseEntered(e -> label.setStyle(HOVERED_BUTTON_STYLE));
         label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
+    }
+
+    private void handleListNameEdit (TextField label) {
+        final String REGEXP = "\\S(.*\\S)?";
+        String input = label.getText();
+
+        if(input.equals("")){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setHeaderText(null);
+            alert.setTitle("Incorrect Name");
+            alert.setContentText("List name cannot be left blank!");
+            alert.showAndWait();
+        }
+        else if (!input.matches(REGEXP)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
+            alert.setHeaderText(null);
+            alert.setContentText("List name cannot start or end with spaces.");
+            alert.showAndWait();
+        }
+        else {
+            long cardListId = Long.parseLong(label.getId());
+            boardOverviewService.updateCardListTitle(cardListId, label.getText(),
+                    boardUserIdentifier.getCurrentBoard());
+        }
     }
 
     private void setupLabelConstraints(TextField label) {
