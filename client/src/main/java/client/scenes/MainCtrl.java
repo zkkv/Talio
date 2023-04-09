@@ -220,6 +220,7 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
         boardSettingsCtrl.setBoardTitle(title);
+        boardSettingsCtrl.setUpTextField();
         primaryStage.setScene(boardSettings);
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
