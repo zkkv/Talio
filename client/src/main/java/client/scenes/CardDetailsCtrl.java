@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -71,6 +73,19 @@ public class CardDetailsCtrl {
     }
 
     /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+    }
+
+    /**
      * The functionality of the button for closing the scene
      *
      * @author Sofia Dimieva
@@ -106,7 +121,7 @@ public class CardDetailsCtrl {
      */
     public void subTaskSetUp(SubTask task, String taskName, boolean checked) {
         HBox subTask = new HBox();
-        subTask.setAlignment(Pos.CENTER_LEFT);
+        subTask.setAlignment(Pos.CENTER);
 
         CheckBox checkBox = new CheckBox();
         checkboxSetUp(task, checkBox, checked);
@@ -306,7 +321,8 @@ public class CardDetailsCtrl {
     public void updateCardTitle(Card card) {
         if(title.getText().trim().equals("")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Alert");
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
             alert.setContentText("You cannot leave the title field blank!");
             alert.showAndWait();
@@ -452,6 +468,7 @@ public class CardDetailsCtrl {
      */
     public void addRetrievedTags() {
         tags.setAlignment(Pos.TOP_CENTER);
+        tags.setMaxWidth(Double.MAX_VALUE);
         tags.getChildren().clear();
         var tagsFromCard = tagsListService.getAllTagsFromCard(card.getId());
         for (Tag tag : tagsFromCard) {

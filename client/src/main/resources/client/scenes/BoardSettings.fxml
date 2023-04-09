@@ -1,58 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="242.0" prefWidth="573.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSettingsCtrl">
+<AnchorPane minHeight="500.0" minWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSettingsCtrl">
     <children>
-        <Label layoutX="14.0" layoutY="14.0" text="Board Settings">
-            <font>
-                <Font size="29.0" />
-            </font>
-        </Label>
-        <Label layoutX="28.0" layoutY="79.0" text="Title:">
-            <font>
-                <Font size="27.0" />
-            </font>
-        </Label>
-        <TextField fx:id="boardTitle" layoutX="108.0" layoutY="86.0" prefHeight="26.0" prefWidth="282.0" />
-        <Button layoutX="425.0" layoutY="77.0" mnemonicParsing="false" onAction="#editBoardName" prefHeight="39.0" prefWidth="133.0" text="Edit">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
-        <Button layoutX="297.0" layoutY="184.0" mnemonicParsing="false" onAction="#removeBoard" prefHeight="39.0" prefWidth="133.0" text="Delete">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
-        <Button layoutX="128.0" layoutY="184.0" mnemonicParsing="false" onAction="#leaveBoard" prefHeight="43.0" prefWidth="150.0" text="Leave Board">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
-        <Label layoutX="28.0" layoutY="133.0" text="Key for joining:">
-            <font>
-                <Font size="27.0" />
-            </font>
-        </Label>
-        <Label fx:id="boardKey" layoutX="218.0" layoutY="133.0">
-            <font>
-                <Font size="27.0" />
-            </font>
-        </Label>
-        <Button layoutX="425.0" layoutY="131.0" mnemonicParsing="false" onAction="#copyKeyToClipboard" prefHeight="39.0" prefWidth="133.0" text="Copy">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
-        <Button layoutX="451.0" layoutY="184.0" mnemonicParsing="false" onAction="#goBack" prefHeight="43.0" prefWidth="108.0" text="Back">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
+      <GridPane alignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="136.000048828125" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="94.4" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="208.80000000000004" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="128.5999755859375" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+              <Label text="Board settings" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                  <font>
+                      <Font size="29.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Label>
+              <Label text="Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <font>
+                      <Font size="19.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Label>
+              <TextField fx:id="boardTitle" prefHeight="26.0" prefWidth="282.0" promptText="Board name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </TextField>
+              <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#editBoardName" prefHeight="43.0" prefWidth="107.0" text="Edit" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Button>
+              <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#removeBoard" prefHeight="43.0" prefWidth="133.0" text="Delete board" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Button>
+              <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#leaveBoard" prefHeight="43.0" prefWidth="107.0" text="Leave board" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Button>
+              <Label text="Join-key" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <font>
+                      <Font size="19.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Label>
+              <Label fx:id="boardKey" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <font>
+                      <Font size="27.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Label>
+              <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#copyKeyToClipboard" prefHeight="43.0" prefWidth="107.0" text="Copy" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Button>
+              <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#goBack" prefHeight="43.0" prefWidth="108.0" text="Back" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                  <font>
+                      <Font size="16.0" />
+                  </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+              </Button>
+         </children>
+      </GridPane>
     </children>
 </AnchorPane>

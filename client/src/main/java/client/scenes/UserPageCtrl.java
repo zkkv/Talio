@@ -10,6 +10,8 @@ import jakarta.ws.rs.NotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -31,15 +33,31 @@ public class UserPageCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+    }
+
     public void logIn(){
         try {
             if(userName.getText().equals("")){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("User name cannot be blank!");
-                alert.show();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setTitle("Incorrect Username");
+                alert.setContentText("Username cannot be blank!");
                 alert.setOnCloseRequest(event -> {
                     userName.clear();
                 });
+                alert.setHeaderText(null);
+                alert.showAndWait();
             }
             else {
                 User user = boardOverviewService.getUser(userName.getText());
@@ -49,23 +67,28 @@ public class UserPageCtrl {
             }
         }
         catch (NotFoundException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Username doesn't exist");
             alert.setContentText("This username doesn't exist. Try with a different name.");
-            alert.show();
             alert.setOnCloseRequest(event -> {
                 userName.clear();
             });
+            alert.setHeaderText(null);
+            alert.showAndWait();
         }
     }
     public void createUser(){
         try {
             if(userName.getText().equals("")){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("User name cannot be blank!");
-                alert.show();
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setContentText("Username cannot be blank!");
                 alert.setOnCloseRequest(event -> {
                     userName.clear();
                 });
+                alert.setHeaderText(null);
+                alert.showAndWait();
             }
             else {
                 User user = boardOverviewService.createUser(userName.getText());
@@ -74,12 +97,15 @@ public class UserPageCtrl {
             }
         }
         catch (BadRequestException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Username doesn't exist");
             alert.setContentText("This username already exist. Try with a different name.");
-            alert.show();
             alert.setOnCloseRequest(event -> {
                 userName.clear();
             });
+            alert.setHeaderText(null);
+            alert.showAndWait();
         }
     }
 
@@ -93,5 +119,9 @@ public class UserPageCtrl {
 
     public void setField(String s) {
         userName.setText(s);
+    }
+    public void disconnect() {
+        boardOverviewService.closeServerConnection();
+        mainCtrl.showClientConnectPage();
     }
 }

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,6 +26,19 @@ public class ClientConnectCtrl {
         this.boardOverviewService = boardOverviewService;
     }
 
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+    }
+
     public void connect() {
         connectTo(ipAddress.getText());
     }
@@ -41,8 +55,9 @@ public class ClientConnectCtrl {
         }
         catch (IOException | ClassCastException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Connection Error");
-            alert.setHeaderText("Connection Error");
+            alert.setHeaderText(null);
             alert.setContentText("The application could not connect to the server. " +
                     "Check the correctness of the IP-address and try again.");
 
