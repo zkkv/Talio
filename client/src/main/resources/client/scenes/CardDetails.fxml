@@ -15,72 +15,119 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
     <children>
-        <VBox prefHeight="620.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox spacing="10.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
             <children>
-                <AnchorPane prefHeight="40.0" prefWidth="600.0">
-                    <children>
-                        <Button layoutX="562.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeCardDetails" text="X" AnchorPane.rightAnchor="14.8" AnchorPane.topAnchor="7.0" />
-                  <TextField fx:id="title" layoutX="14.0" layoutY="7.0" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
-                        <Button fx:id="saveButton" alignment="CENTER" layoutX="371.0" layoutY="2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
-                    </children>
-                </AnchorPane>
+            <HBox prefHeight="25.0" prefWidth="583.0" VBox.vgrow="NEVER">
+               <children>
+                  <TextField fx:id="title" focusTraversable="false" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
+                  <Separator prefHeight="28.0" prefWidth="0.0" visible="false" HBox.hgrow="SOMETIMES" />
+                        <Button fx:id="saveButton" alignment="CENTER" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
+                  <Separator prefHeight="31.0" prefWidth="40.0" visible="false" HBox.hgrow="NEVER" />
+                        <Button mnemonicParsing="false" onAction="#closeCardDetails" text="X" />
+               </children>
+            </HBox>
                 <Separator prefWidth="200.0" />
                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                     <children>
                         <Label text="Description">
                             <VBox.margin>
-                                <Insets left="5.0" />
-                            </VBox.margin></Label>
-                        <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
-                            <VBox.margin>
-                                <Insets left="5.0" right="7.0" />
+                                <Insets />
                             </VBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                        <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
                             <rotationAxis>
                                 <Point3D />
                             </rotationAxis></TextArea>
                     </children>
                 </VBox>
                 <Separator prefWidth="200.0" />
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="293.0" prefWidth="582.0">
-                    <children>
-                        <Button layoutX="199.0" layoutY="1.0" mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
-                        <ScrollPane layoutY="29.0" prefHeight="117.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="315.0" AnchorPane.topAnchor="29.0">
-                            <content>
-                                <VBox id="subtasks" fx:id="subtasks" minHeight="250.0" minWidth="272.0" spacing="2.0">
-                                    <padding>
-                                        <Insets left="2.0" top="2.0" />
-                                    </padding>
-                                </VBox>
-                            </content>
-                        </ScrollPane>
-                        <Label layoutX="14.0" layoutY="-2.0" text="Tasks :">
-                            <font>
-                                <Font size="20.0" />
-                            </font>
-                        </Label>
-                  <ScrollPane layoutX="300.0" layoutY="28.0" prefHeight="263.0" prefWidth="286.0">
-                     <content>
-                        <VBox id="subtasks" fx:id="tags" minHeight="250.0" minWidth="272.0" spacing="2.0">
-                           <padding>
-                              <Insets left="2.0" top="2.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-                  <Label layoutX="300.0" layoutY="-2.0" text="Tags:">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="525.0" mnemonicParsing="false" onAction="#addTag" text="Add Tag" />
-                    </children>
-                </AnchorPane>
-            <HBox prefHeight="17.0" prefWidth="331.0">
+            <HBox alignment="TOP_CENTER" prefHeight="279.0" prefWidth="583.0" VBox.vgrow="ALWAYS">
                <children>
-                  <ProgressBar fx:id="progressBar" prefHeight="17.0" prefWidth="286.0" progress="0.0" />
-                  <ProgressIndicator fx:id="progressIndicator" progress="0.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                                    <Label text="Tasks">
+                                        <font>
+                                            <Font size="20.0" />
+                                        </font>
+                                    </Label>
+                              <Separator prefHeight="30.0" prefWidth="102.0" visible="false" HBox.hgrow="ALWAYS" />
+                                    <Button mnemonicParsing="false" onAction="#addSubTask" text="Add SubTask" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                              <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                           <content>
+                                      <VBox id="subtasks" fx:id="subtasks" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="205.0" prefWidth="352.0" spacing="2.0">
+                                 <padding>
+                                    <Insets left="2.0" top="2.0" />
+                                 </padding>
+                                      </VBox>
+                           </content>
+                              </ScrollPane>
+                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" prefHeight="28.0">
+                           <children>
+                              <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" prefHeight="22.0" progress="0.0" HBox.hgrow="ALWAYS" />
+                              <ProgressIndicator fx:id="progressIndicator" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="30.0" progress="0.81" HBox.hgrow="ALWAYS" />
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox alignment="BOTTOM_CENTER">
+                           <children>
+                              <Label text="Tags">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefHeight="30.0" prefWidth="125.0" visible="false" HBox.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#addTag" text="Add Tag" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="188.0" prefWidth="341.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox id="subtasks" fx:id="tags" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="202.0" prefWidth="346.0" spacing="2.0">
+                                 <padding>
+                                    <Insets left="2.0" top="2.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="28.0" prefWidth="360.0">
+                           <children>
+                              <Separator prefHeight="15.0" prefWidth="101.0" visible="false" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Separator>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
                </children>
             </HBox>
             </children>

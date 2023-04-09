@@ -10,6 +10,8 @@ import jakarta.ws.rs.NotFoundException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class JoinBoardCtrl {
 
@@ -30,14 +32,30 @@ public class JoinBoardCtrl {
         this.boardIdentifier = boardIdentifier;
     }
 
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
+    }
+
     public void joinBoard(){
         User user = boardIdentifier.getCurrentUser();
         try {
             if (user.getJoinedBoards().contains(boardOverviewService
                     .getBoardByKey(boardKey.getText()))) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.show();
+                addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                alert.setTitle("Board has been joined before");
+                alert.setHeaderText(null);
                 alert.setContentText("You have already joined this board");
+                alert.showAndWait();
             }
             else {
                 user = boardOverviewService.addBoardToUser(boardKey.getText(), user.getUserName());
@@ -49,14 +67,20 @@ public class JoinBoardCtrl {
             }
         }
         catch (NotFoundException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.show();
-            alert.setContentText("There doesn't exist such board");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setHeaderText(null);
+            alert.setTitle("Board doesn't exist");
+            alert.setContentText("There doesn't exist such a board");
+            alert.showAndWait();
         }
         catch (BadRequestException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.show();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setHeaderText(null);
+            alert.setTitle("Incorrect key");
             alert.setContentText("Board key field can't be left blank");
+            alert.showAndWait();
         }
     }
 

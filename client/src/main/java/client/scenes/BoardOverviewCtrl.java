@@ -17,13 +17,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
 
 
-@SuppressWarnings("checkstyle:LineLength")
 public class BoardOverviewCtrl implements Initializable {
     private final BoardOverviewService boardOverviewService;
 
@@ -61,6 +61,19 @@ public class BoardOverviewCtrl implements Initializable {
         this.listMenuCtrl = listMenuCtrl;
         this.boardUserIdentifier = boardUserIdentifier;
         this.cardDetailsCtrl = cardDetailsCtrl;
+    }
+
+    /**
+     * Adds the icons to the stage
+     *
+     * @param stage the stage for which the icons need to be set
+     */
+    private void addIcons(Stage stage) {
+        /* Icon created by Freepik - Flaticon */
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon16.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon32.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon64.png"));
+        stage.getIcons().add(new Image("file:client/src/main/resources/img/icon128.png"));
     }
 
     public void createList(Button addList) {
@@ -376,7 +389,12 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     @SuppressWarnings("checkstyle:MethodLength")
-    private void configureNewCard(Card cardEntity, GridPane card, Label task, HBox icons, VBox cardListVbox, long cardListId) {
+    private void configureNewCard(Card cardEntity,
+                                  GridPane card,
+                                  Label task,
+                                  HBox icons,
+                                  VBox cardListVbox,
+                                  long cardListId) {
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();
         RowConstraints row3 = new RowConstraints();
@@ -404,7 +422,9 @@ public class BoardOverviewCtrl implements Initializable {
         icons.setStyle("-fx-background-color: white");
         remove.setOnAction(event -> {
             cardListVbox.getChildren().remove(card);
-            boardOverviewService.removeCard(cardEntity,cardListId, boardUserIdentifier.getCurrentBoard());
+            boardOverviewService.removeCard(cardEntity,
+                    cardListId,
+                    boardUserIdentifier.getCurrentBoard());
         });
         remove.setPrefHeight(20);
         remove.setMinHeight(20);
@@ -496,9 +516,12 @@ public class BoardOverviewCtrl implements Initializable {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     if(label.getText().equals("")){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                        alert.setHeaderText(null);
+                        alert.setTitle("Incorrect Name");
                         alert.setContentText("List name cannot be left blank!");
-                        alert.show();
+                        alert.showAndWait();
                     }
                     else {
                         long cardListId = Long.parseLong(label.getId());

@@ -5,17 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="800.0" style="-fx-background-color: #DAD2BF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ClientConnectCtrl">
+<AnchorPane minHeight="600.0" minWidth="800.0" style="-fx-background-color: #DAD2BF;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ClientConnectCtrl">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="46.0" layoutY="49.0" prefHeight="477.0" prefWidth="717.0" AnchorPane.rightAnchor="20" AnchorPane.leftAnchor="20" >
+      <VBox alignment="CENTER" layoutX="46.0" layoutY="49.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20.0">
          <children>
-            <Label text="Client Connect">
+            <Label text="Talio">
                <font>
                   <Font name="Perpetua Bold" size="67.0" />
                </font>
@@ -43,8 +42,7 @@
                </padding>
             </HBox>
             <Button mnemonicParsing="false" onAction="#connectToDefaultServer" prefHeight="41.0" prefWidth="183.0" text="Connect to localhost:8080" />
-            <AnchorPane prefHeight="91.0" prefWidth="402.0" />
-            <BorderPane prefHeight="0.0" prefWidth="334.0" />
+            <Region prefHeight="72.0" prefWidth="760.0" />
          </children>
       </VBox>
    </children>
