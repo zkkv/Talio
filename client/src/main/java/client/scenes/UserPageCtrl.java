@@ -70,7 +70,7 @@ public class UserPageCtrl {
         usernameErrorLabel.setWrapText(true);
         usernameErrorLabel.setTextAlignment(TextAlignment.JUSTIFY);
         usernameErrorLabel.setFont(Font.font(13));
-        usernameErrorLabel.setText("Username has to be less than " + MAX_LENGTH
+        usernameErrorLabel.setText("Username has to be no more than " + MAX_LENGTH
                 + " characters long and can contain only letters, "
                 + "digits, hyphen (-) and underscore (_).");
         
