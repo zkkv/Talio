@@ -525,20 +525,12 @@ public class BoardOverviewCtrl implements Initializable {
                                     final String NORMAL_BUTTON_STYLE,
                                     final String HOVERED_BUTTON_STYLE) {
 
+        String oldLabelValue = label.getText();
+
         // When unfocused
         label.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
-                handleListNameEdit(label);
-            }
-        });
-
-        // When key pressed
-        label.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    handleListNameEdit(label);
-                }
+                handleListNameEdit(label, oldLabelValue);
             }
         });
 
@@ -548,7 +540,7 @@ public class BoardOverviewCtrl implements Initializable {
         label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
-    private void handleListNameEdit (TextField label) {
+    private void handleListNameEdit (TextField label, String oldLabelValue) {
         final String REGEXP = "\\S(.*\\S)?";
         String input = label.getText();
 
@@ -559,6 +551,7 @@ public class BoardOverviewCtrl implements Initializable {
             alert.setTitle("Incorrect Name");
             alert.setContentText("List name cannot be left blank!");
             alert.showAndWait();
+            label.setText(oldLabelValue);
         }
         else if (!input.matches(REGEXP)) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -567,6 +560,7 @@ public class BoardOverviewCtrl implements Initializable {
             alert.setHeaderText(null);
             alert.setContentText("List name cannot start or end with spaces.");
             alert.showAndWait();
+            label.setText(label.getText().trim());
         }
         else {
             long cardListId = Long.parseLong(label.getId());
