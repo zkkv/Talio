@@ -335,6 +335,7 @@ public class MainCtrl {
         tagDetailsStage.setTitle("Talio: Tag Details");
         tagDetailsStage.setResizable(false);
         tagDetailsStage.show();
+        tagDetailsCtrl.setUpTextField();
         addIcons(tagDetailsStage);
     }
 
