@@ -42,14 +42,14 @@ public class CreateBoardCtrl {
     }
 
     /**
-     * Sets up board key constraints and the error message
+     * Sets up board name constraints and the error message
      * which is shown in case they are violated.
      * Error message disappears in some time after no action is taken.
      *
      * @author Kirill Zhankov
      */
     public void setUpTextField() {
-        final String REGEXP = "[a-zA-Z0-9_ -]*";
+        final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
         final int MAX_LENGTH = 25;
         final int SHOW_DURATION_MS = 6000;
 
@@ -58,8 +58,8 @@ public class CreateBoardCtrl {
         nameErrorLabel.setFont(Font.font(15));
         nameErrorLabel.setText("Board name has to be no more than " + MAX_LENGTH
                 + " characters long and can contain only letters, "
-                + "digits, hyphen (-), underscore (_) and spaces. "
-                + "It cannot start or end with a space.");
+                + "digits, spaces and any of: _-!@#$%^&*()~\" but "
+                + "it cannot start or end with spaces.");
 
         // This filter either returns the changed value of the field or null which indicates
         // incorrect input.
@@ -105,7 +105,7 @@ public class CreateBoardCtrl {
     }
 
     public void createBoard(){
-        final String REGEXP = "[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*";
+        final String REGEXP = "\\S(.*\\S)?";
         String input = boardTitle.getText();
 
         if(input.equals("")){
@@ -121,7 +121,7 @@ public class CreateBoardCtrl {
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
-            alert.setContentText("Board name cannot start or end with a space.");
+            alert.setContentText("Board name cannot start or end with spaces.");
             alert.showAndWait();
         }
         else {
