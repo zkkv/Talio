@@ -73,6 +73,11 @@ public class CardDetailsCtrl {
 
     private Timer descriptionErrorTimer;
 
+    @FXML
+    private Label nameErrorLabel;
+
+    private Timer nameErrorTimer;
+
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
                            BoardUserIdentifier boardUserIdentifier,
@@ -86,13 +91,63 @@ public class CardDetailsCtrl {
 
 
     /**
+     * Sets up card name constraints and the error message
+     * which is shown in case they are violated.
+     * Error message disappears in some time after no action is taken.
+     *
+     * @author Kirill Zhankov
+     */
+    public void setUpCardName() {
+        final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
+        final int MAX_LENGTH = 25;
+        final int SHOW_DURATION_MS = 6000;
+
+        nameErrorLabel.setWrapText(false);
+        nameErrorLabel.setFont(Font.font(12));
+        nameErrorLabel.setText("Card name has to be no more than " + MAX_LENGTH
+                + " characters long and can contain only letters, "
+                + "digits, spaces and any of: _-!@#$%^&*()~\" but "
+                + "it cannot start or end with spaces.");
+
+        // This filter either returns the changed value of the field or null which indicates
+        // incorrect input.
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getControlNewText();
+            if (input.matches(REGEXP) && input.length() <= MAX_LENGTH) {
+                nameErrorLabel.setVisible(false);
+                return change;
+            }
+            else {
+                nameErrorLabel.setVisible(true);
+                if (nameErrorTimer != null) {
+                    nameErrorTimer.cancel();
+                }
+                nameErrorTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        nameErrorLabel.setVisible(false);
+                    }
+                };
+                nameErrorTimer.schedule(task, SHOW_DURATION_MS);
+                return null;
+            }
+        };
+
+        // This thing tracks user input using the filter
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        title.setTextFormatter(textFormatter);
+    }
+
+
+    /**
      * Sets up description constraints and the error message
      * which is shown in case they are violated.
      * Error message disappears in some time after no action is taken.
      *
      * @author Kirill Zhankov
      */
-    public void setUpTextField() {
+    public void setUpDescription() {
         final int MAX_LENGTH = 5000;
         final int SHOW_DURATION_MS = 3000;
 
@@ -383,12 +438,23 @@ public class CardDetailsCtrl {
      * @param card card of which method changes the title of
      */
     public void updateCardTitle(Card card) {
-        if(title.getText().trim().equals("")) {
+        final String REGEXP = "\\S(.*\\S)?";
+        String input = title.getText();
+
+        if(input.trim().equals("")) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
             alert.setContentText("You cannot leave the title field blank!");
+            alert.showAndWait();
+        }
+        else if (!input.matches(REGEXP)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
+            alert.setHeaderText(null);
+            alert.setContentText("Card name cannot start or end with spaces.");
             alert.showAndWait();
         }
         else {
