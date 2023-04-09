@@ -42,12 +42,28 @@ public class CreateBoardCtrl {
     }
 
     public void createBoard(){
-        if(boardTitle.getText().equals("")){
+        final String REGEXP = "[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*";
+        final int MAX_LENGTH = 30;
+
+        String input = boardTitle.getText();
+
+        if(input.equals("")){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Incorrect Name");
             alert.setHeaderText(null);
             alert.setContentText("Board name cannot be blank");
+            alert.showAndWait();
+        }
+        else if (!input.matches(REGEXP) || input.length() > MAX_LENGTH) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
+            alert.setHeaderText(null);
+            alert.setContentText("Board name has to be no more than " + MAX_LENGTH
+                    + " characters long and can contain only letters, "
+                    + "digits, hyphen (-), underscore (_) and spaces. "
+                    + "It cannot start or end with a space.");
             alert.showAndWait();
         }
         else {
