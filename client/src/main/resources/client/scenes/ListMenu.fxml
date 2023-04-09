@@ -13,7 +13,7 @@
 
 <AnchorPane minHeight="300.0" minWidth="240.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ListMenuCtrl">
    <children>
-      <VBox AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label alignment="CENTER" prefHeight="33.0" prefWidth="215.0" text="List Menu">
                <font>
@@ -47,6 +47,11 @@
                   </Button>
                </children>
             </HBox>
+            <Label fx:id="listNameErrorLabel" alignment="CENTER" focusTraversable="false" text="Replace me with error message" textFill="RED" visible="false">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </children>

@@ -236,6 +236,7 @@ public class MainCtrl {
             listMenuStage.setResizable(false);
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
+            listMenuCtrl.setUpTextField();
         }
         else{
             listMenuStage.hide();
