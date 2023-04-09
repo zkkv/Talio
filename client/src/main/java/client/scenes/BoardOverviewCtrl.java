@@ -407,8 +407,7 @@ public class BoardOverviewCtrl implements Initializable {
         RowConstraints row3 = new RowConstraints();
         row1.setMinHeight(5.0);
         row1.setPrefHeight(5.0);
-        row2.setMinHeight(30.0);
-        row2.setPrefHeight(30.0);
+        row2.setVgrow(Priority.ALWAYS);
         row3.setMinHeight(18.0);
         row3.setPrefHeight(18.0);
 
@@ -460,16 +459,22 @@ public class BoardOverviewCtrl implements Initializable {
         );
         card.setBorder(new Border(borderStroke));
         card.setVgap(10);
+
         tagList.setMinHeight(1.0);
         tagList.setPrefHeight(22.0);
         tagList.setPrefWidth(100.0);
         tagList.setSpacing(2);
+
         scrollPane.setMinHeight(1.0);
         scrollPane.setMinWidth(1.0);
         scrollPane.setPrefHeight(25.0);
         scrollPane.setPrefWidth(100.0);
         scrollPane.setContent(tagList);
-        task.setPrefHeight(5);
+
+        task.setPrefHeight(Label.USE_COMPUTED_SIZE);
+        task.setWrapText(true);
+        task.setFont(Font.font(14));
+
         card.setStyle("-fx-background-color: white");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
