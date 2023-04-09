@@ -470,7 +470,8 @@ public class BoardOverviewCtrl implements Initializable {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         for (Tag tag:cardEntity.getTags()) {
             Circle circle = new Circle(8.5);
-            circle.setFill(Color.color(tag.getRed()/255.0,tag.getGreen()/255.0,tag.getBlue()/255.0));
+            circle.setFill(Color.color(tag.getRed()/255.0,
+                    tag.getGreen()/255.0,tag.getBlue()/255.0));
             tagList.getChildren().add(circle);
         }
         task.setId(String.valueOf(cardEntity.getId()));
