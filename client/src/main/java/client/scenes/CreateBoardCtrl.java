@@ -50,7 +50,7 @@ public class CreateBoardCtrl {
      */
     public void setUpTextField() {
         final String REGEXP = "[a-zA-Z0-9_ -]*";
-        final int MAX_LENGTH = 30;
+        final int MAX_LENGTH = 25;
         final int SHOW_DURATION_MS = 6000;
 
         nameErrorLabel.setWrapText(true);
