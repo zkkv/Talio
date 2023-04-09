@@ -31,13 +31,17 @@
                 <Separator prefWidth="200.0" />
                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                     <children>
-                        <Label text="Description">
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="740.0">
+                     <children>
+                              <Label text="Description">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Separator prefHeight="28.0" prefWidth="200.0" visible="false" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="descriptionErrorLabel" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="394.0" text="Replace me with error message" textFill="RED" visible="false" />
+                     </children>
+                  </HBox>
                         <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
                             <rotationAxis>
                                 <Point3D />

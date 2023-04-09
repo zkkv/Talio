@@ -259,6 +259,7 @@ public class MainCtrl {
         cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         cardDetailsCtrl.setDescription(cardEntity);
         cardDetailsCtrl.updateProgressBar();
+        cardDetailsCtrl.setUpTextField();
         initTagsInCardDetails();
     }
 

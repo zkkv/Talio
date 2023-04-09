@@ -21,12 +21,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.UnaryOperator;
 
 
 public class CardDetailsCtrl {
@@ -63,6 +68,11 @@ public class CardDetailsCtrl {
     @FXML
     private ProgressIndicator progressIndicator;
 
+    @FXML
+    private Label descriptionErrorLabel;
+
+    private Timer descriptionErrorTimer;
+
     @Inject
     public CardDetailsCtrl(BoardOverviewService boardOverviewService,
                            BoardUserIdentifier boardUserIdentifier,
@@ -73,6 +83,54 @@ public class CardDetailsCtrl {
         this.mainCtrl = mainCtrl;
         this.tagsListService = tagsListService;
     }
+
+
+    /**
+     * Sets up description constraints and the error message
+     * which is shown in case they are violated.
+     * Error message disappears in some time after no action is taken.
+     *
+     * @author Kirill Zhankov
+     */
+    public void setUpTextField() {
+        final int MAX_LENGTH = 5000;
+        final int SHOW_DURATION_MS = 3000;
+
+        descriptionErrorLabel.setWrapText(false);
+        descriptionErrorLabel.setFont(Font.font(15));
+        descriptionErrorLabel.setText("Description has to be no more than " + MAX_LENGTH
+                + " characters long.");
+
+        // This filter either returns the changed value of the field or null which indicates
+        // incorrect input.
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getControlNewText();
+            if (input.length() <= MAX_LENGTH) {
+                descriptionErrorLabel.setVisible(false);
+                return change;
+            }
+            else {
+                descriptionErrorLabel.setVisible(true);
+                if (descriptionErrorTimer != null) {
+                    descriptionErrorTimer.cancel();
+                }
+                descriptionErrorTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        descriptionErrorLabel.setVisible(false);
+                    }
+                };
+                descriptionErrorTimer.schedule(task, SHOW_DURATION_MS);
+                return null;
+            }
+        };
+
+        // This thing tracks user input using the filter
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        descriptionField.setTextFormatter(textFormatter);
+    }
+
 
     /**
      * Adds the icons to the stage
