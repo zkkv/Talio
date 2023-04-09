@@ -4,7 +4,6 @@ import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.*;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -569,6 +568,13 @@ public class BoardOverviewCtrl implements Initializable {
         }
     }
 
+    /**
+     * Sets up label constraints and the error message
+     * which is shown in case they are violated.
+     * Error message disappears in some time after no action is taken.
+     *
+     * @author Kirill Zhankov
+     */
     private void setupLabelConstraints(TextField label) {
         final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
         final int MAX_LENGTH = 30;
@@ -577,7 +583,7 @@ public class BoardOverviewCtrl implements Initializable {
         Tooltip tooltip = new Tooltip();
         tooltip.setFont(Font.font(15));
         tooltip.setWrapText(true);
-        tooltip.setText("Subtask has to be no more than " + MAX_LENGTH
+        tooltip.setText("List name has to be no more than " + MAX_LENGTH
                 + " characters long and can contain only letters, "
                 + "digits,\nspaces and any of: _-!@#$%^&*()~\" but "
                 + "it cannot start or end with spaces.");
