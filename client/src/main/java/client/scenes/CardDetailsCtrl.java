@@ -104,7 +104,7 @@ public class CardDetailsCtrl {
      */
     public void setUpCardName() {
         final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
-        final int MAX_LENGTH = 25;
+        final int MAX_LENGTH = 100;
         final int SHOW_DURATION_MS = 6000;
 
         nameErrorLabel.setWrapText(false);
@@ -315,7 +315,7 @@ public class CardDetailsCtrl {
                 + " characters long and can contain only letters, "
                 + "digits,\nspaces and any of: _-!@#$%^&*()~\" but "
                 + "it cannot start or end with spaces.");
-        
+
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String input = change.getControlNewText();
             if (input.matches(REGEXP) && input.length() <= MAX_LENGTH) {
