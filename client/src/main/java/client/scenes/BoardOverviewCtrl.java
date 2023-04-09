@@ -22,6 +22,7 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.UnaryOperator;
 
 
 public class BoardOverviewCtrl implements Initializable {
@@ -51,6 +52,8 @@ public class BoardOverviewCtrl implements Initializable {
     private Label addConfirmationLabel;
 
     private Timer listWasAddedTimer;
+
+    private Timer listNameErrorTimer;
 
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
@@ -515,16 +518,60 @@ public class BoardOverviewCtrl implements Initializable {
     private void configureTextField(TextField label,
                                     final String NORMAL_BUTTON_STYLE,
                                     final String HOVERED_BUTTON_STYLE) {
+
+        // When unfocused
+        label.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                final String REGEXP = "\\S(.*\\S)?";
+                String input = label.getText();
+
+                if(input.equals("")){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                    alert.setHeaderText(null);
+                    alert.setTitle("Incorrect Name");
+                    alert.setContentText("List name cannot be left blank!");
+                    alert.showAndWait();
+                }
+                else if (!input.matches(REGEXP)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                    alert.setTitle("Incorrect Name");
+                    alert.setHeaderText(null);
+                    alert.setContentText("List name cannot start or end with spaces.");
+                    alert.showAndWait();
+                }
+                else {
+                    long cardListId = Long.parseLong(label.getId());
+                    boardOverviewService.updateCardListTitle(cardListId, label.getText(),
+                            boardUserIdentifier.getCurrentBoard());
+                }
+
+            }
+        });
+
+        // When key pressed
         label.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
-                    if(label.getText().equals("")){
+                    final String REGEXP = "\\S(.*\\S)?";
+                    String input = label.getText();
+
+                    if(input.equals("")){
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         addIcons((Stage) alert.getDialogPane().getScene().getWindow());
                         alert.setHeaderText(null);
                         alert.setTitle("Incorrect Name");
                         alert.setContentText("List name cannot be left blank!");
+                        alert.showAndWait();
+                    }
+                    else if (!input.matches(REGEXP)) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+                        alert.setTitle("Incorrect Name");
+                        alert.setHeaderText(null);
+                        alert.setContentText("List name cannot start or end with spaces.");
                         alert.showAndWait();
                     }
                     else {
@@ -536,10 +583,60 @@ public class BoardOverviewCtrl implements Initializable {
             }
         });
 
+        setupLabelConstraints(label);
+
         label.setOnMouseEntered(e -> label.setStyle(HOVERED_BUTTON_STYLE));
         label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
+    private void setupLabelConstraints(TextField label) {
+        final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
+        final int MAX_LENGTH = 30;
+        final int SHOW_DURATION_MS = 6000;
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setFont(Font.font(15));
+        tooltip.setWrapText(true);
+        tooltip.setText("Subtask has to be no more than " + MAX_LENGTH
+                + " characters long and can contain only letters, "
+                + "digits,\nspaces and any of: _-!@#$%^&*()~\" but "
+                + "it cannot start or end with spaces.");
+
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getControlNewText();
+            if (input.matches(REGEXP) && input.length() <= MAX_LENGTH) {
+                Platform.runLater(tooltip::hide);
+                return change;
+            }
+            else {
+                tooltip.setAutoHide(true);
+
+                double x = label.localToScreen(label.getBoundsInLocal()).getMinX();
+                double y = label.localToScreen(label.getBoundsInLocal()).getMinY();
+
+                tooltip.show(label.getScene().getWindow(), x, y);
+                final double TOOLTIP_OFFSET_Y = tooltip.getHeight();
+                tooltip.setX(x);
+                tooltip.setY(y - TOOLTIP_OFFSET_Y);
+
+                if (listNameErrorTimer != null) {
+                    listNameErrorTimer.cancel();
+                }
+                listNameErrorTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(tooltip::hide);
+                    }
+                };
+                listNameErrorTimer.schedule(task, SHOW_DURATION_MS);
+                return null;
+            }
+        };
+
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        label.setTextFormatter(textFormatter);
+    }
 
 
     private void configureListMenu(Button button, ContextMenu cm, MenuItem remove, MenuItem edit) {
