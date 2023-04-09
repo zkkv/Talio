@@ -201,6 +201,7 @@ public class MainCtrl {
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
         createBoardCtrl.setField("");
+        createBoardCtrl.setUpTextField();
     }
 
     public void showBoardPage() {

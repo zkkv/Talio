@@ -46,6 +46,7 @@
                         <Font size="20.0" />
                     </font>
                 </Button>
+            <Label fx:id="nameErrorLabel" alignment="CENTER" focusTraversable="false" text="Replace me with error message" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
             </children>
         </GridPane>
     </children>
