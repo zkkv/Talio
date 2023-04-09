@@ -215,6 +215,7 @@ public class MainCtrl {
 
     public void subscribeForAllUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
+        tagsListCtrl.registerForTagUpdates(board);
     }
 
     public void showBoardSettings(String title) {
@@ -247,6 +248,10 @@ public class MainCtrl {
 
     public boolean isTagsInCardShowing(){
         return primaryStage.getScene().equals(tagsInCard);
+    }
+
+    public boolean isTagsListShowing(){
+        return tagsListStage.isShowing();
     }
 
     /**
@@ -344,6 +349,14 @@ public class MainCtrl {
         tagDetailsStage.show();
         tagDetailsCtrl.setUpTextField();
         addIcons(tagDetailsStage);
+    }
+
+    public void initTags(){
+        tagsListCtrl.drawTags();
+    }
+
+    public void closeTagDetails(){
+        tagDetailsStage.close();
     }
 
 }
