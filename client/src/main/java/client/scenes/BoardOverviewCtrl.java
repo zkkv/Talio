@@ -485,13 +485,14 @@ public class BoardOverviewCtrl implements Initializable {
         //List Name
         TextField label = new TextField(cardList.getTitle());
         final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-wrap-text: true";
         final String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-wrap-text: true";
         label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.getId()));
         label.setAlignment(Pos.CENTER);
+        label.setFont(Font.font(14));
         configureTextField(label, NORMAL_TITLE_STYLE, HOVERED_BUTTON_STYLE);
 
         //List Button
