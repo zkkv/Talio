@@ -104,6 +104,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
               </Button>
+            <Label fx:id="nameErrorLabel" alignment="TOP_LEFT" focusTraversable="false" text="Replace me with error message" textFill="RED" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
          </children>
       </GridPane>
     </children>

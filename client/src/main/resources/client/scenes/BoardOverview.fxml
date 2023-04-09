@@ -1,32 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="anchorPane" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <children>
-      <Label fx:id="boardTitle" layoutX="208.0" layoutY="14.0" text="BOARD NAME">
-         <font>
-            <Font size="29.0" />
-         </font>
-      </Label>
-      <ScrollPane layoutX="30.0" layoutY="95.0" pannable="true" prefHeight="387.0" prefWidth="723.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="47.39999999999998">
-         <content>
-            <HBox id="panel" fx:id="panel" alignment="CENTER" spacing="10.0" />
-         </content>
-      </ScrollPane>
-      <Label fx:id="hiddenLabel" layoutX="52.0" layoutY="18.0" opacity="0.0" text="Label" />
-      <Label fx:id="addConfirmationLabel" text="List was added" textFill="#ff3232" visible="false" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50">
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
-      </Label>
-      <Button fx:id="settings" layoutX="524.0" layoutY="14.0" mnemonicParsing="false" text="Settings" />
-      <Button layoutX="533.0" layoutY="55.0" mnemonicParsing="false" onAction="#showAllTagsList" prefWidth="41.0" text="Tags" />
+      <VBox AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <HBox>
+               <children>
+                  <Label fx:id="boardTitle" prefHeight="43.0" prefWidth="699.0" text="WWWWWWWWWWWWWWWWWWWWWWWWW">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </Label>
+                  <Separator prefHeight="54.0" prefWidth="37.0" visible="false" HBox.hgrow="ALWAYS" />
+                  <VBox>
+                     <children>
+                        <Button fx:id="settings" maxHeight="-Infinity" minWidth="91.0" mnemonicParsing="false" text="Settings">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button maxHeight="-Infinity" minWidth="91.0" mnemonicParsing="false" onAction="#showAllTagsList" text="Tags">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <ScrollPane pannable="true" prefHeight="402.0" prefWidth="806.0" vbarPolicy="NEVER">
+               <content>
+                  <HBox id="panel" fx:id="panel" alignment="CENTER" spacing="10.0" />
+               </content>
+            </ScrollPane>
+            <HBox>
+               <children>
+                  <Label fx:id="addConfirmationLabel" text="List was added" textFill="#ff3232" visible="false">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="hiddenLabel" opacity="0.0" text="HiddenLabel" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

@@ -162,10 +162,11 @@ public class TagsInCardCtrl {
         tagButton.setFocusTraversable(false);
         tagButton.setAlignment(Pos.CENTER);
         tagButton.setMnemonicParsing(false);
-        tagButton.setPrefHeight(30);
+        tagButton.setPrefHeight(Button.USE_COMPUTED_SIZE);
         tagButton.setPrefWidth(140);
-        tagButton.setMinHeight(30);
+        tagButton.setMinHeight(Button.USE_PREF_SIZE);
         tagButton.setMinWidth(140);
+        tagButton.setWrapText(true);
 
         String color = "rgb(" + tag.getRed() + ", " + tag.getGreen() + ", " + tag.getBlue() + ");";
         String title = tag.getTitle();
@@ -226,10 +227,11 @@ public class TagsInCardCtrl {
         tagButton.setFocusTraversable(false);
         tagButton.setAlignment(Pos.CENTER);
         tagButton.setMnemonicParsing(false);
-        tagButton.setPrefHeight(30);
+        tagButton.setPrefHeight(Button.USE_COMPUTED_SIZE);
         tagButton.setPrefWidth(140);
-        tagButton.setMinHeight(30);
+        tagButton.setMinHeight(Button.USE_PREF_SIZE);
         tagButton.setMinWidth(140);
+        tagButton.setWrapText(true);
 
         String color = "rgb(" + tag.getRed() + ", " + tag.getGreen() + ", " + tag.getBlue() + ");";
         String title = tag.getTitle();
