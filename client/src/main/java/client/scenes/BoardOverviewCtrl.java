@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -477,6 +479,12 @@ public class BoardOverviewCtrl implements Initializable {
         card.setStyle("-fx-background-color: white");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        for (Tag tag:cardEntity.getTags()) {
+            Circle circle = new Circle(8.5);
+            circle.setFill(Color.color(tag.getRed()/255.0,
+                    tag.getGreen()/255.0,tag.getBlue()/255.0));
+            tagList.getChildren().add(circle);
+        }
         task.setId(String.valueOf(cardEntity.getId()));
     }
 
@@ -651,6 +659,25 @@ public class BoardOverviewCtrl implements Initializable {
                     mainCtrl.showAllTagsList();
                 });
             });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card-details",
+                Card.class,card -> {
+                Platform.runLater(()->{
+                    if(mainCtrl.isCardDetailsShowing()){
+                        mainCtrl.showCardDetails(card.getTitle(), card);
+                    }
+                    if(mainCtrl.isTagsInCardShowing()){
+                        mainCtrl.showAllTagsListWithinACard(card);
+                    }
+                });
+            });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card",
+                Board.class,b -> {
+                    Platform.runLater(()->{
+                        if(mainCtrl.isCardDetailsShowing()){
+                            mainCtrl.showBoardPage();
+                        }
+                    });
+                });
     }
 
     public void configureSettings() {

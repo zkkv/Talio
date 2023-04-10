@@ -21,7 +21,6 @@ import commons.Board;
 import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -174,6 +173,7 @@ public class MainCtrl {
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
+        userPageCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
         userPageCtrl.setUpTextField();
@@ -182,6 +182,7 @@ public class MainCtrl {
     public void showJoinBoard(){
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
+        joinBoardCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
         joinBoardCtrl.setUpTextField();
@@ -226,9 +227,6 @@ public class MainCtrl {
         primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
-    public void changeName(Label label, String title){
-        label.setText(title);
-    }
 
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
@@ -241,6 +239,14 @@ public class MainCtrl {
         else{
             listMenuStage.hide();
         }
+    }
+
+    public boolean isCardDetailsShowing(){
+        return primaryStage.getScene().equals(cardDetails);
+    }
+
+    public boolean isTagsInCardShowing(){
+        return primaryStage.getScene().equals(tagsInCard);
     }
 
     /**

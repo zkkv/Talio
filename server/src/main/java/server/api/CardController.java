@@ -57,6 +57,7 @@ public class CardController {
         card = cardService.save(card);
         Board board = boardService.getBoard(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/" + boardId, board);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(card);
     }
 
@@ -69,6 +70,7 @@ public class CardController {
         card.getTasks().add(saved);
         subTaskService.save(subTask);
         cardService.save(card);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(subTask);
     }
 
@@ -87,6 +89,7 @@ public class CardController {
         subTaskService.delete(taskId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
             boardService.getBoard(boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(subTask);
     }
     @PutMapping("/update-description/{id}/board/{boardId}")
@@ -98,6 +101,7 @@ public class CardController {
         card = cardService.save(card);
         Board board = boardService.getBoard((boardId));
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId, board);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(card);
     }
 
@@ -112,6 +116,7 @@ public class CardController {
         card = cardService.save(card);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
             boardService.getBoard(boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(tag);
     }
 
@@ -128,6 +133,7 @@ public class CardController {
         card = cardService.save(card);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,
             boardService.getBoard(boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(tag);
     }
 
@@ -146,6 +152,7 @@ public class CardController {
         card = cardService.save(card);
         Board board = boardService.getBoard(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(card);
     }
 }

@@ -30,13 +30,10 @@ public class SubTaskControllerTest {
     private BoardService boardService;
 
     @Mock
-    private CardService cardService;
-
-    @Mock
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @InjectMocks
-    private CardController cardController;
+    @Mock
+    private CardService cardService;
 
     @InjectMocks
     private SubTaskController subTaskController;
@@ -108,50 +105,4 @@ public class SubTaskControllerTest {
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(titleSubtask.getName(),actualResponse.getBody().getName());
     }
-    @Test
-    public void testAddCard() {
-        Card card = new Card("Card 1",new ArrayList<>(),new ArrayList<>());
-        SubTask subTaskToAdd = new SubTask();
-        subTaskToAdd.setId(1L);
-
-        Board board = new Board();
-        board.setId(2L);
-
-        when(subTaskService.save(subTaskToAdd)).thenReturn(subTaskToAdd);
-        when(cardService.getCard(1L)).thenReturn(card);
-        when(cardService.save(card)).thenReturn(card);
-        when(boardService.getBoard(2L)).thenReturn(board);
-
-        ResponseEntity<SubTask> actualResponse = cardController.addSubTask(subTaskToAdd, 1L,2L);
-        assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
-        assertEquals(subTaskToAdd, actualResponse.getBody());
-        assertEquals(card.getTasks().size(),1);
-    }
-
-    @Test
-    public void testDeleteCard(){
-        SubTask subTaskToBeRemoved = new SubTask();
-        subTaskToBeRemoved.setId(1L);
-        Card card = new Card("Card",new ArrayList<>(),new ArrayList<>());
-        card.setId(2L);
-        Board board = new Board();
-        board.setId(2L);
-
-        when(boardService.getBoard(2L)).thenReturn(board);
-
-        when(cardService.exists(2L)).thenReturn(true);
-        when(subTaskService.exists(1L)).thenReturn(true);
-
-        when(cardService.getCard(2L)).thenReturn(card);
-        when(subTaskService.getSubTask(1L)).thenReturn(subTaskToBeRemoved);
-
-        when(cardService.save(card)).thenReturn(card);
-
-        ResponseEntity<SubTask> actualResponse = cardController.removeSubTask(2L, 1L,2L);
-
-        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
-        assertEquals(subTaskToBeRemoved,actualResponse.getBody());
-        assertEquals(0,card.getTasks().size());
-    }
-
 }

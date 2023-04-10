@@ -176,6 +176,9 @@ public class UserPageCtrl {
         }
     }
 
+    public void setField(String s) {
+        userName.setText(s);
+    }
     public void disconnect() {
         boardOverviewService.closeServerConnection();
         mainCtrl.showClientConnectPage();

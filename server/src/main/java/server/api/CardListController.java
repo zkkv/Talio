@@ -108,6 +108,7 @@ public class CardListController {
         cardService.delete(cardId);
         Board board = boardService.getBoard(boardId);
         simpMessagingTemplate.convertAndSend("/topic/board/"+boardId,board);
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card",board);
         return ResponseEntity.ok(card);
     }
 

@@ -78,6 +78,7 @@ public class BoardController {
         User user = userService.getUser(userName);
         user.getJoinedBoards().add(board);
         userService.save(user);
+        simpMessagingTemplate.convertAndSend("/topic/board",board);
         return ResponseEntity.ok(board);
     }
 

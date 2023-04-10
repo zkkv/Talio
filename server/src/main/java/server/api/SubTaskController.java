@@ -55,6 +55,7 @@ public class SubTaskController {
         card = cardService.save(card);
         simpMessagingTemplate.convertAndSend("/topic/board/"+
             boardId,boardService.getBoard(boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(subTaskService.save(subTask));
     }
 
@@ -70,6 +71,7 @@ public class SubTaskController {
         card = cardService.save(card);
         simpMessagingTemplate.convertAndSend("/topic/board/"+
             boardId,boardService.getBoard(boardId));
+        simpMessagingTemplate.convertAndSend("/topic/board/"+boardId+"/card-details",card);
         return ResponseEntity.ok(subTask);
     }
 }
