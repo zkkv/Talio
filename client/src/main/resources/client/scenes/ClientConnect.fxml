@@ -34,7 +34,7 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="ipAddress" prefHeight="36.0" prefWidth="176.0" promptText="localhost:8080" />
+                  <TextField fx:id="ipAddress" prefHeight="36.0" prefWidth="176.0" promptText="www.example.com" />
                   <Button mnemonicParsing="false" onAction="#connect" prefHeight="34.0" prefWidth="76.0" text="Connect" />
                </children>
                <padding>

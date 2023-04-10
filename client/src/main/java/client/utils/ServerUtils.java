@@ -48,6 +48,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 @Singleton
 public class ServerUtils {
     private String server;
+    private String ws;
     private HttpURLConnection connection;
 
     private StompSession session;
@@ -59,13 +60,14 @@ public class ServerUtils {
     private Map<Object, Consumer<Tag>> listeners = new HashMap<>();
 
     public void setServer(String ip) {
-        this.server ="http://"+ ip;
-        session = connect("ws://"+ip+"/websocket");
+        this.server = "http://" + ip;
+        this.ws = "ws://" + ip + "/websocket";
     }
 
-    public void testConnection() throws IOException {
+    public void testConnection() throws IOException, RuntimeException {
         var url = new URL(server + "/api/quotes");
         connection = (HttpURLConnection) url.openConnection();
+        session = connect(ws);
     }
 
     public void closeConnection() {

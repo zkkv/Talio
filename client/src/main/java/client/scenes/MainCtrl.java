@@ -106,6 +106,7 @@ public class MainCtrl {
         this.listMenu = new Scene(listMenu.getValue());
         this.listMenuStage = new Stage();
         this.listMenuStage.setScene(this.listMenu);
+        this.listMenuStage.initModality(Modality.APPLICATION_MODAL);
 
         this.createBoardCtrl = createBoard.getKey();
         this.createBoard = new Scene(createBoard.getValue());
@@ -175,6 +176,7 @@ public class MainCtrl {
         userPageCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+        userPageCtrl.setUpTextField();
     }
 
     public void showJoinBoard(){
@@ -183,6 +185,7 @@ public class MainCtrl {
         joinBoardCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+        joinBoardCtrl.setUpTextField();
     }
 
     public void showStartPage() {
@@ -199,6 +202,7 @@ public class MainCtrl {
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
         createBoardCtrl.setField("");
+        createBoardCtrl.setUpTextField();
     }
 
     public void showBoardPage() {
@@ -217,6 +221,7 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
         boardSettingsCtrl.setBoardTitle(title);
+        boardSettingsCtrl.setUpTextField();
         primaryStage.setScene(boardSettings);
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
@@ -225,8 +230,11 @@ public class MainCtrl {
 
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
+            addIcons(listMenuStage);
+            listMenuStage.setResizable(false);
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
+            listMenuCtrl.setUpTextField();
         }
         else{
             listMenuStage.hide();
@@ -259,6 +267,8 @@ public class MainCtrl {
         cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         cardDetailsCtrl.setDescription(cardEntity);
         cardDetailsCtrl.updateProgressBar();
+        cardDetailsCtrl.setUpCardName();
+        cardDetailsCtrl.setUpDescription();
         initTagsInCardDetails();
     }
 
@@ -332,6 +342,7 @@ public class MainCtrl {
         tagDetailsStage.setTitle("Talio: Tag Details");
         tagDetailsStage.setResizable(false);
         tagDetailsStage.show();
+        tagDetailsCtrl.setUpTextField();
         addIcons(tagDetailsStage);
     }
 

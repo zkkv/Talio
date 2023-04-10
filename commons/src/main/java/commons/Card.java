@@ -17,6 +17,7 @@ public class Card {
 
     private String title;
 
+    @Column(length = 5000)
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL)
