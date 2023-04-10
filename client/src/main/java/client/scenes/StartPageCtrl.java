@@ -82,10 +82,10 @@ public class StartPageCtrl implements Initializable {
         Label boardTitle = new Label();
         Button removeBoard = new Button();
         Button leaveBoard = new Button();
-        removeBoard.setText("X");
+        removeBoard.setText("\u2A2F");
         leaveBoard.setText("Leave");
         boardTitle.setText(board.getTitle());
-        boardTitle.setFont(new Font(20.0));
+        boardTitle.setFont(new Font(15));
 
         removeBoard.setOnMouseClicked(event -> {
             boardOverviewService.removeBoard(board);
@@ -103,9 +103,9 @@ public class StartPageCtrl implements Initializable {
         ColumnConstraints col2 = new ColumnConstraints();
         ColumnConstraints col3 = new ColumnConstraints();
 
-        col1.setPercentWidth(60);
-        col2.setPercentWidth(20);
-        col3.setPercentWidth(20);
+        col1.setPercentWidth(80);
+        col2.setPercentWidth(10);
+        col3.setPercentWidth(10);
         gridPane.getColumnConstraints().addAll(col1, col2, col3);
         gridPane.add(boardTitle, 0, 0);
         gridPane.add(leaveBoard, 1, 0);

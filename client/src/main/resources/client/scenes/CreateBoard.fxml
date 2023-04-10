@@ -21,9 +21,9 @@
             <rowConstraints>
                 <RowConstraints maxHeight="339.8000015258789" minHeight="10.0" prefHeight="210.9999755859375" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="339.8000015258789" minHeight="0.0" prefHeight="47.79998168945315" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="365.59998779296876" minHeight="10.0" prefHeight="78.20001220703125" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="373.99994812011715" minHeight="10.0" prefHeight="49.59996337890624" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="361.4" minHeight="10.0" prefHeight="215.20003662109372" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="365.59998779296876" minHeight="10.0" prefHeight="46.19999999999999" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="373.99994812011715" minHeight="10.0" prefHeight="73.39999999999998" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="361.4" minHeight="10.0" prefHeight="176.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label alignment="CENTER" text="Create a new board" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -46,6 +46,7 @@
                         <Font size="20.0" />
                     </font>
                 </Button>
+            <Label fx:id="nameErrorLabel" alignment="CENTER" focusTraversable="false" text="Replace me with error message" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
             </children>
         </GridPane>
     </children>
