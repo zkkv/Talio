@@ -15,29 +15,34 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardDetailsCtrl">
     <children>
         <VBox spacing="10.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
             <children>
             <HBox prefHeight="25.0" prefWidth="583.0" VBox.vgrow="NEVER">
                <children>
-                  <TextField fx:id="title" prefHeight="25.0" prefWidth="177.0" promptText="Enter title..." />
+                  <TextField fx:id="title" focusTraversable="false" prefHeight="25.0" prefWidth="554.0" promptText="Enter title..." />
                   <Separator prefHeight="28.0" prefWidth="0.0" visible="false" HBox.hgrow="SOMETIMES" />
                         <Button fx:id="saveButton" alignment="CENTER" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="155.0" text="Save title and description" />
                   <Separator prefHeight="31.0" prefWidth="40.0" visible="false" HBox.hgrow="NEVER" />
-                        <Button mnemonicParsing="false" onAction="#closeCardDetails" text="X" />
+                        <Button mnemonicParsing="false" onAction="#closeCardDetails" text="⨯" />
                </children>
             </HBox>
+            <Label fx:id="nameErrorLabel" alignment="CENTER" focusTraversable="false" minHeight="24.0" minWidth="312.0" prefHeight="24.0" prefWidth="871.0" text="Replace me with error message" textFill="RED" visible="false" />
                 <Separator prefWidth="200.0" />
                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                     <children>
-                        <Label text="Description">
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
+                  <HBox alignment="BOTTOM_LEFT" prefHeight="35.0" prefWidth="740.0">
+                     <children>
+                              <Label text="Description">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Separator prefHeight="28.0" prefWidth="200.0" visible="false" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="descriptionErrorLabel" alignment="CENTER" focusTraversable="false" minHeight="30.0" minWidth="394.0" text="Replace me with error message" textFill="RED" visible="false" />
+                     </children>
+                  </HBox>
                         <TextArea fx:id="descriptionField" prefHeight="167.0" prefWidth="580.0" promptText="Add description..." wrapText="true">
                             <rotationAxis>
                                 <Point3D />

@@ -60,7 +60,6 @@ public class TagsListCtrl {
     public void drawTags() {
         vbox.setAlignment(Pos.TOP_CENTER);
         addRetrievedTags(boardUserIdentifier.getCurrentBoard());
-        registerForTagUpdates(boardUserIdentifier.getCurrentBoard());
     }
 
 
@@ -90,7 +89,7 @@ public class TagsListCtrl {
     private void drawTag(Tag tag) {
         Button tagButton = new Button();
         HBox tagBox = new HBox();
-        Button removeTag = new Button("X");
+        Button removeTag = new Button("\u2A2F");
 
         configureTagButton(tagButton, tag);
         configureRemoveTagButton(tagBox,removeTag,tag);
@@ -131,10 +130,11 @@ public class TagsListCtrl {
         tagButton.setFocusTraversable(false);
         tagButton.setAlignment(Pos.CENTER);
         tagButton.setMnemonicParsing(false);
-        tagButton.setPrefHeight(30);
+        tagButton.setPrefHeight(Button.USE_COMPUTED_SIZE);
         tagButton.setPrefWidth(140);
-        tagButton.setMinHeight(30);
+        tagButton.setMinHeight(Button.USE_PREF_SIZE);
         tagButton.setMinWidth(140);
+        tagButton.setWrapText(true);
 
         String color = "rgb(" + tag.getRed() + ", " + tag.getGreen() + ", " + tag.getBlue() + ");";
         String title = tag.getTitle();
@@ -149,7 +149,7 @@ public class TagsListCtrl {
      * @author Kirill Zhankov
      */
     private void drawAddTagButton(){
-        Button addTagButton = new Button("+");
+        Button addTagButton = new Button("\uFF0B");
         HBox tagBox = new HBox();
 
         configureTagBox(tagBox);
@@ -247,10 +247,8 @@ public class TagsListCtrl {
         tagsListService.registerForTagUpdates(
                 currentBoard.getId(),
                 tag -> {
-                    if (!drawnTags.contains(tag)) {
-                        vbox.getChildren().remove(vbox.getChildren().size() - 1);
-                        drawTag(tag);
-                        drawAddTagButton();
+                    if(mainCtrl.isTagsListShowing()) {
+                        addRetrievedTags(boardUserIdentifier.getCurrentBoard());
                     }
                 });
     }

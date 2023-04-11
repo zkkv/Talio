@@ -4,7 +4,6 @@ import client.services.BoardUserIdentifier;
 import com.google.inject.Inject;
 import commons.*;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,12 +15,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.UnaryOperator;
 
 
 public class BoardOverviewCtrl implements Initializable {
@@ -50,6 +52,9 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private Label addConfirmationLabel;
 
+    private Timer listWasAddedTimer;
+
+    private Timer listNameErrorTimer;
 
     @Inject
     public BoardOverviewCtrl(BoardOverviewService boardOverviewService, MainCtrl mainCtrl,
@@ -82,21 +87,24 @@ public class BoardOverviewCtrl implements Initializable {
             boardUserIdentifier.getCurrentBoard());
 
         addConfirmationLabel.setVisible(true);
-        Timer timer = new Timer();
+        if (listWasAddedTimer != null) {
+            listWasAddedTimer.cancel();
+        }
+        listWasAddedTimer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 addConfirmationLabel.setVisible(false);
             }
         };
-        timer.schedule(task, 3000);
+        listWasAddedTimer.schedule(task, 3000);
         panel.getChildren().remove(addList);
         drawCardList(newCardList);
         addListButton();
     }
 
     private void addListButton(){
-        Button addList = new Button("+");
+        Button addList = new Button("\uFF0B");
         configureAddListButton(addList);
         addList.setOnAction(event -> {
             createList(addList);
@@ -260,7 +268,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     private void drawAddCardButton(VBox vbox, long cardListId){
-        Button addCard = new Button("+");
+        Button addCard = new Button("\uFF0B");
         configureAddCardButton(addCard);
         addCard.setOnAction(event -> {
             String title = "Card";
@@ -400,8 +408,7 @@ public class BoardOverviewCtrl implements Initializable {
         RowConstraints row3 = new RowConstraints();
         row1.setMinHeight(5.0);
         row1.setPrefHeight(5.0);
-        row2.setMinHeight(30.0);
-        row2.setPrefHeight(30.0);
+        row2.setVgrow(Priority.ALWAYS);
         row3.setMinHeight(18.0);
         row3.setPrefHeight(18.0);
 
@@ -418,7 +425,7 @@ public class BoardOverviewCtrl implements Initializable {
         card.getColumnConstraints().addAll(col1, col2, col3);
 
         card.getRowConstraints().addAll(row1,row2,row3);
-        Button remove = new Button("X");
+        Button remove = new Button("\u2A2F");
         icons.setStyle("-fx-background-color: white");
         remove.setOnAction(event -> {
             cardListVbox.getChildren().remove(card);
@@ -453,19 +460,31 @@ public class BoardOverviewCtrl implements Initializable {
         );
         card.setBorder(new Border(borderStroke));
         card.setVgap(10);
+
         tagList.setMinHeight(1.0);
         tagList.setPrefHeight(22.0);
         tagList.setPrefWidth(100.0);
         tagList.setSpacing(2);
+
         scrollPane.setMinHeight(1.0);
         scrollPane.setMinWidth(1.0);
         scrollPane.setPrefHeight(25.0);
         scrollPane.setPrefWidth(100.0);
         scrollPane.setContent(tagList);
-        task.setPrefHeight(5);
+
+        task.setPrefHeight(Label.USE_COMPUTED_SIZE);
+        task.setWrapText(true);
+        task.setFont(Font.font(14));
+
         card.setStyle("-fx-background-color: white");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        for (Tag tag:cardEntity.getTags()) {
+            Circle circle = new Circle(8.5);
+            circle.setFill(Color.color(tag.getRed()/255.0,
+                    tag.getGreen()/255.0,tag.getBlue()/255.0));
+            tagList.getChildren().add(circle);
+        }
         task.setId(String.valueOf(cardEntity.getId()));
     }
 
@@ -478,13 +497,14 @@ public class BoardOverviewCtrl implements Initializable {
         //List Name
         TextField label = new TextField(cardList.getTitle());
         final String NORMAL_TITLE_STYLE = "-fx-background-color: #d9cdad;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-wrap-text: true";
         final String HOVERED_BUTTON_STYLE = "-fx-background-color: #fadebe;" +
-            " -fx-border-color: #d9cdad; -fx-font-size: 16; -fx-wrap-text: true";
+            " -fx-border-color: #d9cdad; -fx-wrap-text: true";
         label.setStyle(NORMAL_TITLE_STYLE);
         label.setPromptText("Enter list name...");
         label.setId(String.valueOf(cardList.getId()));
         label.setAlignment(Pos.CENTER);
+        label.setFont(Font.font(14));
         configureTextField(label, NORMAL_TITLE_STYLE, HOVERED_BUTTON_STYLE);
 
         //List Button
@@ -511,31 +531,113 @@ public class BoardOverviewCtrl implements Initializable {
     private void configureTextField(TextField label,
                                     final String NORMAL_BUTTON_STYLE,
                                     final String HOVERED_BUTTON_STYLE) {
-        label.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    if(label.getText().equals("")){
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        addIcons((Stage) alert.getDialogPane().getScene().getWindow());
-                        alert.setHeaderText(null);
-                        alert.setTitle("Incorrect Name");
-                        alert.setContentText("List name cannot be left blank!");
-                        alert.showAndWait();
-                    }
-                    else {
-                        long cardListId = Long.parseLong(label.getId());
-                        boardOverviewService.updateCardListTitle(cardListId, label.getText(),
-                            boardUserIdentifier.getCurrentBoard());
-                    }
-                }
+
+        String oldLabelValue = label.getText();
+
+        // When unfocused
+        label.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                handleListNameEdit(label, oldLabelValue);
             }
         });
+
+        setupLabelConstraints(label);
 
         label.setOnMouseEntered(e -> label.setStyle(HOVERED_BUTTON_STYLE));
         label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
+    /**
+     * Handle CardList title renaming and send a server request
+     * to update the title in the backend
+     *
+     * @param label The TextField that fetches the new name
+     * @param oldLabelValue The old name of the CardList
+     */
+    private void handleListNameEdit (TextField label, String oldLabelValue) {
+        final String REGEXP = "\\S(.*\\S)?";
+        String input = label.getText();
+
+        if(input.equals("")){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setHeaderText(null);
+            alert.setTitle("Incorrect Name");
+            alert.setContentText("List name cannot be left blank!");
+            alert.showAndWait();
+            label.setText(oldLabelValue);
+        }
+        else if (!input.matches(REGEXP)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            addIcons((Stage) alert.getDialogPane().getScene().getWindow());
+            alert.setTitle("Incorrect Name");
+            alert.setHeaderText(null);
+            alert.setContentText("List name cannot start or end with spaces.");
+            alert.showAndWait();
+            label.setText(label.getText().trim());
+        }
+        else {
+            long cardListId = Long.parseLong(label.getId());
+            boardOverviewService.updateCardListTitle(cardListId, label.getText(),
+                    boardUserIdentifier.getCurrentBoard());
+        }
+    }
+
+    /**
+     * Sets up label constraints and the error message
+     * which is shown in case they are violated.
+     * Error message disappears in some time after no action is taken.
+     *
+     * @author Kirill Zhankov
+     */
+    private void setupLabelConstraints(TextField label) {
+        final String REGEXP = "[a-zA-Z0-9_ \\-!@#$%^&*()~\"]*";
+        final int MAX_LENGTH = 30;
+        final int SHOW_DURATION_MS = 6000;
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setFont(Font.font(15));
+        tooltip.setWrapText(true);
+        tooltip.setText("List name has to be no more than " + MAX_LENGTH
+                + " characters long and can contain only letters, "
+                + "digits,\nspaces and any of: _-!@#$%^&*()~\" but "
+                + "it cannot start or end with spaces.");
+
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String input = change.getControlNewText();
+            if (input.matches(REGEXP) && input.length() <= MAX_LENGTH) {
+                Platform.runLater(tooltip::hide);
+                return change;
+            }
+            else {
+                tooltip.setAutoHide(true);
+
+                double x = label.localToScreen(label.getBoundsInLocal()).getMinX();
+                double y = label.localToScreen(label.getBoundsInLocal()).getMinY();
+
+                tooltip.show(label.getScene().getWindow(), x, y);
+                final double TOOLTIP_OFFSET_Y = tooltip.getHeight();
+                tooltip.setX(x);
+                tooltip.setY(y - TOOLTIP_OFFSET_Y);
+
+                if (listNameErrorTimer != null) {
+                    listNameErrorTimer.cancel();
+                }
+                listNameErrorTimer = new Timer();
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Platform.runLater(tooltip::hide);
+                    }
+                };
+                listNameErrorTimer.schedule(task, SHOW_DURATION_MS);
+                return null;
+            }
+        };
+
+        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        label.setTextFormatter(textFormatter);
+    }
 
 
     private void configureListMenu(Button button, ContextMenu cm, MenuItem remove, MenuItem edit) {
@@ -561,9 +663,30 @@ public class BoardOverviewCtrl implements Initializable {
             Board.class, b -> {
                 Platform.runLater(() -> {
                     boardUserIdentifier.setCurrentBoard(b);
-                    mainCtrl.showAllTagsList();
+                    if(mainCtrl.isTagsListShowing()) {
+                        mainCtrl.initTags();
+                    }
                 });
             });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card-details",
+                Card.class,card -> {
+                Platform.runLater(()->{
+                    if(mainCtrl.isCardDetailsShowing()){
+                        mainCtrl.showCardDetails(card.getTitle(), card);
+                    }
+                    if(mainCtrl.isTagsInCardShowing()){
+                        mainCtrl.showAllTagsListWithinACard(card);
+                    }
+                });
+            });
+        boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card",
+                Board.class,b -> {
+                    Platform.runLater(()->{
+                        if(mainCtrl.isCardDetailsShowing()){
+                            mainCtrl.showBoardPage();
+                        }
+                    });
+                });
     }
 
     public void configureSettings() {

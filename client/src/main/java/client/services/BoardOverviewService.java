@@ -128,7 +128,7 @@ public class BoardOverviewService {
         serverUtils.removeSubTask(subTask,cardId,board);
     }
 
-    public void testServerConnection() throws IOException {
+    public void testServerConnection() throws IOException, RuntimeException {
         serverUtils.testConnection();
     }
 

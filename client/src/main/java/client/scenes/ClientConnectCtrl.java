@@ -9,8 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class ClientConnectCtrl {
 
     private final MainCtrl mainCtrl;
@@ -53,7 +51,7 @@ public class ClientConnectCtrl {
             boardOverviewService.testServerConnection();
             mainCtrl.showUserPage();
         }
-        catch (IOException | ClassCastException e) {
+        catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             addIcons((Stage) alert.getDialogPane().getScene().getWindow());
             alert.setTitle("Connection Error");

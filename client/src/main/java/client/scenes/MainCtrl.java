@@ -21,7 +21,6 @@ import commons.Board;
 import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -107,6 +106,7 @@ public class MainCtrl {
         this.listMenu = new Scene(listMenu.getValue());
         this.listMenuStage = new Stage();
         this.listMenuStage.setScene(this.listMenu);
+        this.listMenuStage.initModality(Modality.APPLICATION_MODAL);
 
         this.createBoardCtrl = createBoard.getKey();
         this.createBoard = new Scene(createBoard.getValue());
@@ -173,15 +173,19 @@ public class MainCtrl {
     public void showUserPage(){
         primaryStage.setTitle("Talio: User selection");
         primaryStage.setScene(userPage);
+        userPageCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+        userPageCtrl.setUpTextField();
     }
 
     public void showJoinBoard(){
         primaryStage.setTitle("Talio: Join Board");
         primaryStage.setScene(joinBoard);
+        joinBoardCtrl.setField("");
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
+        joinBoardCtrl.setUpTextField();
     }
 
     public void showStartPage() {
@@ -198,6 +202,7 @@ public class MainCtrl {
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
         createBoardCtrl.setField("");
+        createBoardCtrl.setUpTextField();
     }
 
     public void showBoardPage() {
@@ -210,29 +215,43 @@ public class MainCtrl {
 
     public void subscribeForAllUpdates(Board board){
         boardOverviewCtrl.subscribeForUpdates(board);
+        tagsListCtrl.registerForTagUpdates(board);
     }
 
     public void showBoardSettings(String title) {
         primaryStage.setTitle("Talio: Board Settings");
         boardSettingsCtrl.setBoardKey();
         boardSettingsCtrl.setBoardTitle(title);
+        boardSettingsCtrl.setUpTextField();
         primaryStage.setScene(boardSettings);
         primaryStage.setMinWidth(primaryStage.getWidth());
         primaryStage.setMinHeight(primaryStage.getHeight());
     }
 
-    public void changeName(Label label, String title){
-        label.setText(title);
-    }
 
     public void showListMenu(){
         if(!listMenuStage.isShowing()){
+            addIcons(listMenuStage);
+            listMenuStage.setResizable(false);
             listMenuStage.setTitle("Talio: List Menu");
             listMenuStage.show();
+            listMenuCtrl.setUpTextField();
         }
         else{
             listMenuStage.hide();
         }
+    }
+
+    public boolean isCardDetailsShowing(){
+        return primaryStage.getScene().equals(cardDetails);
+    }
+
+    public boolean isTagsInCardShowing(){
+        return primaryStage.getScene().equals(tagsInCard);
+    }
+
+    public boolean isTagsListShowing(){
+        return tagsListStage.isShowing();
     }
 
     /**
@@ -253,6 +272,8 @@ public class MainCtrl {
         cardDetailsCtrl.addRetrievedSubTasks(cardEntity);
         cardDetailsCtrl.setDescription(cardEntity);
         cardDetailsCtrl.updateProgressBar();
+        cardDetailsCtrl.setUpCardName();
+        cardDetailsCtrl.setUpDescription();
         initTagsInCardDetails();
     }
 
@@ -326,7 +347,16 @@ public class MainCtrl {
         tagDetailsStage.setTitle("Talio: Tag Details");
         tagDetailsStage.setResizable(false);
         tagDetailsStage.show();
+        tagDetailsCtrl.setUpTextField();
         addIcons(tagDetailsStage);
+    }
+
+    public void initTags(){
+        tagsListCtrl.drawTags();
+    }
+
+    public void closeTagDetails(){
+        tagDetailsStage.close();
     }
 
 }
