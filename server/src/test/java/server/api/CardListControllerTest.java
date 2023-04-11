@@ -166,7 +166,7 @@ public class CardListControllerTest {
         when(cardListService.save(cardListToRename)).thenReturn(cardListToRename);
 
         ResponseEntity<CardList> actualResponse = cardListController.updateTitle("New Title",
-                                                                                1L,2L);
+            1L,2L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardListToRename.getTitle(),actualResponse.getBody().getTitle());
@@ -193,7 +193,7 @@ public class CardListControllerTest {
         when(cardListService.save(cardList)).thenReturn(cardList);
 
         ResponseEntity<Card> actualResponse = cardListController.removeCard(2L,
-                                                                1L,3L);
+            1L,3L);
 
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(cardToBeRemoved,actualResponse.getBody());
@@ -214,6 +214,52 @@ public class CardListControllerTest {
         when(cardListService.exists(-1L)).thenReturn(false);
 
         ResponseEntity<Card> actualResponse = cardListController.removeCard(-1L,2L,3L);
+
+        assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testRemoveCardForDragValid(){
+        List<Card> cards = new ArrayList<>();
+        Card cardToBeRemoved = new Card();
+        cardToBeRemoved.setId(1L);
+        CardList cardList = new CardList(cards,"List 1");
+        cardList.setId(2L);
+        Board board = new Board();
+        board.setId(2L);
+
+        when(boardService.getBoard(2L)).thenReturn(board);
+
+        when(cardListService.exists(2L)).thenReturn(true);
+        when(cardService.exists(1L)).thenReturn(true);
+
+        when(cardListService.getCardList(2L)).thenReturn(cardList);
+        when(cardService.getCard(1L)).thenReturn(cardToBeRemoved);
+
+        when(cardListService.save(cardList)).thenReturn(cardList);
+
+        ResponseEntity<Card> actualResponse = cardListController.removeCardFromList(2L,
+            1L,3L);
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(cardToBeRemoved,actualResponse.getBody());
+        assertEquals(0,cardList.getCards().size());
+    }
+
+    @Test
+    public void testRemoveCardForDragInvalidCard(){
+        when(cardService.exists(-1L)).thenReturn(false);
+
+        ResponseEntity<Card> actualResponse = cardListController.removeCardFromList(2L,-1L,3L);
+
+        assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testRemoveCardForDragInvalidCardList(){
+        when(cardListService.exists(-1L)).thenReturn(false);
+
+        ResponseEntity<Card> actualResponse = cardListController.removeCardFromList(-1L,2L,3L);
 
         assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
     }
