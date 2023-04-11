@@ -207,7 +207,7 @@ public class CardControllerTest {
         when(boardService.getBoard(2L)).thenReturn(board);
 
         ResponseEntity<Card> actualResponse = cardController.updateSubTasks(subtasks,
-                1L,2L);
+            1L,2L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(subtasks,card.getTasks());
 
@@ -233,7 +233,7 @@ public class CardControllerTest {
     }
 
     @Test
-    public void testRemoveSubtask(){
+    public void testRemoveSubtaskValid(){
         SubTask subTask = new SubTask();
         subTask.setId(1L);
         Card card = new Card();
@@ -252,5 +252,45 @@ public class CardControllerTest {
         ResponseEntity<SubTask> actualResponse = cardController.removeSubTask(2L,1L,3L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(subTask,actualResponse.getBody());
+    }
+
+    @Test
+    public void testRemoveSubTaskInvalid(){
+        SubTask subTask = new SubTask();
+        subTask.setId(1L);
+        Card card = new Card();
+        card.setId(2L);
+        Board board = new Board();
+        board.setId(3L);
+
+        when(cardService.getCard(2L)).thenReturn(card);
+        when(subTaskService.save(subTask)).thenReturn(subTask);
+        when(cardService.save(card)).thenReturn(card);
+        when(subTaskService.getSubTask(1L)).thenReturn(subTask);
+        when(cardService.exists(2L)).thenReturn(false);
+        when(subTaskService.exists(1L)).thenReturn(false);
+
+        ResponseEntity<SubTask> actualResponse = cardController.removeSubTask(2L,1L,3L);
+        assertEquals(HttpStatus.NOT_FOUND,actualResponse.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateDescription(){
+        Board board = new Board();
+        board.setId(1L);
+
+        Card card = new Card();
+        card.setId(2L);
+
+        String desc = "Something here";
+
+        when(cardService.getCard(2L)).thenReturn(card);
+        when(cardService.save(card)).thenReturn(card);
+        when(boardService.getBoard(1L)).thenReturn(board);
+
+        ResponseEntity<Card> actualResponse = cardController.updateDescription(desc,2L,1L);
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(desc,card.getDescription());
     }
 }
