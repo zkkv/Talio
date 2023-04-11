@@ -89,10 +89,12 @@ public class BoardOverviewServiceTest {
         cardList.setId(1L);
         Card card = new Card();
 
-        when(serverUtils.removeCardFromList(card, 1L, board)).thenReturn(Response.accepted().build());
+        when(serverUtils.removeCardFromList(card, 1L,
+                board)).thenReturn(Response.accepted().build());
         boardOverviewService.removeCard(card, 1L, board);
 
-        verify(serverUtils, times(1)).removeCardFromList(card, 1L, board);
+        verify(serverUtils, times(1))
+                .removeCardFromList(card, 1L, board);
     }
 
     @Test
@@ -102,10 +104,12 @@ public class BoardOverviewServiceTest {
         cardList.setId(1L);
         Card card = new Card();
 
-        when(serverUtils.removeCardFromListWhenDragged(card, 1L, board)).thenReturn(Response.accepted().build());
+        when(serverUtils.removeCardFromListWhenDragged(card, 1L,
+                board)).thenReturn(Response.accepted().build());
         boardOverviewService.removeCardWhenDragged(card, 1L, board);
 
-        verify(serverUtils, times(1)).removeCardFromListWhenDragged(card, 1L, board);
+        verify(serverUtils, times(1))
+                .removeCardFromListWhenDragged(card, 1L, board);
     }
 
     @Test
@@ -113,10 +117,12 @@ public class BoardOverviewServiceTest {
         Board board = new Board();
         CardList cardList = new CardList();
 
-        when(serverUtils.removeCardListFromBoard(cardList, board)).thenReturn(Response.accepted().build());
+        when(serverUtils.removeCardListFromBoard(cardList,
+                board)).thenReturn(Response.accepted().build());
         boardOverviewService.removeCardList(cardList, board);
 
-        verify(serverUtils, times(1)).removeCardListFromBoard(cardList, board);
+        verify(serverUtils, times(1))
+                .removeCardListFromBoard(cardList, board);
     }
 
     @Test
@@ -126,7 +132,8 @@ public class BoardOverviewServiceTest {
         Card card = new Card();
         card.setId(1L);
 
-        when(serverUtils.addSubTaskToCard(subTask, 1L, board)).thenReturn(subTask);
+        when(serverUtils.addSubTaskToCard(subTask, 1L,
+                board)).thenReturn(subTask);
 
 
         SubTask actual = boardOverviewService.addSubTask(subTask, 1L, board);
@@ -216,10 +223,12 @@ public class BoardOverviewServiceTest {
         cardList.setId(1L);
         card.setId(2L);
 
-        when(serverUtils.addCardToCardListWithIndex(card,2L,1L,0,board)).thenReturn(card);
+        when(serverUtils.addCardToCardListWithIndex(card,
+                2L,1L, 0,board)).thenReturn(card);
 
 
-        Card actual = boardOverviewService.addCardAtIndex(card,2L,1L,0,board);
+        Card actual = boardOverviewService.addCardAtIndex(card,2L,
+                1L,0,board);
 
         assertEquals(card, actual);
     }
