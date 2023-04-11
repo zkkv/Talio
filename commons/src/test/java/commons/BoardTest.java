@@ -59,4 +59,13 @@ public class BoardTest {
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("cardLists"));
     }
+
+    @Test
+    public void testGetKey(){
+        var b1 = new Board();
+        String key = "asd";
+        b1.setKey(key);
+
+        assertEquals(key,b1.getKey());
+    }
 }

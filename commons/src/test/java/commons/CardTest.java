@@ -42,9 +42,31 @@ class CardTest {
         assertNotEquals(card1.hashCode(), card2.hashCode());
     }
 
-    //    @Test
-    //    void testToString() {
-    //        Card card = new Card("card");
-    //        assertEquals("", card.toString());
-    //    }
+    @Test
+    public void testHasDescription(){
+        Card card = new Card();
+        String desc = "asdfgh";
+        card.setDescription(desc);
+
+        assertTrue(card.hasDescription());
+    }
+
+    @Test
+    public void testGetDesc(){
+        Card card = new Card();
+        String desc = "asdfgh";
+        card.setDescription(desc);
+
+        assertEquals(desc,card.getDescription());
+    }
+
+    @Test
+    public void testSetDesc(){
+        Card card = new Card();
+        String desc = "asdfgh";
+        card.setDescription(desc);
+
+        assertEquals(desc,card.getDescription());
+    }
+
 }
