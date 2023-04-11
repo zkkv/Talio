@@ -75,4 +75,12 @@ public class CardListTest {
         CardList cardList2 = new CardList(list1, "TODO");
         assertEquals(cardList1.hashCode(), cardList2.hashCode());
     }
+
+    @Test
+    public void testGetId(){
+        CardList cardList = new CardList();
+        cardList.setId(1L);
+
+        assertEquals(1L,cardList.getId());
+    }
 }

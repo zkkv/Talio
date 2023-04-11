@@ -83,4 +83,12 @@ class TagTest {
         tag1 = new Tag("name", 1, 2, 3, cards);
         assertEquals("name", tag1.getTitle());
     }
+
+    @Test
+    public void hasToString() {
+        var tag = new Tag("asd",123,123,123,new ArrayList<>()).toString();
+        assertTrue(tag.contains(Tag.class.getSimpleName()));
+        assertTrue(tag.contains("\n"));
+        assertTrue(tag.contains("asd"));
+    }
 }
