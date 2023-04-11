@@ -14,7 +14,7 @@ Talio lets you keep track of your work. Create a board and start adding tasks im
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Vinchentzo | V.T.Bunardzhiev@student.tudelft.nl
 | ![](https://secure.gravatar.com/avatar/962c8a048e322e273ef6dba6a23a9a7c?s=46&d=identicon)               | Calin Ciocanea | c.ciocanea@student.tudelft.nl
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Diana-Otilia Sutac | d.o.sutac@student.tudelft.nl
-| ![](https://secure.gravatar.com/avatar/a3fa7ac230efc573cd8759580806d4e6?s=170&d=identicon)              | Sofia Dimieva | s.dimieva@student.tudelft.nl
+| ![](https://secure.gravatar.com/avatar/a3fa7ac230efc573cd8759580806d4e6?s=46&d=identicon)                | Sofia Dimieva | s.dimieva@student.tudelft.nl
 
 
 
