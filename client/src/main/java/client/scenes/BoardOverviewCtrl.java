@@ -547,6 +547,13 @@ public class BoardOverviewCtrl implements Initializable {
         label.setOnMouseExited(e -> label.setStyle(NORMAL_BUTTON_STYLE));
     }
 
+    /**
+     * Handle CardList title renaming and send a server request
+     * to update the title in the backend
+     *
+     * @param label The TextField that fetches the new name
+     * @param oldLabelValue The old name of the CardList
+     */
     private void handleListNameEdit (TextField label, String oldLabelValue) {
         final String REGEXP = "\\S(.*\\S)?";
         String input = label.getText();
@@ -656,7 +663,9 @@ public class BoardOverviewCtrl implements Initializable {
             Board.class, b -> {
                 Platform.runLater(() -> {
                     boardUserIdentifier.setCurrentBoard(b);
-                    mainCtrl.showAllTagsList();
+                    if(mainCtrl.isTagsListShowing()) {
+                        mainCtrl.initTags();
+                    }
                 });
             });
         boardOverviewService.registerForUpdates("/topic/board/"+board.getId()+"/card-details",

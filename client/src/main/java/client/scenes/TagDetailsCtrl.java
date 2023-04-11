@@ -144,8 +144,7 @@ public class TagDetailsCtrl {
             else {
                 tagsListService.updateTagName(tag.getId(), nameTextField.getText(),
                         boardUserIdentifier.getCurrentBoard());
-                tag.setTitle(nameTextField.getText());
-                tagButton.setText(nameTextField.getText());
+                mainCtrl.closeTagDetails();
             }
         });
     }

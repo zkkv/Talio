@@ -60,7 +60,6 @@ public class TagsListCtrl {
     public void drawTags() {
         vbox.setAlignment(Pos.TOP_CENTER);
         addRetrievedTags(boardUserIdentifier.getCurrentBoard());
-        registerForTagUpdates(boardUserIdentifier.getCurrentBoard());
     }
 
 
@@ -248,10 +247,8 @@ public class TagsListCtrl {
         tagsListService.registerForTagUpdates(
                 currentBoard.getId(),
                 tag -> {
-                    if (!drawnTags.contains(tag)) {
-                        vbox.getChildren().remove(vbox.getChildren().size() - 1);
-                        drawTag(tag);
-                        drawAddTagButton();
+                    if(mainCtrl.isTagsListShowing()) {
+                        addRetrievedTags(boardUserIdentifier.getCurrentBoard());
                     }
                 });
     }
