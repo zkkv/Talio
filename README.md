@@ -15,8 +15,6 @@ Talio lets you keep track of your work. Create a board and start adding tasks im
 | ![](https://secure.gravatar.com/avatar/962c8a048e322e273ef6dba6a23a9a7c?s=46&d=identicon)               | Calin Ciocanea | c.ciocanea@student.tudelft.nl
 | ![](https://secure.gravatar.com/avatar/ea60b4a2649c1809db4b9fdcb1679fbe?s=46&d=identicon)               | Diana-Otilia Sutac | d.o.sutac@student.tudelft.nl
 | ![](https://secure.gravatar.com/avatar/a3fa7ac230efc573cd8759580806d4e6?s=170&d=identicon)              | Sofia Dimieva | s.dimieva@student.tudelft.nl
->>>>>>> 66d9e11ac435b8d8ed35abf8dfa3aab551941505
-
 
 
 <!-- Instructions (remove once assignment has been completed -->
