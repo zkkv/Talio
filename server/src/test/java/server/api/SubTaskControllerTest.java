@@ -101,8 +101,31 @@ public class SubTaskControllerTest {
         when(boardService.getBoard(2L)).thenReturn(board);
 
         ResponseEntity<SubTask> actualResponse =
-                subTaskController.updateTitleSubTask("New Title",1L,3L,2L);
+            subTaskController.updateTitleSubTask("New Title",1L,3L,2L);
         assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
         assertEquals(titleSubtask.getName(),actualResponse.getBody().getName());
+    }
+
+    @Test
+    public void testUpdateIsChecked(){
+        SubTask subtask = new SubTask();
+        subtask.setId(1L);
+        Board board = new Board();
+        board.setId(2L);
+        Card card = new Card();
+        card.setId(3L);
+
+        when(cardService.getCard(3L)).thenReturn(card);
+        when(subTaskService.getSubTask(1L)).thenReturn(subtask);
+        when(cardService.save(card)).thenReturn(card);
+        when(subTaskService.save(subtask)).thenReturn(subtask);
+        when(boardService.getBoard(2L)).thenReturn(board);
+
+        ResponseEntity<SubTask> actualResponse = subTaskController.updateIsChecked(true,1L,
+            2L,3L);
+
+        assertEquals(HttpStatus.OK,actualResponse.getStatusCode());
+        assertEquals(true,actualResponse.getBody().isChecked());
+        assertEquals(subtask,actualResponse.getBody());
     }
 }
