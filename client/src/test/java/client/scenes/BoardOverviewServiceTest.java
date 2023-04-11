@@ -232,7 +232,193 @@ public class BoardOverviewServiceTest {
 
         assertEquals(card, actual);
     }
+    @Test
+    public void testGetCards() {
+        CardList cardList = new CardList(new ArrayList<>(),"asd");
+        cardList.setId(1L);
 
+        when(serverUtils.getCardsOfCardList(1L)).thenReturn(cardList.getCards());
+
+
+        List<Card> actual = boardOverviewService.getCards(1L);
+
+        assertEquals(cardList.getCards(), actual);
+    }
+
+    @Test
+    public void testGetCardList() {
+        CardList cardList = new CardList(new ArrayList<>(),"asd");
+        cardList.setId(1L);
+
+        when(serverUtils.getCardList(1L)).thenReturn(cardList);
+
+
+        CardList actual = boardOverviewService.getCardList(1L);
+
+        assertEquals(cardList, actual);
+    }
+
+    @Test
+    public void testGetBoard() {
+        Board board = new Board();
+        board.setId(1L);
+
+        when(serverUtils.getBoard(1L)).thenReturn(board);
+
+
+        Board actual = boardOverviewService.getBoard(1L);
+
+        assertEquals(board, actual);
+    }
+
+    @Test
+    public void testCreateBoard() {
+        Board board = new Board();
+        board.setId(1L);
+
+        when(serverUtils.createBoard("title","user")).thenReturn(board);
+
+
+        Board actual = boardOverviewService.createBoard("title","user");
+
+        assertEquals(board, actual);
+    }
+
+    @Test
+    public void testGetAllBoards() {
+        List<Board> boards= new ArrayList<>();
+
+        Board board = new Board();
+        board.setId(1L);
+        boards.add(board);
+        when(serverUtils.getAllBoards()).thenReturn(boards);
+
+
+        List<Board> actual = boardOverviewService.getAllBoards();
+
+        assertEquals(boards, actual);
+    }
+
+    @Test
+    public void testRemoveBoardForUser() {
+        Board board = new Board();
+        User user = new User("user",new ArrayList<>());
+        board.setId(1L);
+        when(serverUtils.removeBoardForUser("user",board)).thenReturn(user);
+
+
+        User actual = boardOverviewService.removeBoardForUser(board,"user");
+
+        assertEquals(user, actual);
+    }
+
+    @Test
+    public void testUpdateCardListTitle() {
+        Board board = new Board();
+        CardList cardList = new CardList();
+        board.setId(1L);
+        cardList.setId(2L);
+        when(serverUtils.updateCardListTitle(2L,"title",board)).thenReturn(cardList);
+
+
+        CardList actual = boardOverviewService.updateCardListTitle(2L,"title",board);
+
+        assertEquals(cardList, actual);
+    }
+
+    @Test
+    public void testUpdateCardTitle() {
+        Board board = new Board();
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        when(serverUtils.updateCardTitle(2L,"title",board)).thenReturn(card);
+
+
+        Card actual = boardOverviewService.updateCardTitle(2L,"title",board);
+
+        assertEquals(card, actual);
+    }
+
+    @Test
+    public void testUpdateCardDesc() {
+        Board board = new Board();
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        when(serverUtils.updateCardDescription(2L,"desc",board)).thenReturn(card);
+
+
+        Card actual = boardOverviewService.updateCardDescription(2L,"desc",board);
+
+        assertEquals(card, actual);
+    }
+
+    @Test
+    public void testUpdateSubTaskTitle() {
+        Board board = new Board();
+        SubTask task = new SubTask();
+        task.setId(3L);
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        when(serverUtils.updateTitleSubTask(3L,"title",board,card)).thenReturn(task);
+
+
+        SubTask actual = boardOverviewService.updateTitleSubTask(3L,"title",board,card);
+
+        assertEquals(task, actual);
+    }
+
+    @Test
+    public void testUpdateSubTaskIsChecked() {
+        Board board = new Board();
+        SubTask task = new SubTask();
+        task.setId(3L);
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        when(serverUtils.updateIsChecked(3L,true,board,card)).thenReturn(task);
+
+
+        SubTask actual = boardOverviewService.updateCheckboxTask(3L,true,board,card);
+
+        assertEquals(task, actual);
+    }
+
+    @Test
+    public void testRemoveSubTask() {
+        Board board = new Board();
+        SubTask task = new SubTask();
+        task.setId(3L);
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        when(serverUtils.removeSubTask(task,2L,board)).thenReturn(Response.accepted().build());
+
+
+        boardOverviewService.removeSubTask(task,2L,board);
+
+        verify(serverUtils, times(1)).removeSubTask(task,2L,board);
+    }
+
+    @Test
+    public void testUpdateCardSubtasks() {
+        Board board = new Board();
+        SubTask task = new SubTask();
+        List<SubTask> subTasks = new ArrayList<>();
+        task.setId(3L);
+        Card card = new Card();
+        board.setId(1L);
+        card.setId(2L);
+        subTasks.add(task);
+        when(serverUtils.updateCardSubTasks(2L,subTasks,board)).thenReturn(card);
+
+
+        Card actual = boardOverviewService.updateCardSubTasks(2L,subTasks,board);
+
+        assertEquals(card, actual);
+    }
 
 }
 
